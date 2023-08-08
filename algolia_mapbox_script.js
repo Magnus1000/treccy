@@ -30,7 +30,7 @@ async function fetchAlgoliaResults(lat, lng) {
     const searchClient = algoliasearch(appId, apiKey);
     const index = searchClient.initIndex('treccy_races_all');
 
-    const disciplineFilterCheckbox = document.getElementById('checkbox');
+    const disciplineFilterCheckbox = document.getElementById('disciplineFilter_checkbox');
     if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
         const filterValue = disciplineFilterCheckbox.getAttribute('filter-value');
         if (filterValue) {
