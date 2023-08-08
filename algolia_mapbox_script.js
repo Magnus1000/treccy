@@ -79,13 +79,22 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById('filterForm').addEventListener('submit', function(event) {
-            console.log("Filter Form Submitted...");
-            event.preventDefault();
-            displayMapWithResults();
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        console.log("Filter Form Submitted...");
+
+        // Logging the state of the checkbox
+        const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
+        console.log("Checkbox State:", disciplineFilterCheckbox.checked);
+
+        // Logging the discipline filter value
+        let disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
+        console.log("Discipline Filter Value on Form Submit:", disciplineFilterValue);
+
+        event.preventDefault();
+        displayMapWithResults();
     });
+});
 
     document.addEventListener("DOMContentLoaded", function() {
         console.log("Adjusting Checkbox Styling...");
