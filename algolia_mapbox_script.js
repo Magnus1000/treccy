@@ -22,6 +22,7 @@ function getLocation() {
 
 // Function to fetch results from Algolia based on user location and filters
 async function fetchAlgoliaResults(lat, lng) {
+    
     console.log("Fetching Algolia Results...");
 
     const filters = [];
@@ -38,7 +39,6 @@ async function fetchAlgoliaResults(lat, lng) {
         }
     }
 
-    console.log('Sending filter to Algolia:', searchParameters.filters);
     console.log("Filters being sent to Algolia:", filters);
 
     const results = await index.search('', {
@@ -47,7 +47,7 @@ async function fetchAlgoliaResults(lat, lng) {
         aroundRadius: 5000000,
         filters: filters.join(' AND ')
     });
-
+    console.log('Sending filter to Algolia:', searchParameters.filters);
     console.log("Algolia Search Results:", results);
     return results.hits;
 }
