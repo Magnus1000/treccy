@@ -38,7 +38,7 @@ async function fetchAlgoliaResults(lat, lng) {
         }
     }
 
-
+    console.log('Sending filter to Algolia:', searchParameters.filters);
     console.log("Filters being sent to Algolia:", filters);
 
     const results = await index.search('', {
