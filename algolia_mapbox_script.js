@@ -29,17 +29,18 @@
         const searchClient = algoliasearch(appId, apiKey);
         const index = searchClient.initIndex('treccy_races_all');
 
-        const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
+        // Get the checkbox using its ID or any other attribute
+        const disciplineFilterCheckbox = document.getElementById('checkbox');
+
         if (disciplineFilterCheckbox) {
-            const associatedLabel = disciplineFilterCheckbox.closest("label");
-            if (associatedLabel) {
-                let disciplineFilterValue = associatedLabel.getAttribute('filter-value');
-                console.log("Extracted Discipline Filter Value:", disciplineFilterValue);
-                if (disciplineFilterValue) {
-                    filters.push(`Disciplines:${disciplineFilterValue}`);
-                }
-            }
+            // Log checkbox state
+            console.log("Checkbox State:", disciplineFilterCheckbox.checked);
+            // Log filter value
+            console.log("Filter Value:", disciplineFilterCheckbox.getAttribute('filter-value'));
+        } else {
+            console.log("Checkbox not found.");
         }
+
 
         console.log("Filters being sent to Algolia:", filters);
         
