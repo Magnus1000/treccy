@@ -25,22 +25,27 @@ async function fetchAlgoliaResults(lat, lng) {
     const index = searchClient.initIndex('treccy_races_all');
 
     const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
-    let disciplineFilterValue;
+    const filters = []; // Define the filters array here
 
     if (disciplineFilterCheckbox.checked) {
-    disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
+        const disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
         if (disciplineFilterValue) {
-        filters.push(`Disciplines:${disciplineFilterValue}`);
+            filters.push(`Disciplines:${disciplineFilterValue}`);
         }
     }
 
-
-    const results = await index.search('', {
+    const searchParameters = {
         hitsPerPage: 20,
         aroundLatLng: `${lat},${lng}`,
-        aroundRadius: 5000000, 
-        filters: filters.join(' AND ') // Combine filters
-    });
+        aroundRadius: 5000000
+    };
+    
+    // Only add filters to the search parameters if any are set
+    if (filters.length) {
+        searchParameters.filters = filters.join(' AND ');
+    }
+
+    const results = await index.search('', searchParameters);
 
     console.log("Algolia Search Results:", results);
     return results.hits;
