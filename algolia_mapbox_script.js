@@ -19,13 +19,13 @@ function getLocation() {
 
 // Fetch 20 Closest Results from Algolia
 async function fetchAlgoliaResults(lat, lng) {
+    const filters = [];
     const appId = "CWUIX0EWFE";
     const apiKey = "4cd4c82105f395affbc472c07a9789c8";
     const searchClient = algoliasearch(appId, apiKey);
     const index = searchClient.initIndex('treccy_races_all');
 
     const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
-    const filters = []; // Define the filters array here
 
     if (disciplineFilterCheckbox.checked) {
         const disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
