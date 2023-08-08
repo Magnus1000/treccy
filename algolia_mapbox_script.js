@@ -24,12 +24,16 @@ async function fetchAlgoliaResults(lat, lng) {
     const searchClient = algoliasearch(appId, apiKey);
     const index = searchClient.initIndex('treccy_races_all');
 
-    const disciplineFilterValue = document.getElementById('disciplineFilter').value;
-    const filters = [];
+    const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
+    let disciplineFilterValue;
 
-    if (disciplineFilterValue) {
+    if (disciplineFilterCheckbox.checked) {
+    disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
+        if (disciplineFilterValue) {
         filters.push(`Disciplines:${disciplineFilterValue}`);
+        }
     }
+
 
     const results = await index.search('', {
         hitsPerPage: 20,
@@ -105,6 +109,31 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('filterForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form from actually submitting
         displayMapWithResults();
+    });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to update the checkbox styling based on its state
+    function updateCheckboxStyling() {
+        const spanElement = this.nextElementSibling;
+        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
+        if (this.checked) {
+            parentLabel.classList.add("active-filter");
+        } else {
+            parentLabel.classList.remove("active-filter");
+        }
+    }
+
+    // Attach the function to all relevant checkboxes
+    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
+    
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener("change", updateCheckboxStyling);
+
+        // Initialize the styling based on the checkbox state on page load
+        updateCheckboxStyling.call(checkbox);
     });
 });
 </script>
