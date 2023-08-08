@@ -39,6 +39,10 @@ async function fetchAlgoliaResults(lat, lng) {
     }
 
     console.log("Filters being sent to Algolia:", filters);
+    
+    // Construct the debug URL
+    const debugURL = `https://${appId}-dsn.algolia.net/1/indexes/${'treccy_races_all'}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=5000000&filters=${filters.join(' AND ')}`;
+    console.log("Debug URL with parameters:", debugURL);
 
     const results = await index.search('', {
         hitsPerPage: 20,
