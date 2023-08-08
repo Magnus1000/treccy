@@ -19,37 +19,32 @@ function getLocation() {
 
 // Fetch 20 Closest Results from Algolia
 async function fetchAlgoliaResults(lat, lng) {
-    const filters = [];
+    const filters = [];  // Initialize filters array
+
     const appId = "CWUIX0EWFE";
     const apiKey = "4cd4c82105f395affbc472c07a9789c8";
     const searchClient = algoliasearch(appId, apiKey);
     const index = searchClient.initIndex('treccy_races_all');
 
     const disciplineFilterCheckbox = document.getElementById('disciplineFilter');
-
     if (disciplineFilterCheckbox.checked) {
-        const disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
+        let disciplineFilterValue = disciplineFilterCheckbox.getAttribute('filter-value');
         if (disciplineFilterValue) {
             filters.push(`Disciplines:${disciplineFilterValue}`);
         }
     }
 
-    const searchParameters = {
+    const results = await index.search('', {
         hitsPerPage: 20,
         aroundLatLng: `${lat},${lng}`,
-        aroundRadius: 5000000
-    };
-    
-    // Only add filters to the search parameters if any are set
-    if (filters.length) {
-        searchParameters.filters = filters.join(' AND ');
-    }
-
-    const results = await index.search('', searchParameters);
+        aroundRadius: 5000000, 
+        filters: filters.join(' AND ') // Combine filters
+    });
 
     console.log("Algolia Search Results:", results);
     return results.hits;
 }
+
 
 const disciplineMarkers = {
     'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
