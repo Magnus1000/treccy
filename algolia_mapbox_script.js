@@ -34,9 +34,10 @@ async function fetchAlgoliaResults(lat, lng) {
     if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
         const filterValue = disciplineFilterCheckbox.getAttribute('filter-value');
         if (filterValue) {
-            filters.push(filterValue);
+            filters.push(`Disciplines=${filterValue}`); 
         }
     }
+
 
     console.log("Filters being sent to Algolia:", filters);
 
