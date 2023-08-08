@@ -59,10 +59,10 @@
 
         const userLocation = await getLocation();
 
-        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'YOUR_MAPBOX_STYLE_URL',
+            style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
             center: [userLocation.lng, userLocation.lat],
             zoom: 10
         });
