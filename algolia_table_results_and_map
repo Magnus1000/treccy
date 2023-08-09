@@ -1,9 +1,21 @@
 <script>
 // Globals and Configuration
+console.log("Script Initiated");
+
 let currentMarkers = [];
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
-const algoliaConfig = { ... }; // as before
-const disciplineMarkers = { ... }; // as before
+const algoliaConfig = {
+    appId: "CWUIX0EWFE",
+    apiKey: "4cd4c82105f395affbc472c07a9789c8",
+    indexName: 'treccy_races_all'
+};
+const disciplineMarkers = {
+    'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
+    'paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d28340c9aa33055043be71_paddling-icon-50.svg',
+    'running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f7badb96d1c86df8b_running-icon-50.svg',
+    'cycling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833fff1d33088ebee8f4_cycling-icon-50.svg',
+    'default': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg'
+};
 
 // 1) Checks User Location
 async function getLocation() {
