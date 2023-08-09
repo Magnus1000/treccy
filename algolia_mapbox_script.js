@@ -16,7 +16,61 @@ const disciplineMarkers = {
     'default': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg'
 };
 
-// ... [rest of the script remains unchanged] ...
+async function getLocation() {
+    console.log("Getting User Location...");
+    return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            reject('Geolocation is not supported by your browser.');
+        } else {
+            navigator.geolocation.getCurrentPosition((position) => {
+                resolve({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            }, () => {
+                reject('Unable to retrieve your location.');
+            });
+        }
+    });
+}
+
+async function fetchAlgoliaResults(lat, lng) {
+    console.log("Fetching Algolia Results...");
+
+    const filters = [];
+    const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
+    const index = searchClient.initIndex(algoliaConfig.indexName);
+
+    const disciplineFilterCheckbox = document.getElementById('disciplineFilter_checkbox');
+    if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
+        const filterValue = disciplineFilterCheckbox.getAttribute('filter-value');
+        if (filterValue) {
+            filters.push(`Disciplines=${filterValue}`);
+        }
+    }
+
+    console.log("Filters being sent to Algolia:", filters);
+    
+    const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=5000000&filters=${filters.join(' AND ')}`;
+    console.log("Debug URL with parameters:", debugURL);
+
+    const results = await index.search('', {
+        hitsPerPage: 20,
+        aroundLatLng: `${lat},${lng}`,
+        aroundRadius: 5000000,
+        filters: filters.join(' AND ')
+    });
+
+    console.log("Algolia Search Results:", results);
+    return results.hits;
+}
+
+function removeExistingMarkers() {
+    for (const marker of currentMarkers) {
+        marker.remove();
+    }
+    currentMarkers = [];
+}
 
 function createMarkerOnMap(map, result) {
     let markerImageUrl = disciplineMarkers['default'];  // set default marker
