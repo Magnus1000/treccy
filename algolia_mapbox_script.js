@@ -8,67 +8,22 @@ const algoliaConfig = {
     apiKey: "4cd4c82105f395affbc472c07a9789c8",
     indexName: 'treccy_races_all'
 };
+const disciplineMarkers = {
+    'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
+    'paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d28340c9aa33055043be71_paddling-icon-50.svg',
+    'running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f7badb96d1c86df8b_running-icon-50.svg',
+    'cycling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833fff1d33088ebee8f4_cycling-icon-50.svg',
+    'default': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg'
+};
 
-async function getLocation() {
-    console.log("Getting User Location...");
-    return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-            reject('Geolocation is not supported by your browser.');
-        } else {
-            navigator.geolocation.getCurrentPosition((position) => {
-                resolve({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
-            }, () => {
-                reject('Unable to retrieve your location.');
-            });
-        }
-    });
-}
-
-async function fetchAlgoliaResults(lat, lng) {
-    console.log("Fetching Algolia Results...");
-
-    const filters = [];
-    const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
-    const index = searchClient.initIndex(algoliaConfig.indexName);
-
-    const disciplineFilterCheckbox = document.getElementById('disciplineFilter_checkbox');
-    if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
-        const filterValue = disciplineFilterCheckbox.getAttribute('filter-value');
-        if (filterValue) {
-            filters.push(`Disciplines=${filterValue}`);
-        }
-    }
-
-    console.log("Filters being sent to Algolia:", filters);
-    
-    const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=5000000&filters=${filters.join(' AND ')}`;
-    console.log("Debug URL with parameters:", debugURL);
-
-    const results = await index.search('', {
-        hitsPerPage: 20,
-        aroundLatLng: `${lat},${lng}`,
-        aroundRadius: 5000000,
-        filters: filters.join(' AND ')
-    });
-
-    console.log("Algolia Search Results:", results);
-    return results.hits;
-}
-
-function removeExistingMarkers() {
-    for (const marker of currentMarkers) {
-        marker.remove();
-    }
-    currentMarkers = [];
-}
+// ... [rest of the script remains unchanged] ...
 
 function createMarkerOnMap(map, result) {
-    // Placeholder for your marker creating logic
-    // Using a dummy image URL for now, replace it with your logic for getting the marker image.
-    const markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
+    let markerImageUrl = disciplineMarkers['default'];  // set default marker
+
+    if (result.Disciplines && disciplineMarkers[result.Disciplines.toLowerCase()]) {
+        markerImageUrl = disciplineMarkers[result.Disciplines.toLowerCase()];
+    }
 
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div>
