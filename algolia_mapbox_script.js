@@ -69,12 +69,26 @@ async function displayMapWithResults() {
     });
 
     try {
-        const results = await fetchAlgoliaResults(userLocation.lat, userLocation.lng);
         results.forEach(result => {
-            if (result._geoloc && typeof result._geoloc.lng === 'number' && typeof result._geoloc.lat === 'number') {
-                // (the rest of your map code here, unchanged...)
-            }
-        });
+        // Check if coordinates are valid
+        if(result._geoloc && typeof result._geoloc.lng === 'number' && typeof result._geoloc.lat === 'number') {
+            const popupContent = `
+                <div style="max-width: 300px;">
+                    <h3><a href="/races/${result.Slug}">${result.Name}</a></h3>
+                    <p>${result.Description}</p>
+                    <p><strong>Discipline:</strong> ${result.Discipline}</p>
+                    <p><strong>State/Province:</strong> ${result.StateProvince}</p>
+                </div>
+            `;
+
+            const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+
+            new mapboxgl.Marker()
+                .setLngLat([result._geoloc.lng, result._geoloc.lat])
+                .setPopup(popup)
+                .addTo(map);
+        }
+    });
     } catch (error) {
         console.error("Error fetching Algolia results:", error);
     }
