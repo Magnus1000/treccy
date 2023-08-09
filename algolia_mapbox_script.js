@@ -55,9 +55,8 @@ async function fetchAlgoliaResults(lat, lng) {
     return results.hits;
 }
 
-// Function to display the map with results from Algolia
+// Display on Mapbox
 async function displayMapWithResults() {
-    console.log("Displaying Map with Results...");
     const userLocation = await getLocation();
 
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
@@ -69,30 +68,42 @@ async function displayMapWithResults() {
     });
 
     try {
+        const results = await fetchAlgoliaResults(userLocation.lat, userLocation.lng);
+
         results.forEach(result => {
-        // Check if coordinates are valid
-        if(result._geoloc && typeof result._geoloc.lng === 'number' && typeof result._geoloc.lat === 'number') {
-            const popupContent = `
-                <div style="max-width: 300px;">
-                    <h3><a href="/races/${result.Slug}">${result.Name}</a></h3>
-                    <p>${result.Description}</p>
-                    <p><strong>Discipline:</strong> ${result.Discipline}</p>
-                    <p><strong>State/Province:</strong> ${result.StateProvince}</p>
-                </div>
-            `;
+            if(result._geoloc && typeof result._geoloc.lng === 'number' && typeof result._geoloc.lat === 'number') {
+                const popupContent = `
+                    <div>
+                        <h4>${result.Name}</h4>
+                        <p>${result.Description}</p>
+                        <p><strong>Discipline:</strong> ${result.Disciplines || 'N/A'}</p>
+                        <p><strong>State/Province:</strong> ${result.State_Province}</p>
+                        <a href="/races/${result.Slug}">More details</a>
+                    </div>
+                `;
 
-            const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+                const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
 
-            new mapboxgl.Marker()
-                .setLngLat([result._geoloc.lng, result._geoloc.lat])
-                .setPopup(popup)
-                .addTo(map);
-        }
-    });
+                let discipline = result.Disciplines ? result.Disciplines.toLowerCase() : 'default';
+                let markerImageUrl = disciplineMarkers[discipline] || 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
+
+                const customMarker = new Image(50, 50);
+                customMarker.src = markerImageUrl;
+
+                new mapboxgl.Marker(customMarker)
+                    .setLngLat([result._geoloc.lng, result._geoloc.lat])
+                    .setPopup(popup)
+                    .addTo(map);
+            }
+        });
+
     } catch (error) {
         console.error("Error fetching Algolia results:", error);
     }
 }
+
+// Call the function to initiate the process
+displayMapWithResults();
 
 document.addEventListener("DOMContentLoaded", function() {
     // Adjusting Checkbox Styling on page load
