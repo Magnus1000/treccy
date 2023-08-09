@@ -73,17 +73,19 @@ function removeExistingMarkers() {
 }
 
 function createMarkerOnMap(map, result) {
-    let markerImageUrl = disciplineMarkers['default'];  // set default marker
-
-    if (result.Disciplines && disciplineMarkers[result.Disciplines.toLowerCase()]) {
-        markerImageUrl = disciplineMarkers[result.Disciplines.toLowerCase()];
+    let markerImageUrl;
+    if (result.Disciplines.length === 1) {
+        markerImageUrl = disciplineMarkers[result.Disciplines[0].toLowerCase()];
+    } else {
+        // Use a generic marker for multiple disciplines
+        markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
     }
 
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div>
             <h4>${result.Name}</h4>
             <p>${result.Description}</p>
-            <p><strong>Discipline:</strong> ${result.Disciplines || 'N/A'}</p>
+            <p><strong>Discipline:</strong> ${result.Disciplines.join(', ')}</p>
             <p><strong>State/Province:</strong> ${result.State_Province}</p>
             <a href="/races/${result.Slug}">More details</a>
         </div>
@@ -99,6 +101,7 @@ function createMarkerOnMap(map, result) {
 
     currentMarkers.push(marker);
 }
+
 
 async function displayMapWithResults() {
     console.log("Displaying Map with Results...");
