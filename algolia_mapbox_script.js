@@ -108,7 +108,8 @@ async function displayMapWithResults() {
         container: 'map',
         style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
         center: [userLocation.lng, userLocation.lat],
-        zoom: 10
+        zoom: 10,
+        accessToken: mapboxToken  // Add this line
     });
 
     const results = await fetchAlgoliaResults(userLocation.lat, userLocation.lng);
