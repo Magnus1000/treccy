@@ -125,17 +125,29 @@ function createMarkerOnMap(map, result) {
 }
 
 
-async function displayMapWithResults() {
+async function displayMapWithResults(lat, lng) {
     console.log("Displaying Map with Results...");
-    const userLocation = await getLocation();
-
+    
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
-        center: [userLocation.lng, userLocation.lat],
+        center: [lng, lat],
         zoom: 10,
-        accessToken: mapboxToken  // Add this line
+        accessToken: mapboxToken  
     });
+
+    // Fetch Algolia Results
+    const results = await fetchAlgoliaResults(lat, lng);
+    
+    // Clear any existing markers
+    removeExistingMarkers();
+
+    // Display Algolia results on the map
+    results.forEach(result => {
+        createMarkerOnMap(map, result);
+    });
+
+    map.resize();
 }
 
 // Checkbox Styling
@@ -197,8 +209,6 @@ document.getElementById('showList').addEventListener('click', async function() {
     const raceListgrid = document.getElementById('raceListgrid');
     raceListgrid.style.display = 'flex';  // Show the race list grid
 
-    const userLocation = await getLocation();
-    displayMapWithResults(userLocation.lat, userLocation.lng);
 });
 
 // On Page Load Logic
