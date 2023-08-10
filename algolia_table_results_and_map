@@ -245,6 +245,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Listen to Filter Form Submission
     document.getElementById('filterForm').addEventListener('submit', (event) => {
         event.preventDefault();
+        updateURLWithFilters();
+        console.log("Filter form submitted and URL updated.");
         displayMapWithResults(userLocation.lat, userLocation.lng);
     });
 });
