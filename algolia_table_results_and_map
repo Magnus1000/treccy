@@ -229,6 +229,23 @@ document.getElementById('showList').addEventListener('click', async function() {
 
 });
 
+// 6) Check the URL parameters and preset the filter if there are any filters already set
+function checkAndPresetFilters() {
+    console.log("Checking and Presetting Filters from URL Params...");
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const filters = urlSearchParams.getAll('filter');
+
+    filters.forEach(filter => {
+        const checkbox = document.querySelector(`input[filter-value='${filter}']`);
+        if (checkbox) {
+            checkbox.checked = true;
+            const parentLabel = checkbox.closest(".w-checkbox.checkbox-buttons");
+            parentLabel.classList.add("active-filter");
+        }
+    });
+}
+
 // On Page Load Logic
 document.addEventListener("DOMContentLoaded", async function() {
     const userLocation = await getLocation();
@@ -249,5 +266,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.log("Filter form submitted and URL updated.");
         displayMapWithResults(userLocation.lat, userLocation.lng);
     });
+
+    // Check and Preset Filters from URL Params
+    checkAndPresetFilters();
 });
 </script>
