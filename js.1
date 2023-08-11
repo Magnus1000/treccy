@@ -269,6 +269,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         updateURLWithFilters();
         console.log("Filter form submitted and URL updated.");
         displayMapWithResults(userLocation.lat, userLocation.lng);
+
+    // Hide the modal with ID "filterForm"
+    document.getElementById('filterForm').style.display = 'none';
     });
 
     // Check and Preset Filters from URL Params
