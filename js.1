@@ -110,22 +110,6 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
 `;
 
 algoliaRacesDiv.innerHTML += raceCardHTML;
-
-        const raceCardHTML = `
-            <div class="race-card">
-                <img src="https://global-uploads.webflow.com/64ccebfb87c59cf5f3e54ed6/64cd3b3ec7904911140a6546_763awew3skd5y0hb3dhh8eh2bx3d3g8k-p-500.png" loading="lazy" alt="${result.Name}" class="image-87">
-                <h4 class="heading-8">${result.Name}</h4>
-                <div class="div-block-24">
-                    <h5 class="race-grid-location">${result.City}</h5>
-                    <h5 class="race-grid-location comma">,</h5>
-                    <h5 fs-cmsfilter-field="country" class="race-grid-location">${result.Country}</h5>
-                    <h5 fs-cmsfilter-field="discipline" class="race-grid-location">${disciplines}</h5>
-                    <div class="text-block-109">${result.Description}</div>
-                </div>
-            </div>
-        `;
-
-        algoliaRacesDiv.innerHTML += raceCardHTML;
     });
 }
 
