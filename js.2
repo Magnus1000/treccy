@@ -40,8 +40,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
     console.log("Geocoder Created");
 
+    // Get the input field with id 'current_location'
+    var currentLocationInput = document.getElementById('current_location');
+
+    // Add an event listener for the 'focus' event
+    currentLocationInput.addEventListener('focus', function() {
+        console.log("Input Field Focused");
+    });
+
+    // Add an event listener for the 'keyup' event
+    currentLocationInput.addEventListener('keyup', function() {
+        console.log("Key Pressed:", currentLocationInput.value);
+    });
+
     // Add Geocoder to the input field with id 'current_location'
-    document.getElementById('current_location').appendChild(geocoder.onAdd());
+    currentLocationInput.appendChild(geocoder.onAdd());
     console.log("Geocoder Added to Input Field");
 
     // Optional: Handle the selection event
@@ -49,5 +62,4 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.log("Address Selected:", e.result); // Log the selected address details
     });
 });
-
 </script>
