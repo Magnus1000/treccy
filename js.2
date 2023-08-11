@@ -1,7 +1,10 @@
 <script>
 // On Page Load Logic
 document.addEventListener("DOMContentLoaded", async function() {
+    console.log("Page Loaded");
+
     const userLocation = await getLocation();
+    console.log("User Location:", userLocation);
 
     // Load Algolia Results to the Grid
     loadAlgoliaResultsToDiv(userLocation.lat, userLocation.lng);
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         updateURLWithFilters();
         console.log("Filter form submitted and URL updated.");
         displayMapWithResults(userLocation.lat, userLocation.lng);
-    
+
         // Hide the modal with ID "filterForm"
         document.getElementById('filterForm').style.display = 'none';
     });
@@ -28,19 +31,23 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Set Mapbox Access Token
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+    console.log("Mapbox Access Token Set");
 
     // Create Geocoder
     var geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         // Set options if needed
     });
+    console.log("Geocoder Created");
 
     // Add Geocoder to the input field with id 'current_location'
     document.getElementById('current_location').appendChild(geocoder.onAdd());
+    console.log("Geocoder Added to Input Field");
 
     // Optional: Handle the selection event
     geocoder.on('result', function(e) {
-        console.log(e.result); // Log the selected address details
+        console.log("Address Selected:", e.result); // Log the selected address details
     });
 });
+
 </script>
