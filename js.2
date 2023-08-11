@@ -1,0 +1,26 @@
+<script>
+// On Page Load Logic
+document.addEventListener("DOMContentLoaded", async function() {
+    const userLocation = await getLocation();
+
+    // Load Algolia Results to the Grid
+    loadAlgoliaResultsToDiv(userLocation.lat, userLocation.lng);
+
+    // Display Results on the Map
+    displayMapWithResults(userLocation.lat, userLocation.lng);
+
+    // Checkbox Styling
+    initializeCheckboxStyling();
+
+    // Listen to Filter Form Submission
+    document.getElementById('filterForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        updateURLWithFilters();
+        console.log("Filter form submitted and URL updated.");
+        displayMapWithResults(userLocation.lat, userLocation.lng);
+    });
+
+    // Check and Preset Filters from URL Params
+    checkAndPresetFilters();
+});
+</script>
