@@ -19,32 +19,28 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.log("Filter form submitted and URL updated.");
         displayMapWithResults(userLocation.lat, userLocation.lng);
     
-    // Hide the modal with ID "filterForm"
-    document.getElementById('filterForm').style.display = 'none';
+        // Hide the modal with ID "filterForm"
+        document.getElementById('filterForm').style.display = 'none';
     });
 
     // Check and Preset Filters from URL Params
     checkAndPresetFilters();
-});
-</script>
 
-<script>
-console.log("Mapbox Location Searchbox Script Initiated");
+    // Set Mapbox Access Token
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 
-// Set Mapbox Access Token
-mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+    // Create Geocoder
+    var geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        // Set options if needed
+    });
 
-// Create Geocoder
-var geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    // Set options if needed
-});
+    // Add Geocoder to the input field with id 'current_location'
+    document.getElementById('current_location').appendChild(geocoder.onAdd());
 
-// Add Geocoder to the input field with id 'current_location'
-document.getElementById('current_location').appendChild(geocoder.onAdd());
-
-// Optional: Handle the selection event
-geocoder.on('result', function(e) {
-    console.log(e.result); // Log the selected address details
+    // Optional: Handle the selection event
+    geocoder.on('result', function(e) {
+        console.log(e.result); // Log the selected address details
+    });
 });
 </script>
