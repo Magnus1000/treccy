@@ -29,6 +29,9 @@ function updateURLWithFilters() {
     const minimumDistance = document.getElementById('minimum-distance').value;
     const maximumDistance = document.getElementById('maximum-distance').value;
 
+    // Location range filter
+    const locationRange = document.getElementById('location_range').value;
+
     // Date filters
     const dateFrom = document.getElementById('dateFrom').value;
     const dateTo = document.getElementById('dateTo').value;
@@ -46,6 +49,10 @@ function updateURLWithFilters() {
 
     if (maximumDistance) {
         params.set('maxDist', maximumDistance);
+    }
+
+    if (locationRange) {
+        params.set('locationRange', locationRange);
     }
 
     if (dateFrom) {
