@@ -10,18 +10,6 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
-// Initialize Algolia Places
-const placesAutocomplete = places({
-    appId: algoliaConfig.appId,
-    apiKey: algoliaConfig.apiKey,
-    container: document.getElementById('current_location'),
-});
-
-// Optional: Handle selection
-placesAutocomplete.on('change', function resultSelected(e) {
-    console.log(e.suggestion); // Log the selected address details
-});
-
 const disciplineMarkers = {
     'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
     'paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d28340c9aa33055043be71_paddling-icon-50.svg',
