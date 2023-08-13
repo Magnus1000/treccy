@@ -79,6 +79,9 @@ searchInput.addEventListener('input', (e) => {
                     suggestionItem.addEventListener('click', () => {
                         // Populate the search bar with the selected suggestion
                         searchInput.value = placeName;
+                        // Store latitude and longitude as attributes
+                        searchInput.setAttribute('data-lat', suggestion.geometry.coordinates[1]);
+                        searchInput.setAttribute('data-lon', suggestion.geometry.coordinates[0]);
                         // Clear the suggestions
                         suggestionsBox.innerHTML = "";
                         suggestionsBox.classList.remove('active'); // Hide suggestions
