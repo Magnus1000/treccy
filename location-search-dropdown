@@ -14,6 +14,7 @@ searchInput.addEventListener('input', (e) => {
 
     if (query === "") {
         suggestionsBox.innerHTML = "";
+        suggestionsBox.classList.remove('active'); // Hide suggestions
         return; // Exit if the query is empty
     }
 
@@ -23,7 +24,7 @@ searchInput.addEventListener('input', (e) => {
         .then(data => {
             // Check if features are available
             if (data.features && data.features.length > 0) {
-                // Clear any previous suggestions
+                suggestionsBox.classList.add('active'); // Show suggestions
                 suggestionsBox.innerHTML = "";
 
                 const suggestions = data.features;
@@ -31,7 +32,14 @@ searchInput.addEventListener('input', (e) => {
                     // Create suggestion text
                     const placeName = suggestion.place_name;
                     const suggestionItem = document.createElement('div');
-                    suggestionItem.textContent = placeName;
+                    suggestionItem.classList.add('suggestion-item'); // Assign class
+                    
+                    // Create and add location icon
+                    const iconElement = document.createElement('img');
+                    iconElement.src = 'path/to/your/location-icon.png'; // Change this path
+                    suggestionItem.appendChild(iconElement);
+
+                    suggestionItem.appendChild(document.createTextNode(placeName));
                     suggestionsBox.appendChild(suggestionItem);
 
                     // Add click event listener to each suggestion
@@ -40,8 +48,11 @@ searchInput.addEventListener('input', (e) => {
                         searchInput.value = placeName;
                         // Clear the suggestions
                         suggestionsBox.innerHTML = "";
+                        suggestionsBox.classList.remove('active'); // Hide suggestions
                     });
                 });
+            } else {
+                suggestionsBox.classList.remove('active'); // Hide suggestions
             }
         })
         .catch(error => console.error(error));
