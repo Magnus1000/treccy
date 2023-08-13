@@ -22,8 +22,15 @@ function initializeCheckboxStyling() {
 
 // Update URL params with filters 
 function updateURLWithFilters() {
-    // Discipline filter
-    const disciplineFilterCheckbox = document.getElementById('disciplineFilter_checkbox');
+    // Initialize URLSearchParams object
+    const params = new URLSearchParams(window.location.search);
+
+    // Get all selected discipline checkboxes
+    const selectedDisciplines = Array.from(document.querySelectorAll('input[name="disciplineFilter_checkbox"]:checked')).map(checkbox => checkbox.value);
+    const disciplinesString = selectedDisciplines.join(',');
+    if (disciplinesString) {
+        params.set('discipline', disciplinesString);
+    }
 
     // Distance filters
     const minimumDistance = document.getElementById('minimum-distance').value;
