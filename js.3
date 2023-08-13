@@ -44,6 +44,9 @@ function initializeCheckboxStyling() {
     const dateFrom = document.getElementById('dateFrom').value;
     const dateTo = document.getElementById('dateTo').value;
 
+    // Type filter
+    const selectedType = document.querySelector('input[name="type"]:checked');
+
     // Location search bar value
     
     // Get the search input element
@@ -80,6 +83,11 @@ function initializeCheckboxStyling() {
     if (dateTo) {
         params.set('toDate', dateTo);
     }
+
+    if (selectedType) {
+    params.set('type', selectedType.value);
+    }
+
     
     if (searchBarValue) {
         params.set('location', searchBarValue);
