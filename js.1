@@ -152,13 +152,42 @@ function createMarkerOnMap(map, result) {
         markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
     }
 
+    // Creating the disciplines div
+    let disciplinesDiv = '';
+    result.Disciplines.forEach(discipline => {
+        disciplinesDiv += `<div class="map-popup-discipline">${discipline}</div>`;
+    });
+
+    // Formatted date
+    const formattedDate = formatDate(result.Date);
+
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div>
-            <h4>${result.Name}</h4>
-            <p>${result.Description}</p>
-            <p><strong>Discipline:</strong> ${result.Disciplines.join(', ')}</p>
-            <p><strong>State/Province:</strong> ${result.State_Province}</p>
-            <a href="/races/${result.Slug}">More details</a>
+        <div class="map-popup-div">
+            <div class="map-popup-image-div">
+                <a href="/races/${result.Slug}" class="map-popup-link-block w-inline-block">
+                    <img src="${markerImageUrl}" loading="lazy" alt="" class="map-popup-image">
+                </a>
+                <div class="map-popup-discipline-div">${disciplinesDiv}</div>
+                <div class="heart-icon-div"><div class="heart-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false">
+  <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
+</svg></div>
+                </div>
+            </div>
+            <a href="/races/${result.Slug}" class="link-block w-inline-block">
+                <div class="map-popup-header-div">
+                    <div class="map-popup-header">${result.Name}</div>
+                </div>
+                <div class="map-popup-country-and-date-div">
+                    <div class="map-popup-header-country-div">
+                        <div class="map-popup-city-text">${result.City}</div>
+                        <div class="map-popup-comma">, </div>
+                        <div class="map-popup-country-text">${result.Country}</div>
+                    </div>
+                    <div class="map-popup-date-div">
+                        <div class="map-popup-date-text">${formattedDate}</div>
+                    </div>
+                </div>
+            </a>
         </div>
     `);
 
@@ -172,6 +201,7 @@ function createMarkerOnMap(map, result) {
 
     currentMarkers.push(marker);
 }
+
 
 
 async function displayMapWithResults(lat, lng) {
