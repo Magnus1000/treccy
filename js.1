@@ -229,49 +229,4 @@ async function displayMapWithResults(lat, lng) {
     map.resize();
 }
 
-// 5) Listens to the toggle events to hide/display the map and grid
-document.getElementById('showMap').addEventListener('click', async function() {
-    console.log("Show Map Button Clicked...");
-
-    const mapContainer = document.getElementById('map');
-    mapContainer.style.display = 'flex';  // Show the map container
-
-    const showListrow = document.getElementById('showListrow');
-    showListrow.style.display = 'flex';  // Show the Show List row
-
-    const showMaprow = document.getElementById('showMaprow');
-    showMaprow.style.display = 'none';  // Hide the Show Map row
-
-    const raceListgrid = document.getElementById('raceListgrid');
-    raceListgrid.style.display = 'none';  // Hide the race list grid
-
-    const footer = document.getElementById('footer');
-    raceListgrid.style.display = 'none';  // Hide the footer
-
-    const userLocation = await getLocation();
-    displayMapWithResults(userLocation.lat, userLocation.lng);
-
-    // Assuming your Mapbox GL JS map object is named 'map'
-    map.resize();
-});
-
-document.getElementById('showList').addEventListener('click', async function() {
-    console.log("Show List Button Clicked...");
-
-    const mapContainer = document.getElementById('map');
-    mapContainer.style.display = 'none';  // Hide the map container
-
-    const showListrow = document.getElementById('showMaprow');
-    showListrow.style.display = 'flex';  // Show the Show Map row
-
-    const showMaprow = document.getElementById('showListrow');
-    showMaprow.style.display = 'none';  // Hide the Show List row
-
-    const raceListgrid = document.getElementById('raceListgrid');
-    raceListgrid.style.display = 'flex';  // Show the race list grid
-
-    const footer = document.getElementById('footer');
-    raceListgrid.style.display = 'flex';  // Show the footer
-
-});
 </script>
