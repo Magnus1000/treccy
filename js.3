@@ -38,6 +38,8 @@ function updateURLWithFilters() {
 
     // Location search bar value
     const searchBarValue = document.getElementById('search-bar').value;
+    const searchBarLat = searchBarValue.getAttribute('data-lat');
+    const searchBarLon = searchBarValue.getAttribute('data-lon');
 
     let params = new URLSearchParams();
 
@@ -67,7 +69,12 @@ function updateURLWithFilters() {
     }
 
     if (searchBarValue) {
-        params.set('location', searchBarValue);
+        params.set('location', searchBarValue.value);
+    }
+
+    if (searchBarLat && searchBarLon) {
+        params.set('lat', searchBarLat);
+        params.set('lon', searchBarLon);
     }
 
     // Update the URL without causing a page reload
