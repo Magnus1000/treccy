@@ -1,0 +1,88 @@
+<script>
+// 6) Check the URL parameters and preset the filter if there are any filters already set
+function checkAndPresetFilters() {
+  console.log("Checking and Presetting Filters from URL Params...");
+
+  const urlSearchParams = new URLSearchParams(window.location.search);
+
+  // Handle discipline filters (can be multiple)
+  Array.from(urlSearchParams.keys()).forEach(key => {
+    if (key.startsWith('discipline')) {
+      const disciplineValue = urlSearchParams.get(key);
+      const checkbox = document.querySelector(`input[filter-value='${disciplineValue}']`);
+      if (checkbox) {
+        checkbox.checked = true;
+        const parentLabel = checkbox.closest(".w-checkbox.checkbox-buttons");
+        parentLabel.classList.add("active-filter");
+      }
+    }
+  });
+
+  // Handle minDist filter
+  const minDist = urlSearchParams.get('minDist');
+  if (minDist) {
+    const minDistInput = document.getElementById('minimum-distance');
+    if (minDistInput) {
+      minDistInput.value = minDist;
+    }
+  }
+
+  // Handle maxDist filter
+  const maxDist = urlSearchParams.get('maxDist');
+  if (maxDist) {
+    const maxDistInput = document.getElementById('maximum-distance');
+    if (maxDistInput) {
+      maxDistInput.value = maxDist;
+    }
+  }
+
+  // Handle locationRange filter
+  const locationRange = urlSearchParams.get('locationRange');
+  if (locationRange) {
+    const locationRangeInput = document.getElementById('location_range');
+    if (locationRangeInput) {
+      locationRangeInput.value = locationRange;
+    }
+  }
+
+  // Handle fromDate filter
+  const fromDate = urlSearchParams.get('fromDate');
+  if (fromDate) {
+    const fromDateInput = document.getElementById('dateFrom');
+    if (fromDateInput) {
+      fromDateInput.value = fromDate;
+    }
+  }
+
+  // Handle toDate filter
+  const toDate = urlSearchParams.get('toDate');
+  if (toDate) {
+    const toDateInput = document.getElementById('dateTo');
+    if (toDateInput) {
+      toDateInput.value = toDate;
+    }
+  }
+
+  // Handle type filter
+  const type = urlSearchParams.get('type');
+  if (type) {
+    const radioButton = document.getElementById(type);
+    if (radioButton) {
+      radioButton.checked = true;
+    }
+  }
+
+  // Handle location filter
+  const location = urlSearchParams.get('location');
+  const lat = urlSearchParams.get('lat');
+  const lon = urlSearchParams.get('lon');
+  if (location) {
+    const searchBarElement = document.getElementById('search-bar');
+    if (searchBarElement) {
+      searchBarElement.value = location;
+      if (lat) searchBarElement.setAttribute('data-lat', lat);
+      if (lon) searchBarElement.setAttribute('data-lon', lon);
+    }
+  }
+}
+</script>
