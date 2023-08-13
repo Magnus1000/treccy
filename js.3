@@ -36,6 +36,9 @@ function updateURLWithFilters() {
     const dateFrom = document.getElementById('dateFrom').value;
     const dateTo = document.getElementById('dateTo').value;
 
+    // Location search bar value
+    const searchBarValue = document.getElementById('search-bar').value;
+
     let params = new URLSearchParams();
 
     if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
@@ -61,6 +64,10 @@ function updateURLWithFilters() {
 
     if (dateTo) {
         params.set('toDate', dateTo);
+    }
+
+    if (searchBarValue) {
+        params.set('location', searchBarValue);
     }
 
     // Update the URL without causing a page reload
