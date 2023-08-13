@@ -69,28 +69,30 @@ async function fetchAlgoliaResults(lat, lng) {
     return results.hits;
 }
 
+// 3) Returns results to the algoliaRaces grid
+// Date formatting function
 function formatDate(dateString) {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.toLocaleString('en-US', { month: 'short' });
-    const year = date.getFullYear().toString().substr(-2); // Get the last two digits of the year
+    const year = date.getFullYear().toString().substr(-2);
     const formattedDate = `${day} ${month} ${year}`;
     
-    console.log("Formatted date:", formattedDate); // Logging the formatted date to the console
+    console.log("Formatted date:", formattedDate);
     return formattedDate;
 }
 
-// 3) Returns results to the algoliaRaces grid
+// Load Algolia Results
 async function loadAlgoliaResultsToDiv(lat, lng) {
     console.log("Fetching and Displaying Algolia Results in Div...");
 
     const results = await fetchAlgoliaResults(lat, lng);
 
     const algoliaRacesDiv = document.getElementById('algoliaRaces');
-    algoliaRacesDiv.innerHTML = ''; // Clear any previous data
+    algoliaRacesDiv.innerHTML = '';  // Clear any previous data
 
     results.forEach(result => {
-        const formattedDate = formatDate(result.Date); // Call the formatDate function to format the date
+        const formattedDate = formatDate(result.Date); // Format the date using the function
 
         const raceCardHTML = `
         <div class="race-card">
