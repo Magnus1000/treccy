@@ -37,9 +37,14 @@ function updateURLWithFilters() {
     const dateTo = document.getElementById('dateTo').value;
 
     // Location search bar value
-    const searchBarValue = document.getElementById('search-bar').value;
-    const searchBarLat = searchBarValue.getAttribute('data-lat');
-    const searchBarLon = searchBarValue.getAttribute('data-lon');
+    
+    // Get the search input element
+    const searchBarElement = document.getElementById('search-bar');
+    
+    // Get the value and lat-lon attributes
+    const searchBarValue = searchBarElement.value;
+    const searchBarLat = searchBarElement.getAttribute('data-lat');
+    const searchBarLon = searchBarElement.getAttribute('data-lon');
 
     let params = new URLSearchParams();
 
@@ -67,9 +72,9 @@ function updateURLWithFilters() {
     if (dateTo) {
         params.set('toDate', dateTo);
     }
-
+    
     if (searchBarValue) {
-        params.set('location', searchBarValue.value);
+        params.set('location', searchBarValue);
     }
 
     if (searchBarLat && searchBarLon) {
