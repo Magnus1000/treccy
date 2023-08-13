@@ -22,21 +22,16 @@ function initializeCheckboxStyling() {
 
     // Update URL params with filters 
     function updateURLWithFilters() {
-    // Discipline filter
     // Get all checkboxes with the class 'disciplineFilter_checkbox'
     const disciplineFilterCheckboxes = document.querySelectorAll('.disciplineFilter_checkbox');
 
-    // Create an array to store the values of checked disciplines
-    let disciplineFilterValues = [];
+    // Get discipline values from checked checkboxes
+    const selectedDisciplines = Array.from(disciplineFilterCheckboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.getAttribute('filter-value'));
 
-    // Iterate through the checkboxes and add the checked values to the array
-    disciplineFilterCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            const filterValue = checkbox.getAttribute('filter-value');
-            disciplineFilterValues.push(filterValue);
-        }
-    });
-    console.log("Selected discipline filters:", disciplineFilterValues); // Log the selected disciplines
+    // Log the selected disciplines to the console
+    console.log('Selected discipline filters:', selectedDisciplines);
 
     // Distance filters
     const minimumDistance = document.getElementById('minimum-distance').value;
@@ -61,10 +56,10 @@ function initializeCheckboxStyling() {
 
     let params = new URLSearchParams();
 
-    if (disciplineFilterValues.length > 0) {
-        // Join the values with a comma and set the 'discipline' param
-        params.set('discipline', disciplineFilterValues.join(','));
-    }
+    // Add selected disciplines to URL parameters
+  selectedDisciplines.forEach((discipline, index) => {
+      params.append(`discipline${index}`, discipline);
+  });
 
     if (minimumDistance) {
         params.set('minDist', minimumDistance);
@@ -94,6 +89,9 @@ function initializeCheckboxStyling() {
         params.set('lat', searchBarLat);
         params.set('lon', searchBarLon);
     }
+
+  // Log the final parameters to the console
+  console.log('Final URL parameters:', params.toString());
 
     // Update the URL without causing a page reload
     history.pushState({}, '', '?' + params.toString());
