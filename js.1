@@ -81,12 +81,14 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
     results.forEach(result => {
     const raceCardHTML = `
         <div class="race-card">
-            <a href="/races/${result.Slug}" class="race-card-image-link-block w-inline-block">
-                <img src="https://global-uploads.webflow.com/64ccebfb87c59cf5f3e54ed6/64cd3b3ec7904911140a6546_763awew3skd5y0hb3dhh8eh2bx3d3g8k-p-500.png" loading="lazy" alt="${result.Name}" class="race-card-image">
+            <div class="race-card-top-block">
+                <a href="/races/${result.Slug}" class="race-card-image-link-block w-inline-block">
+                    <img src="https://global-uploads.webflow.com/64ccebfb87c59cf5f3e54ed9/64d577b91781ce52b98c4e29_64cd3b3ec7904911140a6546_763awew3skd5y0hb3dhh8eh2bx3d3g8k-p-500.png" loading="lazy" alt="${result.Name}" class="race-card-image">
+                </a>
                 <div class="race-discipline-tags-wrapper">
                     <div class="race-discipline-tags-list">
                         <div class="race-discipline-tag-div">
-                            <img src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg" loading="lazy" alt="" class="race-discipline-icon">
+                            <img src="https://global-uploads.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f7badb96d1c86df8b_running-icon-50.svg" loading="lazy" alt="" class="race-discipline-icon">
                         </div>
                     </div>
                 </div>
@@ -97,20 +99,20 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
                         </svg>
                     </div>
                 </div>
-            </a>
+            </div>
             <a href="/races/${result.Slug}" id="textLinkblock" class="card-text-link-block w-inline-block">
                 <div class="race-card-heading-div">
                     <h4 id="raceNameid" class="race-card-heading">${result.Name}</h4>
-                    <h4 id="raceDistanceid" class="race-card-heading-right">69km</h4>
+                    <h4 id="raceDistanceid" class="race-card-heading-right">${result.Distance}</h4>
                 </div>
                 <div class="race-card-location-tags">
                     <div class="race-card-location-tags-left-column">
                         <h5 id="raceCityid" class="race-grid-location">${result.City}</h5>
                         <h5 class="race-grid-location comma">,</h5>
-                        <h5 id="raceCountryid" class="race-grid-location">${result.Country}</h5>
+                        <h5 id="raceCountryid" fs-cmsfilter-field="country" class="race-grid-location">${result.Country}</h5>
                     </div>
                 </div>
-                <div id="racecardDate" class="race-card-date-text">${result.Date}</div>
+                <div id="racecardDate" fs-cmsfilter-field="distance" class="race-card-date-text">${result.Date}</div>
             </a>
         </div>
     `;
