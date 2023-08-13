@@ -36,7 +36,7 @@ searchInput.addEventListener('input', (e) => {
                     
                     // Create and add location icon
                     const iconElement = document.createElement('img');
-                    iconElement.src = 'path/to/your/location-icon.png'; // Change this path
+                    iconElement.src = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833fff1d33088ebee8f4_cycling-icon-50.svg'; // Change this path
                     suggestionItem.appendChild(iconElement);
 
                     suggestionItem.appendChild(document.createTextNode(placeName));
