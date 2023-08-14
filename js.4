@@ -11,41 +11,50 @@
 <script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
 <script>
-  const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
-  const appId = "CWUIX0EWFE";
-  const apiKey = "4cd4c82105f395affbc472c07a9789c8";
-  const searchClient = algoliasearch(appId, apiKey);
-  const indexName = "treccy_races_all";
+const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+const appId = "CWUIX0EWFE";
+const apiKey = "5485c8730af09f40cb02af2b1011f276"; // Updated API key
+const searchClient = algoliasearch(appId, apiKey);
+const indexName = "treccy_races_all";
 
-  const { setIsOpen } = autocomplete({
-      container: "#global-race-search",
-      placeholder: "Search this blog",
-      detachedMediaQuery: '',
-      openOnFocus: true,
-      getSources({ query, state }) {
-        if (!query) {
-          return [];
-        }
+console.log("Initializing Algolia autocomplete..."); // Log initialization
 
-        return [
-          {
-            sourceId: "races",
-            getItems() {
-              return getAlgoliaResults({
-                searchClient,
-                queries: [
-                  {
-                    indexName: indexName,
-                    query,
-                    params: {
-                      attributesToSnippet: ['name:10', 'summary:35'],
-                      snippetEllipsisText: '…',
-                      hitsPerPage: 5
-                    }
+const { setIsOpen } = autocomplete({
+    container: "#search-div",
+    placeholder: "Search this blog",
+    detachedMediaQuery: '',
+    openOnFocus: true,
+    getSources({ query, state }) {
+      console.log("Query received:", query); // Log the query
+
+      if (!query) {
+        return [];
+      }
+
+      return [
+        {
+          sourceId: "races",
+          getItems() {
+            console.log("Fetching results from Algolia..."); // Log fetching
+
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    attributesToSnippet: ['name:10', 'summary:35'],
+                    snippetEllipsisText: '…',
+                    hitsPerPage: 5
                   }
-                ]
-              });
-            },
+                }
+              ]
+            }).then(results => {
+              console.log("Results from Algolia:", results); // Log results
+              return results;
+            });
+          },
             templates: {
               header() {
                 return (
@@ -95,9 +104,11 @@
       }
     });
   
+    console.log("Algolia autocomplete initialized."); // Log completion
+
     document.addEventListener('keydown', (event) => {
-    if (event.metaKey && event.key.toLowerCase() === 'k') {
-      setIsOpen(true);
-    }
-  });
+      if (event.metaKey && event.key.toLowerCase() === 'k') {
+        setIsOpen(true);
+      }
+    });
 </script>
