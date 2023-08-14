@@ -97,8 +97,8 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
         const raceCardHTML = `
         <div class="race-card">
             <div class="race-card-top-block">
-                <a href="/races/${result.Slug}" class="race-card-image-link-block w-inline-block">
-                    <img src="https://global-uploads.webflow.com/64ccebfb87c59cf5f3e54ed9/64d577b91781ce52b98c4e29_64cd3b3ec7904911140a6546_763awew3skd5y0hb3dhh8eh2bx3d3g8k-p-500.png" loading="lazy" alt="${result.Name}" class="race-card-image">
+                <a href="/races/${result.slug_ag}" class="race-card-image-link-block w-inline-block">
+                    <img src="${result.photo_main_ag}" loading="lazy" alt="${result.name_ag}" class="race-card-image">
                 </a>
                 <div class="race-discipline-tags-wrapper">
                     <div class="race-discipline-tags-list">
@@ -115,16 +115,16 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
                     </div>
                 </div>
             </div>
-            <a href="/races/${result.Slug}" id="textLinkblock" class="popup-text-link-block w-inline-block">
+            <a href="/races/${result.slug_ag}" id="textLinkblock" class="popup-text-link-block w-inline-block">
                 <div class="race-card-heading-div">
-                    <h4 id="raceNameid" class="race-card-heading">${result.Name}</h4>
-                    <h4 id="raceDistanceid" class="race-card-heading-right">${result.Distance}</h4>
+                    <h4 id="raceNameid" class="race-card-heading">${result.name_ag}</h4>
+                    <h4 id="raceDistanceid" class="race-card-heading-right">${result.distance_ag}</h4>
                 </div>
                 <div class="race-card-location-tags">
                     <div class="race-card-location-tags-left-column">
-                        <h5 id="raceCityid" class="race-grid-location">${result.City}</h5>
+                        <h5 id="raceCityid" class="race-grid-location">${result.city_ag}</h5>
                         <h5 class="race-grid-location comma">,</h5>
-                        <h5 id="raceCountryid" fs-cmsfilter-field="country" class="race-grid-location">${result.Country}</h5>
+                        <h5 id="raceCountryid" class="race-grid-location">${result.country_ag}</h5>
                     </div>
                 </div>
                 <div id="racecardDate" class="race-card-date-text">${formattedDate}</div>
