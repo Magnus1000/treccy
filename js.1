@@ -92,7 +92,7 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
     algoliaRacesDiv.innerHTML = '';  // Clear any previous data
 
     results.forEach(result => {
-        const formattedDate = formatDate(result.Date); // Format the date using the function
+        const formattedDate = formatDate(result.date_ag); // Format the date using the function
 
         const raceCardHTML = `
         <div class="race-card">
