@@ -145,8 +145,8 @@ function removeExistingMarkers() {
 
 function createMarkerOnMap(map, result) {
     let markerImageUrl;
-    if (result.Disciplines.length === 1) {
-        markerImageUrl = disciplineMarkers[result.Disciplines[0].toLowerCase()];
+    if (result.disciplinesag.length === 1) {
+        markerImageUrl = disciplineMarkers[result.disciplines_ag[0].toLowerCase()];
     } else {
         // Use a generic marker for multiple disciplines
         markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
@@ -154,7 +154,7 @@ function createMarkerOnMap(map, result) {
 
     // Creating the disciplines div
     let disciplinesDiv = '';
-    result.Disciplines.forEach(discipline => {
+    result.disciplines_ag.forEach(discipline => {
         disciplinesDiv += `<div class="map-popup-discipline">${discipline}</div>`;
     });
 
