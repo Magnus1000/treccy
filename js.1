@@ -115,7 +115,7 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
                     </div>
                 </div>
             </div>
-            <a href="/races/${result.slug_ag}" id="textLinkblock" class="popup-text-link-block w-inline-block">
+            <a href="/races/${result.slug_ag}" id="textLinkblock" class="card-text-link-block w-inline-block">
                 <div class="race-card-heading-div">
                     <h4 id="raceNameid" class="race-card-heading">${result.name_ag}</h4>
                     <h4 id="raceDistanceid" class="race-card-heading-right">${result.distance_ag}</h4>
@@ -164,7 +164,7 @@ function createMarkerOnMap(map, result) {
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="map-popup-div">
             <div class="map-popup-image-div">
-                <a href="/races/${result.Slug}" class="map-popup-link-block w-inline-block">
+                <a href="/races/${result.slug_ag}" class="map-popup-link-block w-inline-block">
                     <img src="${markerImageUrl}" loading="lazy" alt="" class="map-popup-image">
                 </a>
                 <div class="map-popup-discipline-div">${disciplinesDiv}</div>
@@ -173,15 +173,15 @@ function createMarkerOnMap(map, result) {
 </svg></div>
                 </div>
             </div>
-            <a href="/races/${result.Slug}" class="link-block w-inline-block">
+            <a href="/races/${result.slug_ag}" class="link-block w-inline-block">
                 <div class="map-popup-header-div">
-                    <div class="map-popup-header">${result.Name}</div>
+                    <div class="map-popup-header">${result.name_ag}</div>
                 </div>
                 <div class="map-popup-country-and-date-div">
                     <div class="map-popup-header-country-div">
-                        <div class="map-popup-city-text">${result.City}</div>
+                        <div class="map-popup-city-text">${result.city_ag}</div>
                         <div class="map-popup-comma">, </div>
-                        <div class="map-popup-country-text">${result.Country}</div>
+                        <div class="map-popup-country-text">${result.country_ag}</div>
                     </div>
                     <div class="map-popup-date-div">
                         <div class="map-popup-date-text">${formattedDate}</div>
