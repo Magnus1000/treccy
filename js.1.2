@@ -26,9 +26,6 @@ document.getElementById('showMap').addEventListener('click', async function() {
     const userLocation = await getLocation();
     displayMapWithResults(userLocation.lat, userLocation.lng);
 
-    // Assuming your Mapbox GL JS map object is named 'map'
-    map.resize();
-
     updateViewInUrl('map');
 });
 
