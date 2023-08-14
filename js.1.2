@@ -15,9 +15,6 @@ document.getElementById('showMap').addEventListener('click', async function() {
     const raceListgrid = document.getElementById('raceListgrid');
     raceListgrid.style.display = 'none';  // Hide the race list grid
 
-    const footer = document.getElementById('footer');
-    raceListgrid.style.display = 'none';  // Hide the footer
-
     const userLocation = await getLocation();
     displayMapWithResults(userLocation.lat, userLocation.lng);
 
@@ -39,9 +36,6 @@ document.getElementById('showList').addEventListener('click', async function() {
 
     const raceListgrid = document.getElementById('raceListgrid');
     raceListgrid.style.display = 'flex';  // Show the race list grid
-
-    const footer = document.getElementById('footer');
-    raceListgrid.style.display = 'flex';  // Show the footer
 
 });
 
