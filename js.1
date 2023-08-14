@@ -145,7 +145,7 @@ function removeExistingMarkers() {
 
 function createMarkerOnMap(map, result) {
     let markerImageUrl;
-    if (result.disciplinesag.length === 1) {
+    if (result.disciplines_ag.length === 1) {
         markerImageUrl = disciplineMarkers[result.disciplines_ag[0].toLowerCase()];
     } else {
         // Use a generic marker for multiple disciplines
@@ -159,7 +159,7 @@ function createMarkerOnMap(map, result) {
     });
 
     // Formatted date
-    const formattedDate = formatDate(result.Date);
+    const formattedDate = formatDate(result.start_date_ag);
 
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="map-popup-div">
