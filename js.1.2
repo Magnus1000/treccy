@@ -1,4 +1,12 @@
 <script>
+// Function to update the URL with the view type
+function updateViewInUrl(viewType) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('view', viewType);
+  history.replaceState(null, null, url.toString());
+  console.log(`URL updated with view: ${viewType}`);
+}
+
 // 5) Listens to the toggle events to hide/display the map and grid
 document.getElementById('showMap').addEventListener('click', async function() {
     console.log("Show Map Button Clicked...");
@@ -20,6 +28,8 @@ document.getElementById('showMap').addEventListener('click', async function() {
 
     // Assuming your Mapbox GL JS map object is named 'map'
     map.resize();
+
+    updateViewInUrl('map');
 });
 
 document.getElementById('showList').addEventListener('click', async function() {
@@ -37,7 +47,21 @@ document.getElementById('showList').addEventListener('click', async function() {
     const raceListgrid = document.getElementById('raceListgrid');
     raceListgrid.style.display = 'flex';  // Show the race list grid
 
+    updateViewInUrl('list'); 
+
 });
+
+// Function to load the view from URL parameters
+function loadViewFromUrlParams() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const viewType = urlSearchParams.get('view');
+  if (viewType === 'map') {
+    document.getElementById('showMap').click();
+  } else if (viewType === 'list') {
+    document.getElementById('showList').click();
+  }
+  console.log(`Loaded view from URL: ${viewType}`);
+}
 
 // 6) Check the URL parameters and preset the filter if there are any filters already set
 function checkAndPresetFilters() {
@@ -125,4 +149,7 @@ function checkAndPresetFilters() {
     }
   }
 }
+
+// Load View Based on View Params
+loadViewFromUrlParams();
 </script>
