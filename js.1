@@ -145,8 +145,17 @@ function removeExistingMarkers() {
 
 function createMarkerOnMap(map, result) {
     let markerImageUrl;
+    
     if (result.disciplines_ag.length === 1) {
-        markerImageUrl = disciplineMarkers[result.disciplines_ag[0].toLowerCase()];
+        let disciplineKey = result.disciplines_ag[0].toLowerCase();
+        // Check if the discipline key exists in the disciplineMarkers object
+        if (disciplineMarkers[disciplineKey]) {
+            markerImageUrl = disciplineMarkers[disciplineKey];
+        } else {
+            // Log a warning to the console if the key is not found
+            console.warn(`Discipline key not found: ${disciplineKey}`);
+            markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
+        }
     } else {
         // Use a generic marker for multiple disciplines
         markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
