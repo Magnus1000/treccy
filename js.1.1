@@ -1,0 +1,104 @@
+<script>
+// 4) Displays results on the map
+function removeExistingMarkers() {
+    for (const marker of currentMarkers) {
+        marker.remove();
+    }
+    currentMarkers = [];
+}
+
+function createMarkerOnMap(map, result) {
+    let markerImageUrl;
+    
+    if (result.disciplines_ag.length === 1) {
+        let disciplineKey = result.disciplines_ag[0].toLowerCase();
+        // Check if the discipline key exists in the disciplineMarkers object
+        if (disciplineMarkers[disciplineKey]) {
+            markerImageUrl = disciplineMarkers[disciplineKey];
+        } else {
+            // Log a warning to the console if the key is not found
+            console.warn(`Discipline key not found: ${disciplineKey}`);
+            markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
+        }
+    } else {
+        // Use a generic marker for multiple disciplines
+        markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
+    }
+
+    // Creating the disciplines div
+    let disciplinesDiv = '';
+    result.disciplines_ag.forEach(discipline => {
+        disciplinesDiv += `<div class="map-popup-discipline">${discipline}</div>`;
+    });
+
+    // Formatted date
+    const formattedDate = formatDate(result.start_date_ag);
+
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <div class="map-popup-div">
+            <div class="map-popup-image-div">
+                <a href="/races/${result.slug_ag}" class="map-popup-link-block w-inline-block">
+                    <img src="${markerImageUrl}" loading="lazy" alt="" class="map-popup-image">
+                </a>
+                <div class="map-popup-discipline-div">${disciplinesDiv}</div>
+                <div class="heart-icon-div"><div class="heart-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false">
+  <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
+</svg></div>
+                </div>
+            </div>
+            <a href="/races/${result.slug_ag}" class="link-block w-inline-block">
+                <div class="map-popup-header-div">
+                    <div class="map-popup-header">${result.name_ag}</div>
+                </div>
+                <div class="map-popup-country-and-date-div">
+                    <div class="map-popup-header-country-div">
+                        <div class="map-popup-city-text">${result.city_ag}</div>
+                        <div class="map-popup-comma">, </div>
+                        <div class="map-popup-country-text">${result.country_ag}</div>
+                    </div>
+                    <div class="map-popup-date-div">
+                        <div class="map-popup-date-text">${formattedDate}</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    `);
+
+    const customMarker = new Image(50, 50);
+    customMarker.src = markerImageUrl;
+
+    const marker = new mapboxgl.Marker(customMarker)
+        .setLngLat([result._geoloc.lng, result._geoloc.lat])
+        .setPopup(popup)
+        .addTo(map);
+
+    currentMarkers.push(marker);
+}
+
+
+
+async function displayMapWithResults(lat, lng) {
+    console.log("Displaying Map with Results...");
+    
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+        center: [lng, lat],
+        zoom: 10,
+        accessToken: mapboxToken  
+    });
+
+    // Fetch Algolia Results
+    const results = await fetchAlgoliaResults(lat, lng);
+    
+    // Clear any existing markers
+    removeExistingMarkers();
+
+    // Display Algolia results on the map
+    results.forEach(result => {
+        createMarkerOnMap(map, result);
+    });
+
+    map.resize();
+}
+</script>
