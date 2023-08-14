@@ -32,7 +32,7 @@ function createMarkerOnMap(map, result) {
     });
 
     // Formatted date
-    const formattedDate = formatDate(result.start_date_ag);
+    const formattedDate = formatDate(result.date_ag);
 
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div class="map-popup-div">
