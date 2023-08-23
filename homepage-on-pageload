@@ -30,7 +30,7 @@ const algoliaConfig = {
   }
 
   // Function to fetch Algolia Results
-async function fetchAlgoliaResults(lat, lng, radius) {
+async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     console.log("Fetching Algolia Results...");
 
     const urlSearchParams = new URLSearchParams(window.location.search);
