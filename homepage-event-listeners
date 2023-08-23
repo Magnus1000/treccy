@@ -33,8 +33,8 @@ async function toggleView(showMap) {
     document.getElementById('raceListgrid').style.display = showMap ? 'none' : 'flex';
 
     if (showMap) {
-        const userLocation = await getLocation();
-        displayMapWithResults(userLocation.lat, userLocation.lng);
+        const coordinates = getCoordinatesFromUrl();
+        displayMapWithResults(coordinates.lat, coordinates.lng);
     }
 }
 
