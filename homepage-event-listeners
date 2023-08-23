@@ -58,25 +58,7 @@ function createMarkerOnMap(map, result) {
     const markerImageUrl = getMarkerImageUrl(result.disciplines_ag);
     const customMarker = new Image(50, 50);
     customMarker.src = markerImageUrl;
-    
-    // Creating the disciplines div
-    let disciplinesDiv = '';
-    result.disciplines_ag.forEach(discipline => {
-        disciplinesDiv += `<div class="map-popup-discipline">${discipline}</div>`;
-    });
 
-    // Formatted date
-    const formattedDate = formatDate(result.date_ag);
-
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(/* Your HTML content */);
-
-    const marker = new mapboxgl.Marker(customMarker)
-        .setLngLat([result._geoloc.lng, result._geoloc.lat])
-        .setPopup(popup)
-        .addTo(map);
-
-    currentMarkers.push(marker);
-}
     // Creating the disciplines div
     let disciplinesDiv = '';
     result.disciplines_ag.forEach(discipline => {
@@ -116,19 +98,12 @@ function createMarkerOnMap(map, result) {
         </div>
     `);
 
-    const customMarker = new Image(50, 50);
-    customMarker.src = markerImageUrl;
-
     const marker = new mapboxgl.Marker(customMarker)
         .setLngLat([result._geoloc.lng, result._geoloc.lat])
         .setPopup(popup)
         .addTo(map);
 
-    currentMarkers.push(marker);
-}
-
-    // Add the marker to the currentMarkers array
-    // currentMarkers.push(marker);
+    currentMarkers.push(marker); // Add the marker to the currentMarkers array
 }
 
 async function displayMapWithResults(lat, lng) {
