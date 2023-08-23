@@ -53,14 +53,11 @@
                       attributesToSnippet: ['name_ag:10', 'description_ag:35'],
                       snippetEllipsisText: '…',
                       hitsPerPage: 5,
-                      facets: ['disciplines_ag', 'city_ag', 'state_province_ag', 'country_ag'] // Adding facets here
+                      facets: ['disciplines_ag', 'city_ag', 'state_province_ag', 'country_ag']
                     }
                   }
                 ]
               });
-
-              // Here you'll need to process the results to create the category results.
-              // Please adjust the logic based on the actual structure of your results.
 
               console.log("Results from Algolia:", results);
               return results;
@@ -70,26 +67,28 @@
             }
           },
           templates: {
-            // Removed the header function as you requested
             item({ item, components, html }) {
-              if (item.type === 'category') {
-                // Handle category result
-                const url = `/countries/${item.location.country}?discipline0=${item.query}&location=${item.location.city}%2C+${item.location.state_province}%2C+${item.location.country}&lat=43.653482&lon=-79.383935`;
-                return html`<a href="${url}">View all ${item.query} races in ${item.location.city}, ${item.location.state_province}, ${item.location.country}</a>`;
-              } else {
-                // Handle individual race result
-                const date = new Date(item.date_ag);
-                const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
-                const disciplines = toTitleCase(item.disciplines_ag.join(', '));
+              // Extract the date from item.date_ag and format it
+              const date = new Date(item.date_ag);
+              const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+              // Convert disciplines to proper case
+              const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
-                return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
+              // Constructing the category link
+              const categoryLink = `/countries/${item.country_ag}?discipline0=${item.disciplines_ag[0]}`;
+
+              return html`
+                <div>
+                  <a href="${categoryLink}">See all ${disciplines} races in ${item.country_ag}</a>
+                </div>
+                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
                   <div class="aa-ItemContent">
                     <div class="aa-ItemContentBody">
                       <div class="aa-ItemContentTitle">
                         ${item.name_ag} 
                       </div>
                       <div class="aa-ItemContentSubtitle">
-                        ${item.city_ag}, ${item.country_ag} - ${formattedDate} 
+                        ${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate} 
                       </div>
                       <div class="aa-ItemContentDescription">
                         ${disciplines} 
@@ -97,7 +96,6 @@
                     </div>
                   </div>
                 </a>`;
-              }
             },
             noResults() {
               return "No races for this query.";
