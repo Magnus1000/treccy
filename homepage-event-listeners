@@ -58,10 +58,6 @@ function createMarkerOnMap(map, result) {
     const markerImageUrl = getMarkerImageUrl(result.disciplines_ag);
     const customMarker = new Image(50, 50);
     customMarker.src = markerImageUrl;
-
-    // Create a popup and marker here (seems like this part is missing)
-function createMarkerOnMap(map, result) {
-    let markerImageUrl;
     
     if (result.disciplines_ag.length === 1) {
         let disciplineKey = result.disciplines_ag[0].toLowerCase();
@@ -77,6 +73,14 @@ function createMarkerOnMap(map, result) {
         // Use a generic marker for multiple disciplines
         markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
     }
+
+    const marker = new mapboxgl.Marker(customMarker)
+        .setLngLat([result._geoloc.lng, result._geoloc.lat])
+        .setPopup(popup)
+        .addTo(map);
+
+    currentMarkers.push(marker);
+}
 
     // Creating the disciplines div
     let disciplinesDiv = '';
@@ -178,6 +182,7 @@ function initializeCheckboxStyling() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("Document Ready...");
+    initializeCheckboxStyling();
 
 });
 </script>
