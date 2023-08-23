@@ -1,0 +1,72 @@
+<style>
+input[type="checkbox"]{
+    display: none;
+  }
+</style>
+
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const profilePill = document.getElementById('profile-pill');
+    const profileDropdown = document.getElementById('profile-dropdown');
+
+    // Initially, let's assume you want the dropdown hidden.
+    profileDropdown.style.display = 'none';
+
+    profilePill.addEventListener('click', function() {
+        if (profileDropdown.style.display === 'none' || profileDropdown.style.display === '') {
+            profileDropdown.style.display = 'flex';
+        } else {
+            profileDropdown.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<style>
+  .active-vertical-menu-item,
+  .active-horizontal-menu-item {
+    font-weight: 700;
+  }
+  
+  .heart-icon {
+  display: block;
+  height: 24px;
+  width: 24px;
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5); /* Default stroke color if the variable is not defined */
+  stroke-width: 2;
+  overflow: visible;
+}
+
+.heart-icon.saved {
+  fill: #0a0f0d; /* Saved color */
+  stroke: #0a0f0d;
+}
+  
+  .heart-icon-large {
+  display: block;
+  height: 44px;
+  width: 44px;
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5); /* Default stroke color if the variable is not defined */
+  stroke-width: 2;
+  overflow: visible;
+}
+
+.heart-icon-large.saved {
+  fill: #0a0f0d; /* Saved color */
+  stroke: #0a0f0d;
+}
+
+</style>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P6GBQ545');</script>
+<!-- End Google Tag Manager -->
