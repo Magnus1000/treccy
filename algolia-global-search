@@ -66,22 +66,18 @@
               );
             },
 item({ item, components, html }) {
+  // Extract the date from item.date_ag and format it
+  const date = new Date(item.date_ag);
+  const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+
   return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
     <div class="aa-ItemContent">
-      <div class="aa-ItemIcon aa-ItemIcon--alignTop">
-        <a href="/races/${item.slug_ag}"><img
-          src="${item.photo_main_ag}"
-          alt="${item.name_ag}" // Name of the race as alt text
-          width="40"
-          height="40"
-        /></a>
-      </div>
       <div class="aa-ItemContentBody">
         <div class="aa-ItemContentTitle">
           ${item.name_ag} // Name of the race
         </div>
         <div class="aa-ItemContentSubtitle">
-          ${item.city_ag}, ${item.country_ag} - ${item.date_ag} // Location and date
+          ${item.city_ag}, ${item.country_ag} - ${formattedDate} // Location and formatted date
         </div>
         <div class="aa-ItemContentDescription">
           ${item.disciplines_ag.join(', ')} // Disciplines, assuming it's an array
