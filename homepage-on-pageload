@@ -35,17 +35,18 @@ async function fetchAlgoliaResults(lat, lng, radius) {
     console.log("Fetching Algolia Results...");
 
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const disciplines = urlSearchParams.getAll('discipline'); // Get all disciplines as an array
-    const minDist = parseFloat(urlSearchParams.get('minDist'));
-    const maxDist = parseFloat(urlSearchParams.get('maxDist'));
-    const type = urlSearchParams.get('type');
-
-    // Build the filters array
     const filters = [];
-    disciplines.forEach(discipline => filters.push(`discipline:${discipline}`));
-    if (!isNaN(minDist)) filters.push(`distance_ag >= ${minDist}`);
-    if (!isNaN(maxDist)) filters.push(`distance_ag <= ${maxDist}`);
-    if (type) filters.push(`type:${type}`);
+
+    // Iterate through all parameters and build the filters dynamically
+    urlSearchParams.forEach((value, key) => {
+        if (key.startsWith('discipline')) {
+            // Handle discipline parameters separately since they are arrays
+            filters.push(`disciplines_ag:${value}`);
+        } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
+            // Handle other parameters as key-value pairs
+            filters.push(`${key}:${value}`);
+        }
+    });
 
     // Prepare search parameters
     const searchParams = {
