@@ -16,7 +16,7 @@ function updateViewInUrl(viewType) {
   console.log(`URL updated with view: ${viewType}`);
 }
 
-// 5) Listens to the toggle events to hide/display the map and grid
+// Listens to the toggle events to hide/display the map and grid
 document.getElementById('showMap').addEventListener('click', async function() {
     console.log("Show Map Button Clicked...");
 
@@ -56,7 +56,20 @@ document.getElementById('showList').addEventListener('click', async function() {
     updateViewInUrl('list'); 
 
 });
-// Displays results on the map
+
+// Updated function to handle disciplines and default icon
+function getMarkerImageUrl(disciplines) {
+    if (disciplines.length === 1) {
+        const disciplineKey = disciplines[0].toLowerCase();
+        if (disciplineMarkers[disciplineKey]) {
+            return disciplineMarkers[disciplineKey];
+        } else {
+            console.warn(`Discipline key not found: ${disciplineKey}`);
+        }
+    }
+    return disciplineMarkers['default'];
+}
+
 function removeExistingMarkers() {
     for (const marker of currentMarkers) {
         marker.remove();
@@ -65,6 +78,7 @@ function removeExistingMarkers() {
 }
 
 function createMarkerOnMap(map, result) {
+    const markerImageUrl = getMarkerImageUrl(result.disciplines_ag);
     let markerImageUrl;
     
     if (result.disciplines_ag.length === 1) {
@@ -81,6 +95,49 @@ function createMarkerOnMap(map, result) {
         // Use a generic marker for multiple disciplines
         markerImageUrl = 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg';
     }
+
+async function displayMapWithResults(lat, lng, results) {
+    console.log("Displaying Map with Results...");
+    
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+        center: [lng, lat],
+        zoom: 10,
+        accessToken: mapboxToken  
+    });
+    
+    // Clear any existing markers
+    removeExistingMarkers();
+
+    // Display Algolia results on the map
+    results.forEach(result => {
+        createMarkerOnMap(map, result);
+    });
+
+    map.resize();
+}
+
+// Checkbox Styling
+function initializeCheckboxStyling() {
+    console.log("Adjusting Checkbox Styling...");
+
+    function updateCheckboxStyling() {
+        const spanElement = this.nextElementSibling;
+        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
+        if (this.checked) {
+            parentLabel.classList.add("active-filter");
+        } else {
+            parentLabel.classList.remove("active-filter");
+        }
+    }
+
+    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateCheckboxStyling);
+        updateCheckboxStyling.call(checkbox);
+    });
+}
 
     // Creating the disciplines div
     let disciplinesDiv = '';
@@ -177,6 +234,7 @@ function initializeCheckboxStyling() {
         updateCheckboxStyling.call(checkbox);
     });
 }
+
     // Update URL params with filters 
     function updateURLWithFilters() {
     // Get all checkboxes with the class 'disciplinefilter_checkbox'
@@ -259,7 +317,6 @@ function initializeCheckboxStyling() {
     // Update the URL without causing a page reload
     history.pushState({}, '', '?' + params.toString());
 }
-
 
 // Function to get the query parameters from the URL
 function getQueryParams() {
