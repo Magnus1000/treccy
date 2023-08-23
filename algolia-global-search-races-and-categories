@@ -9,9 +9,6 @@
 <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
 
 <script>
-  // Variable to track if the "See All" link has already been shown
-  let showAllLinkShown = false;
-
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -32,8 +29,6 @@
     detachedMediaQuery: '',
     openOnFocus: true,
     getSources({ query, state }) {
-      // Reset the tracking variable for a new search
-      showAllLinkShown = false;
       console.log("Query received:", query);
 
       if (!query) {
@@ -79,21 +74,7 @@
               // Convert disciplines to proper case
               const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
-              // Check if both discipline and location (city, state_province, or country) are present
-              const showCategoryLink = item.disciplines_ag.length > 0 && (item.city_ag || item.state_province_ag || item.country_ag);
-
-              // Construct the "See All" link only if not already shown
-              const showAllLink = !showAllLinkShown && showCategoryLink ? html`<a href="/countries/${item.country_ag}?discipline0=${query.toLowerCase()}&location=${item.city_ag}%2C+${item.state_province_ag}%2C+${item.country_ag}">See all ${disciplines} races in ${item.city_ag}, ${item.state_province_ag}</a>` : '';
-
-              // Update the tracking variable if the link has been shown
-              if (!showAllLinkShown && showCategoryLink) {
-                showAllLinkShown = true;
-              }
-
               return html`
-                <div>
-                  ${showAllLink}
-                </div>
                 <a class="aa-ItemLink" href="/races/${item.slug_ag}">
                   <div class="aa-ItemContent">
                     <div class="aa-ItemContentBody">
@@ -112,7 +93,22 @@
             },
             noResults() {
               return "No races for this query.";
-            }
+            },
+            footer({ items, fragment }) {
+              if (items.length === 0) {
+                return;
+              }
+              
+              // Extracting necessary values from the first item
+              const item = items[0];
+              const disciplines = toTitleCase(item.disciplines_ag.join(', '));
+              const countryAgLower = item.country_ag.toLowerCase();
+
+              return html`
+                <div>
+                  <a href="/countries/${countryAgLower}?discipline0=${query.toLowerCase()}&location=${item.city_ag}%2C+${item.state_province_ag}%2C+${countryAgLower}">See all ${disciplines} races in ${item.city_ag}, ${item.state_province_ag}</a>
+                </div>`;
+            },
           },
           getItemUrl({ item }) {
             return "/races/" + item.slug_ag;
