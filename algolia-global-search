@@ -18,7 +18,7 @@
 
   const { setIsOpen } = autocomplete({
     container: "#global-race-search",
-    placeholder: "Search this blog",
+    placeholder: "Search for kayak races",
     detachedMediaQuery: '',
     openOnFocus: true,
     getSources({ query, state }) {
@@ -60,14 +60,14 @@
           templates: {
             header() {
               return (
-                "Posts"
+                "Races"
               );
             },
             item({ item, components, html }) {
-              return html`<a class="aa-ItemLink" href="/posts/${item.slug_ag}">
+              return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
                 <div class="aa-ItemContent">
                   <div class="aa-ItemIcon aa-ItemIcon--alignTop">
-                    <a href="/posts/${item.slug.ag}"><img
+                    <a href="/races/${item.slug.ag}"><img
                       src="${item.photo_main_ag}"
                       alt="${item.name_ag}"
                       width="40"
@@ -95,7 +95,7 @@
               </a>`;
             },
             noResults() {
-              return "No posts for this query.";
+              return "No races for this query.";
             }
           },
           getItemUrl({ item }) {
