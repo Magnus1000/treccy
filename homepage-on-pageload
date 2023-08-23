@@ -51,7 +51,9 @@ async function fetchAlgoliaResults(lat, lng, radius) {
     // Prepare search parameters
     const searchParams = {
         hitsPerPage: 20,
-        filters: filters.join(' AND ')
+        filters: filters.join(' AND '),
+        page: page
+
     };
 
     // Include aroundLatLng and aroundRadius if lat and lng are valid numbers
@@ -79,10 +81,10 @@ async function fetchAlgoliaResults(lat, lng, radius) {
 }
 
 // Load Algolia Results
-async function loadAlgoliaResultsToDiv(lat, lng, radius) {
+async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   console.log("Fetching and Displaying Algolia Results in Div...");
 
-  const results = await fetchAlgoliaResults(lat, lng, radius);
+  const results = await fetchAlgoliaResults(lat, lng, radius, page);
 
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
   algoliaRacesDiv.innerHTML = '';  // Clear any previous data
@@ -152,5 +154,29 @@ function checkAndLoadAlgoliaResults() {
 
 // Check if URL parameters exist and load Algolia results
 checkAndLoadAlgoliaResults();
+
+// Variable to keep track of the current page
+let currentPage = 0;
+
+// Function to handle scroll event
+function handleScroll() {
+    // Check if user is at the bottom of the page
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        // Increment current page
+        currentPage++;
+
+        // Fetch and display the next page of Algolia results
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const lat = parseFloat(urlSearchParams.get('lat'));
+        const lng = parseFloat(urlSearchParams.get('lng'));
+        const locationRange = parseFloat(urlSearchParams.get('locationRange'));
+        
+        loadAlgoliaResultsToDiv(lat, lng, locationRange, currentPage); // Pass the current page number
+    }
+}
+
+// Add scroll event listener
+window.addEventListener('scroll', handleScroll);
+
 
 </script>
