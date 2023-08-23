@@ -66,45 +66,40 @@
               return [];
             }
           },
-templates: {
-  item({ item, components, html }) {
-    // Extract the date from item.date_ag and format it
-    const date = new Date(item.date_ag);
-    const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
-    // Convert disciplines to proper case
-    const disciplines = toTitleCase(item.disciplines_ag.join(', '));
+          templates: {
+            item({ item, components, html }) {
+              // Extract the date from item.date_ag and format it
+              const date = new Date(item.date_ag);
+              const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+              // Convert disciplines to proper case
+              const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
-    // Check if both discipline and location (city, state_province, or country) are present
-    const showCategoryLink = item.disciplines_ag.length > 0 && (item.city_ag || item.state_province_ag || item.country_ag);
+              // Check if both discipline and location (city, state_province, or country) are present
+              const showCategoryLink = item.disciplines_ag.length > 0 && (item.city_ag || item.state_province_ag || item.country_ag);
 
-    // Constructing the category link
-    const categoryLink = showCategoryLink ? `/countries/${item.country_ag}?discipline0=${item.disciplines_ag[0]}` : '';
+              // Constructing the category link
+              const categoryLink = showCategoryLink ? `/countries/${item.country_ag}?discipline0=${item.disciplines_ag[0]}` : '';
 
-    return html`
-      <div>
-        ${showCategoryLink ? html`<a href="${categoryLink}">See all ${disciplines} races in ${item.country_ag}</a>` : ''}
-      </div>
-      <a class="aa-ItemLink" href="/races/${item.slug_ag}">
-        <div class="aa-ItemContent">
-          <div class="aa-ItemContentBody">
-            <div class="aa-ItemContentTitle">
-              ${item.name_ag} 
-            </div>
-            <div class="aa-ItemContentSubtitle">
-              ${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate} 
-            </div>
-            <div class="aa-ItemContentDescription">
-              ${disciplines} 
-            </div>
-          </div>
-        </div>
-      </a>`;
-  },
-  noResults() {
-    return "No races for this query.";
-  }
-},
-
+              return html`
+                <div>
+                  ${showCategoryLink ? html`<a href="${categoryLink}">See all ${disciplines} races in ${item.country_ag}</a>` : ''}
+                </div>
+                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                  <div class="aa-ItemContent">
+                    <div class="aa-ItemContentBody">
+                      <div class="aa-ItemContentTitle">
+                        ${item.name_ag} 
+                      </div>
+                      <div class="aa-ItemContentSubtitle">
+                        ${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate} 
+                      </div>
+                      <div class="aa-ItemContentDescription">
+                        ${disciplines} 
+                      </div>
+                    </div>
+                  </div>
+                </a>`;
+            },
             noResults() {
               return "No races for this query.";
             }
