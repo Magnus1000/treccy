@@ -91,24 +91,23 @@
                   </div>
                 </a>`;
             },
-footer({ state, html }) {
-  // Check if results are available
-  if (state.results && state.results[0]) {
-    // Iterate over the hits to find the first one with the necessary attributes
-    for (const hit of state.results[0].hits) {
-      if (hit.disciplines_ag && hit.city_ag && hit.state_province_ag && hit.country_ag) {
-        const disciplines = toTitleCase(hit.disciplines_ag.join(', '));
-        const city = hit.city_ag;
-        const stateProvince = hit.state_province_ag;
-        const countryAgLower = hit.country_ag.toLowerCase();
-        const categoryLink = `/countries/${countryAgLower}?discipline0=${state.query.toLowerCase()}&location=${city}%2C+${stateProvince}%2C+${countryAgLower}`;
-        return html`<div><a href="${categoryLink}">See all ${disciplines} races in ${city}, ${stateProvince}</a></div>`;
-      }
-    }
-  }
-  return '';
-}
-
+            footer({ state, html }) {
+              // Check if results are available
+              if (state.results && state.results[0]) {
+                // Iterate over the hits to find the first one with the necessary attributes
+                for (const hit of state.results[0].hits) {
+                  if (hit.disciplines_ag && hit.city_ag && hit.state_province_ag && hit.country_ag) {
+                    const disciplines = toTitleCase(hit.disciplines_ag.join(', '));
+                    const city = hit.city_ag;
+                    const stateProvince = hit.state_province_ag;
+                    const countryAgLower = hit.country_ag.toLowerCase();
+                    const categoryLink = `/countries/${countryAgLower}?discipline0=${state.query.toLowerCase()}&location=${city}%2C+${stateProvince}%2C+${countryAgLower}`;
+                    return html`<div><a href="${categoryLink}">See all ${disciplines} races in ${city}, ${stateProvince}</a></div>`;
+                  }
+                }
+              }
+              return '';
+            },
             noResults() {
               return "No races for this query.";
             }
