@@ -31,26 +31,34 @@ const algoliaConfig = {
   }
 
   // Function to fetch Algolia Results
-  async function fetchAlgoliaResults(lat, lng, radius) {
+async function fetchAlgoliaResults(lat, lng, radius) {
     console.log("Fetching Algolia Results...");
 
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const disciplines = urlSearchParams.getAll('discipline'); // Get all disciplines as an array
+    const minDist = parseFloat(urlSearchParams.get('minDist'));
+    const maxDist = parseFloat(urlSearchParams.get('maxDist'));
+    const type = urlSearchParams.get('type');
+
+    // Build the filters array
     const filters = [];
+    disciplines.forEach(discipline => filters.push(`discipline:${discipline}`));
+    if (!isNaN(minDist)) filters.push(`distance >= ${minDist}`);
+    if (!isNaN(maxDist)) filters.push(`distance <= ${maxDist}`);
+    if (type) filters.push(`type:${type}`);
 
     // Prepare search parameters
     const searchParams = {
-        hitsPerPage: 20
+        hitsPerPage: 20,
+        filters: filters.join(' AND ')
     };
 
     // Include aroundLatLng and aroundRadius if lat and lng are valid numbers
     if (!isNaN(lat) && !isNaN(lng)) {
         searchParams.aroundLatLng = `${lat},${lng}`;
-        if (!isNaN(radius)) { // Include radius if it's a valid number
+        if (!isNaN(radius)) {
             searchParams.aroundRadius = radius;
         }
-    }
-
-    if (filters.length > 0) {
-        searchParams.filters = filters.join(' AND ');
     }
 
     const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
@@ -65,7 +73,7 @@ const algoliaConfig = {
 
     console.log("Algolia Search Results:", results);
     return results.hits;
-  }
+}
 
 // Load Algolia Results
 async function loadAlgoliaResultsToDiv(lat, lng, radius) {
