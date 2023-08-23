@@ -17,6 +17,15 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
+// Function to extract country from URL
+function getCountryFromURL() {
+  const urlPathname = window.location.pathname; // Get the current URL path
+  const segments = urlPathname.split('/'); // Split the path into segments
+  const country = segments[2]; // Get the country segment
+  console.log("Extracted country from URL:", country);
+  return country;
+}
+
 // STEP 1 - CHECK IF URL PARAMS EXIST
   // Date formatting function
   function formatDate(dateString) {
@@ -31,9 +40,11 @@ const algoliaConfig = {
   }
 
   // Function to fetch Algolia Results
-async function fetchAlgoliaResults(lat, lng, radius) {
+async function fetchAlgoliaResults(lat, lng, radius, page) {
     console.log("Fetching Algolia Results...");
 
+    const country = getCountryFromURL(); // Extract country from URL
+    const filters = [`country_ag:${country}`]; // Add country filter to the search
     const urlSearchParams = new URLSearchParams(window.location.search);
     const filters = [];
 
