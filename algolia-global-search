@@ -1,14 +1,11 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic" />
-<style>
-  :root {
-    --aa-icon-size: 80px;
-  }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
-<script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
 <script>
-  const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js']; // Corrected this line
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
+  const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
   const appId = "CWUIX0EWFE";
   const apiKey = "4cd4c82105f395affbc472c07a9789c8";
   const searchClient = algoliasearch(appId, apiKey);
@@ -33,7 +30,6 @@
           sourceId: "races",
           async getItems() {
             console.log("Fetching results from Algolia...");
-
             console.log("Query being sent:", query);
 
             try {
@@ -59,43 +55,31 @@
               return [];
             }
           },
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
+          templates: {
+            // Removed the header function as you requested
+            item({ item, components, html }) {
+              // Extract the date from item.date_ag and format it
+              const date = new Date(item.date_ag);
+              const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+              // Convert disciplines to proper case
+              const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
-const templates = {
-  // Removed the header function as you requested
-  item({ item, components, html }) {
-    // Extract the date from item.date_ag and format it
-    const date = new Date(item.date_ag);
-    const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
-
-    // Convert disciplines to proper case
-    const disciplines = toTitleCase(item.disciplines_ag.join(', '));
-
-    return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
-      <div class="aa-ItemContent">
-        <div class="aa-ItemContentBody">
-          <div class="aa-ItemContentTitle">
-            ${item.name_ag} 
-          </div>
-          <div class="aa-ItemContentSubtitle">
-            ${item.city_ag}, ${item.country_ag} - ${formattedDate} 
-          </div>
-          <div class="aa-ItemContentDescription">
-            ${disciplines} 
-          </div>
-        </div>
-      </div>
-    </a>`;
-  },
-  noResults() {
-    return "No races for this query.";
-  }
-};
-,
+              return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                <div class="aa-ItemContent">
+                  <div class="aa-ItemContentBody">
+                    <div class="aa-ItemContentTitle">
+                      ${item.name_ag} 
+                    </div>
+                    <div class="aa-ItemContentSubtitle">
+                      ${item.city_ag}, ${item.country_ag} - ${formattedDate} 
+                    </div>
+                    <div class="aa-ItemContentDescription">
+                      ${disciplines} 
+                    </div>
+                  </div>
+                </div>
+              </a>`;
+            },
             noResults() {
               return "No races for this query.";
             }
