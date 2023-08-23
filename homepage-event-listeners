@@ -19,7 +19,6 @@ function initializeCheckboxStyling() {
         updateCheckboxStyling.call(checkbox);
     });
 }
-
     // Update URL params with filters 
     function updateURLWithFilters() {
     // Get all checkboxes with the class 'disciplinefilter_checkbox'
@@ -47,10 +46,8 @@ function initializeCheckboxStyling() {
     // Type filter
     const selectedType = document.querySelector('input[name="type"]:checked');
 
-    // Location search bar value
-    
     // Get the search input element
-    const searchBarElement = document.getElementById('search-bar');
+    const searchBarElement = document.getElementById('location-search-bar');
     
     // Get the value and lat-lon attributes
     const searchBarValue = searchBarElement.value;
@@ -95,7 +92,7 @@ function initializeCheckboxStyling() {
 
     if (searchBarLat && searchBarLon) {
         params.set('lat', searchBarLat);
-        params.set('lon', searchBarLon);
+        params.set('lng', searchBarLon);
     }
 
   // Log the final parameters to the console
@@ -104,9 +101,8 @@ function initializeCheckboxStyling() {
     // Update the URL without causing a page reload
     history.pushState({}, '', '?' + params.toString());
 }
-</script>
 
-<script>
+
 // Function to get the query parameters from the URL
 function getQueryParams() {
   const queryParams = {};
@@ -195,9 +191,7 @@ document.getElementById('submit_email_initial').addEventListener('click', functi
   // Send the webhook
   sendWebhook(email, params);
 });
-</script>
 
-<script>
 document.getElementById('copy_to_clipboard').addEventListener('click', function() {
   // Get the current page's URL
   const urlToCopy = window.location.href;
