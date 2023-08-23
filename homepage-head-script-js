@@ -1,0 +1,92 @@
+<!-- Mapbox styles and scripts -->
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+
+<!-- UUID -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script>
+
+<!-- Algolia script -->
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+
+<!-- Location Search Dropdown -->
+<style>
+.suggestions-dropdown {
+    display: none; /* Hidden by default */
+}
+
+.suggestions-dropdown.active {
+    display: flex; /* Shown when there are suggestions */
+}
+
+/* Hide the default radio button */
+.type-radio-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #69706d;
+  outline: none;
+  position: relative;
+  margin-right: 8px; /* Space between the radio and label */
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+/* Style for the unchecked state */
+.type-radio-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/* Style for the checked state */
+.type-radio-button:checked::before {
+  background-color: #0a0f0d; /* Selected color */
+  border: 1px solid #0a0f0d;
+}
+
+.heart-icon {
+  display: block;
+  height: 24px;
+  width: 24px;
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5); /* Default stroke color if the variable is not defined */
+  stroke-width: 2;
+  overflow: visible;
+}
+
+.heart-icon.saved {
+  fill: #0a0f0d; /* Saved color */
+  stroke: #0a0f0d;
+}
+
+/* Style Mapbox Popup */
+.mapboxgl-popup-close-button {
+    left: 0;
+    right:auto;
+    }
+    
+.mapboxgl-popup-tip {
+    display: none;
+}
+
+.mapboxgl-popup-content {
+    padding: 0px!important;
+    border-radius:5px;
+    width: 300px;
+    max-width: 500px;
+}
+
+.mapboxgl-popup.mapboxgl-popup-anchor-bottom {
+    max-width: 300px;
+}
+</style>
