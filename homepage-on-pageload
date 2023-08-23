@@ -31,42 +31,47 @@ const algoliaConfig = {
   }
 
   // Function to fetch Algolia Results
-  async function fetchAlgoliaResults(lat, lng) {
-      console.log("Fetching Algolia Results...");
+  async function fetchAlgoliaResults(lat, lng, radius) {
+    console.log("Fetching Algolia Results...");
 
-      const filters = [];
-      const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
-      const index = searchClient.initIndex(algoliaConfig.indexName);
+    const filters = [];
 
-      const disciplineFilterCheckbox = document.getElementById('disciplineFilter_checkbox');
-      if (disciplineFilterCheckbox && disciplineFilterCheckbox.checked) {
-          const filterValue = disciplineFilterCheckbox.getAttribute('filter-value');
-          if (filterValue) {
-              filters.push(`Disciplines=${filterValue}`);
-          }
-      }
+    // Prepare search parameters
+    const searchParams = {
+        hitsPerPage: 20
+    };
 
-      console.log("Filters being sent to Algolia:", filters);
-      
-      const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=5000000&filters=${filters.join(' AND ')}`;
-      console.log("Debug URL with parameters:", debugURL);
+    // Include aroundLatLng and aroundRadius if lat and lng are valid numbers
+    if (!isNaN(lat) && !isNaN(lng)) {
+        searchParams.aroundLatLng = `${lat},${lng}`;
+        if (!isNaN(radius)) { // Include radius if it's a valid number
+            searchParams.aroundRadius = radius;
+        }
+    }
 
-      const results = await index.search('', {
-          hitsPerPage: 20,
-          aroundLatLng: `${lat},${lng}`,
-          aroundRadius: 5000000,
-          filters: filters.join(' AND ')
-      });
+    if (filters.length > 0) {
+        searchParams.filters = filters.join(' AND ');
+    }
 
-      console.log("Algolia Search Results:", results);
-      return results.hits;
+    const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
+    const index = searchClient.initIndex(algoliaConfig.indexName);
+
+    console.log("Filters being sent to Algolia:", filters);
+
+    const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=${radius}&filters=${filters.join(' AND ')}`;
+    console.log("Debug URL with parameters:", debugURL);
+
+    const results = await index.search('', searchParams);
+
+    console.log("Algolia Search Results:", results);
+    return results.hits;
   }
 
 // Load Algolia Results
-async function loadAlgoliaResultsToDiv(lat, lng) {
+async function loadAlgoliaResultsToDiv(lat, lng, radius) {
   console.log("Fetching and Displaying Algolia Results in Div...");
 
-  const results = await fetchAlgoliaResults(lat, lng);
+  const results = await fetchAlgoliaResults(lat, lng, radius);
 
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
   algoliaRacesDiv.innerHTML = '';  // Clear any previous data
@@ -117,18 +122,23 @@ async function loadAlgoliaResultsToDiv(lat, lng) {
 
   // Function to check if there are any URL parameters
   function checkIfUrlParamsExist() {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const lat = parseFloat(urlSearchParams.get('lat')); // Assuming latitude is passed as a URL parameter
-    const lng = parseFloat(urlSearchParams.get('lng')); // Assuming longitude is passed as a URL parameter
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const lat = parseFloat(urlSearchParams.get('lat'));
+  const lng = parseFloat(urlSearchParams.get('lng'));
+  const locationRange = parseFloat(urlSearchParams.get('locationRange')); // Parse the locationRange parameter
 
-    if (urlSearchParams.toString()) {
-      console.log("URL parameters found.");
-      loadAlgoliaResultsToDiv(lat, lng); // Call your load function directly
-    } else {
-      console.log("No URL parameters found.");
-    }
+  if (isNaN(lat) || isNaN(lng)) {
+    console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
+  }
+
+  if (isNaN(locationRange)) {
+    console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
   }
 
   // Check if URL parameters exist
   checkIfUrlParamsExist();
+
+  // Call the load function with the parsed lat, lng, and locationRange
+  loadAlgoliaResultsToDiv(lat, lng, locationRange);
+}
 </script>
