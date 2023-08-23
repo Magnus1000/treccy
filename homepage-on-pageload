@@ -120,25 +120,26 @@ async function loadAlgoliaResultsToDiv(lat, lng, radius) {
 });
   }
 
-  // Function to check if there are any URL parameters
-  function checkIfUrlParamsExist() {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const lat = parseFloat(urlSearchParams.get('lat'));
-  const lng = parseFloat(urlSearchParams.get('lng'));
-  const locationRange = parseFloat(urlSearchParams.get('locationRange')); // Parse the locationRange parameter
+// Function to check if there are any URL parameters and load Algolia results
+function checkAndLoadAlgoliaResults() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlSearchParams.get('lat'));
+    const lng = parseFloat(urlSearchParams.get('lng'));
+    const locationRange = parseFloat(urlSearchParams.get('locationRange')); // Parse the locationRange parameter
 
-  if (isNaN(lat) || isNaN(lng)) {
-    console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
-  }
+    if (isNaN(lat) || isNaN(lng)) {
+        console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
+    }
 
-  if (isNaN(locationRange)) {
-    console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
-  }
+    if (isNaN(locationRange)) {
+        console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
+    }
 
-  // Check if URL parameters exist
-  checkIfUrlParamsExist();
-
-  // Call the load function with the parsed lat, lng, and locationRange
-  loadAlgoliaResultsToDiv(lat, lng, locationRange);
+    // Call the load function with the parsed lat, lng, and locationRange
+    loadAlgoliaResultsToDiv(lat, lng, locationRange);
 }
+
+// Check if URL parameters exist and load Algolia results
+checkAndLoadAlgoliaResults();
+
 </script>
