@@ -9,7 +9,6 @@
 // Globals and Configuration
 console.log("Script Initiated");
 
-let currentMarkers = [];
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 const algoliaConfig = {
     appId: "CWUIX0EWFE",
