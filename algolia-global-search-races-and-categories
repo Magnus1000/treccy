@@ -67,31 +67,41 @@
             }
           },
           templates: {
-            item({ item, components, html, state }) {
+            item({ item, components, html }) {
+              // Extract the date from item.date_ag and format it
               const date = new Date(item.date_ag);
               const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+              // Convert disciplines to proper case
               const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
-              // Check if this is the last item
-              const isLastItem = state.results[0].hits.length - 1 === state.results[0].hits.indexOf(item);
-
-              // Constructing the category link
-              const countryAgLower = item.country_ag.toLowerCase();
-              const categoryLink = `/countries/${countryAgLower}?discipline0=${state.query.toLowerCase()}&location=${item.city_ag}%2C+${item.state_province_ag}%2C+${countryAgLower}`;
-
               return html`
-                <div>
-                  <a class="aa-ItemLink" href="/races/${item.slug_ag}">
-                    <div class="aa-ItemContent">
-                      <div class="aa-ItemContentBody">
-                        <div class="aa-ItemContentTitle">${item.name_ag}</div>
-                        <div class="aa-ItemContentSubtitle">${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate}</div>
-                        <div class="aa-ItemContentDescription">${disciplines}</div>
+                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                  <div class="aa-ItemContent">
+                    <div class="aa-ItemContentBody">
+                      <div class="aa-ItemContentTitle">
+                        ${item.name_ag} 
+                      </div>
+                      <div class="aa-ItemContentSubtitle">
+                        ${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate} 
+                      </div>
+                      <div class="aa-ItemContentDescription">
+                        ${disciplines} 
                       </div>
                     </div>
-                  </a>
-                  ${isLastItem ? html`<div><a href="${categoryLink}">See all ${disciplines} races in ${item.city_ag}, ${item.state_province_ag}</a></div>` : ''}
-                </div>`;
+                  </div>
+                </a>`;
+            },
+            footer({ state, html }) {
+              // Check if results are available
+              if (state.results[0].hits.length > 0) {
+                const disciplines = toTitleCase(state.results[0].hits[0].disciplines_ag.join(', '));
+                const city = state.results[0].hits[0].city_ag;
+                const stateProvince = state.results[0].hits[0].state_province_ag;
+                const countryAgLower = state.results[0].hits[0].country_ag.toLowerCase();
+                const categoryLink = `/countries/${countryAgLower}?discipline0=${state.query.toLowerCase()}&location=${city}%2C+${stateProvince}%2C+${countryAgLower}`;
+                return html`<div><a href="${categoryLink}">See all ${disciplines} races in ${city}, ${stateProvince}</a></div>`;
+              }
+              return '';
             },
             noResults() {
               return "No races for this query.";
