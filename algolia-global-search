@@ -59,12 +59,21 @@
               return [];
             }
           },
-templates: {
-  // Removed the header function
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+const templates = {
+  // Removed the header function as you requested
   item({ item, components, html }) {
     // Extract the date from item.date_ag and format it
     const date = new Date(item.date_ag);
     const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+
+    // Convert disciplines to proper case
+    const disciplines = toTitleCase(item.disciplines_ag.join(', '));
 
     return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
       <div class="aa-ItemContent">
@@ -76,7 +85,7 @@ templates: {
             ${item.city_ag}, ${item.country_ag} - ${formattedDate} 
           </div>
           <div class="aa-ItemContentDescription">
-            ${item.disciplines_ag.join(', ')} 
+            ${disciplines} 
           </div>
         </div>
       </div>
@@ -85,7 +94,7 @@ templates: {
   noResults() {
     return "No races for this query.";
   }
-}
+};
 ,
             noResults() {
               return "No races for this query.";
