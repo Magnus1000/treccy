@@ -1,3 +1,13 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic" />
+<style>
+  :root {
+    --aa-icon-size: 80px;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+
 <script>
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
