@@ -21,7 +21,8 @@ const algoliaConfig = {
 function getCountryFromURL() {
   const urlPathname = window.location.pathname; // Get the current URL path
   const segments = urlPathname.split('/'); // Split the path into segments
-  const country = segments[2]; // Get the country segment
+  let country = segments[2]; // Get the country segment
+  country = country.replace(/-/g, ' '); // Replace hyphens with spaces
   console.log("Extracted country from URL:", country);
   return country;
 }
