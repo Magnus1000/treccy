@@ -515,22 +515,6 @@ const { setIsOpen } = autocomplete({
 
 <script>
   $(document).ready(function() {
-  // Listen for click events on the 'filter-open' button.
-  $('#filter-open').on('click', function() {
-    // Show the modal when the 'filter-open' button is clicked.
-    $('#filterForm').show();
-  });
-
-  // Listen for click events on the 'filter-close' button.
-  $('#filter-close').on('click', function() {
-    // Hide the modal when the 'filter-close' button is clicked.
-    $('#filterForm').hide();
-  });
-});
-</script>
-
-<script>
-  $(document).ready(function() {
     // Get the current page's URL path
     var path = window.location.pathname;
 
@@ -545,4 +529,3 @@ const { setIsOpen } = autocomplete({
     $(".horizontal-menu-item[data-url='" + path + "']").addClass("active-horizontal-menu-item");
   });
 </script>
-  
