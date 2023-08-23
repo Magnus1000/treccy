@@ -46,7 +46,6 @@ async function fetchAlgoliaResults(lat, lng, radius, page) {
     const country = getCountryFromURL(); // Extract country from URL
     const filters = [`country_ag:${country}`]; // Add country filter to the search
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const filters = [];
 
     // Iterate through all parameters and build the filters dynamically
     urlSearchParams.forEach((value, key) => {
@@ -58,6 +57,7 @@ async function fetchAlgoliaResults(lat, lng, radius, page) {
             filters.push(`${key}:${value}`);
         }
     });
+
 
     // Prepare search parameters
     const searchParams = {
