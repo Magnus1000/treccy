@@ -1,3 +1,15 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic"
+/>
+<style>
+  :root {
+    --aa-icon-size: 80px;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
 <script>
 const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
 const appId = "CWUIX0EWFE";
@@ -8,25 +20,24 @@ const indexName = "treccy_races_all";
 console.log("Initializing Algolia autocomplete..."); // Log initialization
 
 const { setIsOpen } = autocomplete({
-  container: "#global-race-search",
-  placeholder: "Search this blog",
-  detachedMediaQuery: '',
-  openOnFocus: true,
-  getSources({ query, state }) {
-    console.log("Query received:", query); // Log the query
+    container: "#global-race-search",
+    placeholder: "Search this blog",
+    detachedMediaQuery: '',
+    openOnFocus: true,
+    getSources({ query, state }) {
+      console.log("Query received:", query); // Log the query
 
-    if (!query) {
-      return [];
-    }
+      if (!query) {
+        return [];
+      }
 
-    return [
-      {
-        sourceId: "races",
-        async getItems() { // Updated function
-          console.log("Fetching results from Algolia..."); // Log fetching
+      return [
+        {
+          sourceId: "races",
+          getItems() {
+            console.log("Fetching results from Algolia..."); // Log fetching
 
-          try {
-            const results = await getAlgoliaResults({
+            return getAlgoliaResults({
               searchClient,
               queries: [
                 {
@@ -39,27 +50,65 @@ const { setIsOpen } = autocomplete({
                   }
                 }
               ]
+            }).then(results => {
+              console.log("Results from Algolia:", results); // Log results
+              return results;
             });
-
-            console.log("Results from Algolia:", results); // Log results
-            return results;
-          } catch (error) {
-            console.error("Error fetching results from Algolia:", error); // Log error
-            return [];
+          },
+            templates: {
+              header() {
+                return (
+                  "Posts"
+                );
+              },
+              item({ item, components, html }) {
+                return html`<a class="aa-ItemLink" href="/posts/${item.slug_ag}">
+                  <div class="aa-ItemContent">
+                    <div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                      <a href="/posts/${item.slug.ag}"><img
+                        src="${item.photo_main_ag}"
+                        alt="${item.name_ag}"
+                        width="40"
+                        height="40"
+                      /></a>
+                    </div>
+                    <div class="aa-ItemContentBody">
+                      <div class="aa-ItemContentTitle">
+                        ${components.Snippet({
+                          hit: item,
+                          attribute: 'name',
+                        })}
+                      </div>
+                      <div class="aa-ItemContentSubtitle">
+                        Published in <strong>${item.country_ag}</strong>
+                      </div>
+                      <div class="aa-ItemContentDescription">
+                        ${components.Snippet({
+                          hit: item,
+                          attribute: 'summary',
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </a>`;
+              },
+              noResults() {
+                return "No posts for this query.";
+              }
+            },
+            getItemUrl({ item }) {
+              return "/races/" + item.slug_ag;
+            },
           }
-        },
-        // Rest of the code remains the same
-        // ...
+        ];
       }
-    ];
-  }
-});
+    });
+  
+    console.log("Algolia autocomplete initialized."); // Log completion
 
-console.log("Algolia autocomplete initialized."); // Log completion
-
-document.addEventListener('keydown', (event) => {
-  if (event.metaKey && event.key.toLowerCase() === 'k') {
-    setIsOpen(true);
-  }
-});
+    document.addEventListener('keydown', (event) => {
+      if (event.metaKey && event.key.toLowerCase() === 'k') {
+        setIsOpen(true);
+      }
+    });
 </script>
