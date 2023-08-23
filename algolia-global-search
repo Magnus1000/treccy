@@ -69,7 +69,7 @@ item({ item, components, html }) {
   return html`<a class="aa-ItemLink" href="/races/${item.slug_ag}">
     <div class="aa-ItemContent">
       <div class="aa-ItemIcon aa-ItemIcon--alignTop">
-        <a href="/races/${item.slug.ag}"><img
+        <a href="/races/${item.slug_ag}"><img
           src="${item.photo_main_ag}"
           alt="${item.name_ag}" // Name of the race as alt text
           width="40"
