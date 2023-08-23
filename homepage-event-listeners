@@ -8,6 +8,29 @@ const disciplineMarkers = {
     'default': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64ce497c38241ed462982298_favicon32.jpg'
 };
 
+const defaultLat = -45.0312; // Default latitude for Queenstown
+const defaultLng = 168.6626; // Default longitude for Queenstown
+
+// Function to get coordinates from URL or use default
+function getCoordinatesFromUrl() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlSearchParams.get('lat'));
+    const lng = parseFloat(urlSearchParams.get('lng'));
+
+    // If lat and lng are not available or are NaN, use the default coordinates
+    if (isNaN(lat) || isNaN(lng)) {
+        return {
+            lat: defaultLat, // Default latitude
+            lng: defaultLng // Default longitude
+        };
+    }
+
+    return {
+        lat: lat,
+        lng: lng
+    };
+}
+
 function updateViewInUrl(viewType) {
   const url = new URL(window.location.href);
   url.searchParams.set('view', viewType);
