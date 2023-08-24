@@ -132,6 +132,9 @@ function createMarkerOnMap(map, result) {
 
 async function displayMapWithResults(lat, lng) {
     console.log("Displaying Map with Results...");
+    
+    // Log the Algolia results to verify they are as expected
+    console.log("Algolia Results:", algoliaResults);
 
     const map = new mapboxgl.Map({
         container: 'map',
@@ -145,7 +148,9 @@ async function displayMapWithResults(lat, lng) {
     removeExistingMarkers();
 
     // Use the global Algolia results variable instead of fetching
-    const results = algoliaResults; // Assuming algoliaResults is the global variable
+    const results = algoliaResults;
+    console.log("Using results for map:", results); // Additional logging
+
     results.forEach(result => {
         createMarkerOnMap(map, result);
     });
