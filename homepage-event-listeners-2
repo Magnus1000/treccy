@@ -143,6 +143,9 @@ document.getElementById('filterForm').addEventListener('submit', function(event)
 
     // Call the function to update URL with filters
     updateURLWithFilters();
+
+    // Check if there are any URL parameters and load Algolia results
+    checkAndLoadAlgoliaResults();
 });
 
 </script>
