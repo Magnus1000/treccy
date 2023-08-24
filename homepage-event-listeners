@@ -162,6 +162,10 @@ async function displayMapWithResults(lat, lng) {
             zoom: 10,
             accessToken: mapboxToken
         });
+
+        // Disable map rotation using scroll
+        map.scrollZoom.setRotateWithScroll(false);
+
     } else {
         restoreMapState(map); // Restore the map state if map instance already exists
     }
