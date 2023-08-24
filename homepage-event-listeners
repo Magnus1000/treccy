@@ -54,6 +54,8 @@ let mapState = {
     center: [defaultLng, defaultLat]
 };
 
+let map; // Declare map variable without initializing it here
+
 function saveMapState(map) {
     mapState.zoom = map.getZoom();
     mapState.center = map.getCenter().toArray();
