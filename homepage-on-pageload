@@ -76,14 +76,17 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     console.log("Debug URL with parameters:", debugURL);
 
     try {
-    const results = await index.search('', searchParams);
-    console.log("Algolia Search Results:", results);
-    return results.hits;
-} catch (error) {
-    console.error("An error occurred while fetching Algolia results:", error);
-    return [];
-}
+        const results = await index.search('', searchParams);
+        console.log("Algolia Search Results:", results);
 
+        // Update the global algoliaResults variable with the fetched results
+        algoliaResults = results.hits;
+
+        return results.hits;
+    } catch (error) {
+        console.error("An error occurred while fetching Algolia results:", error);
+        return [];
+    }
 }
 
 // Load Algolia Results
