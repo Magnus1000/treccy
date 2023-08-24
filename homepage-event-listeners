@@ -163,8 +163,12 @@ async function displayMapWithResults(lat, lng) {
             accessToken: mapboxToken
         });
 
-        // Disable map rotation using scroll
-        map.scrollZoom.setRotateWithScroll(false);
+        // Set specific zoom rates for trackpad and mouse wheel
+        map.scrollZoom.setZoomRate(1 / 100);
+        map.scrollZoom.setWheelZoomRate(1 / 450);
+
+        // Disable map rotation using right click
+        map.dragRotate.disable();
 
     } else {
         restoreMapState(map); // Restore the map state if map instance already exists
