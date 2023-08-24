@@ -1,7 +1,6 @@
 <!-- ############################################ EVENT LISTENERS 2 ############################################ -->
 <script>
 
-<script>
 const searchInput = document.getElementById('location-search-bar');
 const suggestionsBox = document.getElementById('suggestions');
 
