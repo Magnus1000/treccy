@@ -166,14 +166,6 @@ async function displayMapWithResults(lat, lng) {
     // Log the Algolia results to verify they are as expected
     console.log("Algolia Results:", algoliaResults);
 
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
-        center: [lng, lat],
-        zoom: 10,
-        accessToken: mapboxToken
-    });
-
     // Clear any existing markers
     removeExistingMarkers();
 
