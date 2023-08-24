@@ -16,6 +16,9 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
+// Declare a variable to store Algolia results globally
+let algoliaResults = [];
+
 // STEP 1 - CHECK IF URL PARAMS EXIST
   // Date formatting function
   function formatDate(dateString) {
@@ -52,7 +55,6 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
         hitsPerPage: 20,
         filters: filters.join(' AND '),
         page: page
-
     };
 
     // Include aroundLatLng and aroundRadius if lat and lng are valid numbers
