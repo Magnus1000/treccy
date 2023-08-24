@@ -44,9 +44,27 @@ document.getElementById('showMap').addEventListener('click', async function() {
 });
 
 document.getElementById('showList').addEventListener('click', async function() {
+    if (map) saveMapState(map); // Save the map state if the map instance exists
     await toggleView(false);
     updateViewInUrl('list');
 });
+
+let mapState = {
+    zoom: 10,
+    center: [defaultLng, defaultLat]
+};
+
+function saveMapState(map) {
+    mapState.zoom = map.getZoom();
+    mapState.center = map.getCenter().toArray();
+    console.log("Map state saved:", mapState);
+}
+
+function restoreMapState(map) {
+    map.setZoom(mapState.zoom);
+    map.setCenter(mapState.center);
+    console.log("Map state restored:", mapState);
+}
 
 async function toggleView(showMap) {
     console.log(showMap ? "Show Map Button Clicked..." : "Show List Button Clicked...");
@@ -132,6 +150,18 @@ function createMarkerOnMap(map, result) {
 
 async function displayMapWithResults(lat, lng) {
     console.log("Displaying Map with Results...");
+
+    if (!map) { // Only create a new map instance if it doesn't exist
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+            center: [lng, lat],
+            zoom: 10,
+            accessToken: mapboxToken
+        });
+    } else {
+        restoreMapState(map); // Restore the map state if map instance already exists
+    }
     
     // Log the Algolia results to verify they are as expected
     console.log("Algolia Results:", algoliaResults);
