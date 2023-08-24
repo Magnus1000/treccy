@@ -23,9 +23,9 @@ function updateURLWithFilters() {
     fromDate: getElementValue('dateFrom'),
     toDate: getElementValue('dateTo'),
     type: document.querySelector('input[name="type"]:checked')?.value,
-    location: getElementValue('search-bar'),
-    lat: document.getElementById('search-bar').getAttribute('data-lat'),
-    lng: document.getElementById('search-bar').getAttribute('data-lon'),
+    location: getElementValue('location-search-bar'),
+    lat: document.getElementById('location-search-bar').getAttribute('data-lat'),
+    lng: document.getElementById('location-search-bar').getAttribute('data-lon'),
   };
 
   let params = new URLSearchParams();
