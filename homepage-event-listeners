@@ -163,18 +163,8 @@ async function displayMapWithResults(lat, lng) {
             accessToken: mapboxToken
         });
 
-        // Enable scroll to zoom interaction, with zoom around the center of the map
-        map.scrollZoom.enable({around: 'center'});
-
-        // Set specific zoom rates for trackpad and mouse wheel
-        map.scrollZoom.setZoomRate(1 / 100);
-        map.scrollZoom.setWheelZoomRate(1 / 450);
-
-        // Disable map rotation using right click
-        map.dragRotate.disable();
-
-        // Disable map rotation using touch (two-finger rotation)
-        map.touchZoomRotate.disableRotation();
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
 
     } else {
         restoreMapState(map); // Restore the map state if map instance already exists
