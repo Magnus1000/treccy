@@ -104,12 +104,22 @@ function updateURLWithFilters() {
   history.pushState({}, '', '?' + params.toString());
 }
 
+function showFilterForm() {
+  const filterFormDiv = document.getElementById('filterForm');
+  if (filterFormDiv) {
+    filterFormDiv.style.display = 'flex'; // Show the div
+  }
+}
+
 function hideFilterForm() {
   const filterFormDiv = document.getElementById('filterForm');
   if (filterFormDiv) {
     filterFormDiv.style.display = 'none'; // Hide the div
   }
 }
+
+document.getElementById('filter-open').addEventListener('click', showFilterForm);
+document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
 // Add an event listener to the form with id="filterForm"
 document.getElementById('filterForm').addEventListener('submit', function(event) {
