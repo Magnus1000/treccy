@@ -1,25 +1,25 @@
 <script>
 
 const placeholderTexts = [
-  "Search for Kayak Races",
-  "Search for Running Races",
-  "Search for Cycling Races",
-  "Search for Mountain Bike Races",
+  "Search for Kayak races",
+  "Search for Running races",
+  "Search for Cycling races",
+  "Search for Mountain Bike races",
 ];
 
 let placeholderIndex = 0;
 
-// Function to update placeholder text
-function updatePlaceholder() {
-  const searchInput = document.querySelector("#global-race-search input");
-  if (searchInput) {
-    searchInput.placeholder = placeholderTexts[placeholderIndex];
-    placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
-  }
+function updatePlaceholder(autocompleteInstance) {
+  autocompleteInstance.update({
+    placeholder: placeholderTexts[placeholderIndex]
+  });
+  placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
 }
 
-// Set an interval to update the placeholder text every 3 seconds
-setInterval(updatePlaceholder, 3000);
+let interval;
+const startPlaceholderRotation = (autocompleteInstance) => {
+  interval = setInterval(() => updatePlaceholder(autocompleteInstance), 3000);
+};
 
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
@@ -131,6 +131,9 @@ setInterval(updatePlaceholder, 3000);
       ];
     }
   });
+
+  // Start rotating placeholder texts
+  startPlaceholderRotation(autocompleteInstance);
 
   console.log("Algolia autocomplete initialized.");
 
