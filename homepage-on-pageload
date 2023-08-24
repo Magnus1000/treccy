@@ -75,10 +75,15 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=${radius}&filters=${encodedFilters}`;
     console.log("Debug URL with parameters:", debugURL);
 
+    try {
     const results = await index.search('', searchParams);
-
     console.log("Algolia Search Results:", results);
     return results.hits;
+} catch (error) {
+    console.error("An error occurred while fetching Algolia results:", error);
+    return [];
+}
+
 }
 
 // Load Algolia Results
