@@ -21,25 +21,26 @@ const startPlaceholderRotation = (autocompleteInstance) => {
   interval = setInterval(() => updatePlaceholder(autocompleteInstance), 3000);
 };
 
-  function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-  }
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
 
-  const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
-  const appId = "CWUIX0EWFE";
-  const apiKey = "4cd4c82105f395affbc472c07a9789c8";
-  const searchClient = algoliasearch(appId, apiKey);
-  const indexName = "treccy_races_all";
+const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+const appId = "CWUIX0EWFE";
+const apiKey = "4cd4c82105f395affbc472c07a9789c8";
+const searchClient = algoliasearch(appId, apiKey);
+const indexName = "treccy_races_all";
 
-  console.log("Initializing Algolia autocomplete...");
+console.log("Initializing Algolia autocomplete...");
 
-  const { setIsOpen } = autocomplete({
-    container: "#global-race-search",
-    placeholder: placeholderTexts[placeholderIndex], // Set the initial placeholder text,
-    detachedMediaQuery: '',
-    openOnFocus: true,
+// Capture the entire autocomplete instance here
+const autocompleteInstance = autocomplete({
+  container: "#global-race-search",
+  placeholder: placeholderTexts[placeholderIndex], // Set the initial placeholder text,
+  detachedMediaQuery: '',
+  openOnFocus: true,
     getSources({ query, state }) {
       console.log("Query received:", query);
 
@@ -132,14 +133,14 @@ const startPlaceholderRotation = (autocompleteInstance) => {
     }
   });
 
-  // Start rotating placeholder texts
-  startPlaceholderRotation(autocompleteInstance);
+// Start rotating placeholder texts
+startPlaceholderRotation(autocompleteInstance);
 
-  console.log("Algolia autocomplete initialized.");
+console.log("Algolia autocomplete initialized.");
 
-  document.addEventListener('keydown', (event) => {
-    if (event.metaKey && event.key.toLowerCase() === 'k') {
-      setIsOpen(true);
-    }
-  });
+document.addEventListener('keydown', (event) => {
+  if (event.metaKey && event.key.toLowerCase() === 'k') {
+    autocompleteInstance.setIsOpen(true); // Use the instance's method
+  }
+});
 </script>
