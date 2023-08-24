@@ -15,7 +15,7 @@ searchInput.addEventListener('input', (e) => {
     }
 
     // Call the Mapbox Geocoding endpoint
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${accessToken}&types=place,region,country`)
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxToken}&types=place,region,country`)
         .then(response => response.json())
         .then(data => {
             // Check if features are available
