@@ -106,15 +106,27 @@ function updateURLWithFilters() {
 
 function showFilterForm() {
   const filterFormDiv = document.getElementById('filterForm');
+  const filtersModalDiv = document.getElementById('filters-modal');
+  
   if (filterFormDiv) {
-    filterFormDiv.style.display = 'flex'; // Show the div
+    filterFormDiv.style.display = 'flex'; // Hide the entire filterForm div
+  }
+
+  if (filtersModalDiv) {
+    filtersModalDiv.style.display = 'flex'; // Ensure that filters-modal div stays visible
   }
 }
 
 function hideFilterForm() {
   const filterFormDiv = document.getElementById('filterForm');
+  const filtersModalDiv = document.getElementById('filters-modal');
+  
   if (filterFormDiv) {
-    filterFormDiv.style.display = 'none'; // Hide the div
+    filterFormDiv.style.display = 'none'; // Hide the entire filterForm div
+  }
+
+  if (filtersModalDiv) {
+    filtersModalDiv.style.display = 'flex'; // Ensure that filters-modal div stays visible
   }
 }
 
