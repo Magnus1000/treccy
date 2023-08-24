@@ -54,6 +54,10 @@ let mapState = {
     center: [defaultLng, defaultLat]
 };
 
+let map = new mapboxgl.Map({
+    // configuration
+});
+
 function saveMapState(map) {
     mapState.zoom = map.getZoom();
     mapState.center = map.getCenter().toArray();
@@ -61,6 +65,7 @@ function saveMapState(map) {
 }
 
 function restoreMapState(map) {
+    console.log(map); // Inspect the map object
     map.setZoom(mapState.zoom);
     map.setCenter(mapState.center);
     console.log("Map state restored:", mapState);
