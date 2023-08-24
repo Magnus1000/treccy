@@ -1,4 +1,26 @@
 <script>
+
+const placeholderTexts = [
+  "Search for Kayak Races",
+  "Search for Running Races",
+  "Search for Cycling Races",
+  "Search for Mountain Bike Races",
+];
+
+let placeholderIndex = 0;
+
+// Function to update placeholder text
+function updatePlaceholder() {
+  const searchInput = document.querySelector("#global-race-search input");
+  if (searchInput) {
+    searchInput.placeholder = placeholderTexts[placeholderIndex];
+    placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
+  }
+}
+
+// Set an interval to update the placeholder text every 3 seconds
+setInterval(updatePlaceholder, 3000);
+
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -15,7 +37,7 @@
 
   const { setIsOpen } = autocomplete({
     container: "#global-race-search",
-    placeholder: "Search for kayak races",
+    placeholder: placeholderTexts[placeholderIndex], // Set the initial placeholder text,
     detachedMediaQuery: '',
     openOnFocus: true,
     getSources({ query, state }) {
