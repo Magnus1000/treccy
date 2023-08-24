@@ -9,7 +9,6 @@
 // Globals and Configuration
 console.log("Script Initiated");
 
-let currentMarkers = [];
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 const algoliaConfig = {
     appId: "CWUIX0EWFE",
@@ -41,7 +40,7 @@ function getCountryFromURL() {
   }
 
   // Function to fetch Algolia Results
-async function fetchAlgoliaResults(lat, lng, radius, page) {
+async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     console.log("Fetching Algolia Results...");
 
     const country = getCountryFromURL(); // Extract country from URL
@@ -88,8 +87,16 @@ async function fetchAlgoliaResults(lat, lng, radius, page) {
 
     const results = await index.search('', searchParams);
 
-    console.log("Algolia Search Results:", results);
-    return results.hits;
+	    try {
+        const results = await index.search('', searchParams);
+        console.log("Algolia Search Results:", results);
+        // Update the global algoliaResults variable with the fetched results
+        algoliaResults = results.hits;
+        return results.hits;
+    } catch (error) {
+        console.error("An error occurred while fetching Algolia results:", error);
+        return [];
+    }
 }
 
 // Load Algolia Results
