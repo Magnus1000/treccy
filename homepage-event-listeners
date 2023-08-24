@@ -173,6 +173,9 @@ async function displayMapWithResults(lat, lng) {
         // Disable map rotation using right click
         map.dragRotate.disable();
 
+        // Disable map rotation using touch (two-finger rotation)
+        map.touchZoomRotate.disableRotation();
+
     } else {
         restoreMapState(map); // Restore the map state if map instance already exists
     }
