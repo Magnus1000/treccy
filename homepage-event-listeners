@@ -132,21 +132,20 @@ function createMarkerOnMap(map, result) {
 
 async function displayMapWithResults(lat, lng) {
     console.log("Displaying Map with Results...");
-    
+
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
         center: [lng, lat],
         zoom: 10,
-        accessToken: mapboxToken  
+        accessToken: mapboxToken
     });
 
     // Clear any existing markers
     removeExistingMarkers();
 
-    // Fetch Algolia Results and display them on the map
-    // Assume fetchAlgoliaResults is a previously defined function
-    const results = await fetchAlgoliaResults(lat, lng);
+    // Use the global Algolia results variable instead of fetching
+    const results = algoliaResults; // Assuming algoliaResults is the global variable
     results.forEach(result => {
         createMarkerOnMap(map, result);
     });
