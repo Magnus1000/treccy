@@ -163,6 +163,9 @@ async function displayMapWithResults(lat, lng) {
             accessToken: mapboxToken
         });
 
+        // Enable scroll to zoom interaction, with zoom around the center of the map
+        map.scrollZoom.enable({around: 'center'});
+
         // Set specific zoom rates for trackpad and mouse wheel
         map.scrollZoom.setZoomRate(1 / 100);
         map.scrollZoom.setWheelZoomRate(1 / 450);
