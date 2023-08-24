@@ -104,13 +104,23 @@ function updateURLWithFilters() {
   history.pushState({}, '', '?' + params.toString());
 }
 
+function hideFilterForm() {
+  const filterFormDiv = document.getElementById('filterForm');
+  if (filterFormDiv) {
+    filterFormDiv.style.display = 'none'; // Hide the div
+  }
+}
+
 // Add an event listener to the form with id="filterForm"
 document.getElementById('filterForm').addEventListener('submit', function(event) {
   // Prevent the default form submission behavior
   event.preventDefault();
 
-  // Call the function to update URL with filters
-  updateURLWithFilters();
+    // Call the function to hide the filter form div
+    hideFilterForm();
+
+    // Call the function to update URL with filters
+    updateURLWithFilters();
 });
 
 </script>
