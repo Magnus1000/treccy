@@ -41,6 +41,10 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 
     // Iterate through all parameters and build the filters dynamically
     urlSearchParams.forEach((value, key) => {
+        if (key === 'view') {
+            // Ignore the "view" parameter
+            return;
+        }
         if (key.startsWith('discipline')) {
             // Handle discipline parameters separately since they are arrays
             filters.push(`disciplines_ag:${value}`);
