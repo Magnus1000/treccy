@@ -18,7 +18,7 @@ function updatePlaceholder(autocompleteInstance) {
 
 let interval;
 const startPlaceholderRotation = (autocompleteInstance) => {
-  interval = setInterval(() => updatePlaceholder(autocompleteInstance), 3000);
+  interval = setInterval(() => updatePlaceholder(autocompleteInstance), 2000);
 };
 
 function toTitleCase(str) {
