@@ -2,14 +2,8 @@
 <script>
 
 <script>
-const searchInput = document.getElementById('search-bar');
+const searchInput = document.getElementById('location-search-bar');
 const suggestionsBox = document.getElementById('suggestions');
-
-const sessionToken = uuidv4(); // Assigning the generated UUID to sessionToken
-console.log("Generated session token:", sessionToken);
-
-// Mapbox Access Token
-const accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 
 // Attach event listener to search input
 searchInput.addEventListener('input', (e) => {
@@ -110,7 +104,6 @@ function updateURLWithFilters() {
   // Update the URL without causing a page reload
   history.pushState({}, '', '?' + params.toString());
 }
-
 
 // Add an event listener to the form with id="filterForm"
 document.getElementById('filterForm').addEventListener('submit', function(event) {
