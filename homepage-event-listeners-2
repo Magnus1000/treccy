@@ -241,17 +241,29 @@ document.getElementById('email-signup-field').addEventListener('input', checkEma
 
 // Event listener for the button click
 document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
-  const email = getEmail();
-  if (!isValidEmail(email)) {
-    console.error('Invalid email:', email);
-    return;
-  }
-  const params = getQueryParams(); // Assuming you have a getQueryParams function to get URL parameters
-  console.log('Sending webhook with email:', email, 'and parameters:', params);
-  sendWebhook(email, params);
+  const emailFieldDiv = document.getElementById('email-signup-field');
+  const emailButtonIconDiv = document.getElementById('.subscribe-to-notifications-button');
 
-  // Call the function to toggle classes
-  toggleEmailClasses();
+  // Check if email field and button are active
+  if (emailFieldDiv.classList.contains('active') && emailButtonIconDiv.classList.contains('active')) {
+    const email = getEmail();
+    if (!isValidEmail(email)) {
+      console.error('Invalid email:', email);
+      return;
+    }
+    const params = getQueryParams(); // Assuming you have a getQueryParams function to get URL parameters
+    console.log('Sending webhook with email:', email, 'and parameters:', params);
+    sendWebhook(email, params);
+
+    // Clear the email field
+    document.getElementById('email-signup-field').value = '';
+
+    // Call the function to toggle classes
+    toggleEmailClasses();
+  } else {
+    // Toggle the active state if email field and button are not active
+    toggleEmailClasses();
+  }
 });
 
 </script>
