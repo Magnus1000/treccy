@@ -138,14 +138,14 @@ function toggleEmailClasses() {
   // Get the div elements by class name
   const emailFieldDiv = document.getElementById('email-signup-field');
   const emailButtonTextDiv = document.getElementById('email-submit-button-text');
-  const emailButtonIconDiv = document.getElementById('subscribe-to-notifications-button');
+  const emailButtonDiv = document.getElementById('subscribe-to-notifications-button');
 
   // Check if the elements are found
   if (emailFieldDiv && emailButtonTextDiv) {
     // Toggle the active class for both divs
     emailFieldDiv.classList.toggle('active');
     emailButtonTextDiv.classList.toggle('active');
-    emailButtonIconDiv.classList.toggle('active');
+    emailButtonDiv.classList.toggle('active');
   } else {
     console.warn('Email elements not found');
   }
@@ -242,10 +242,10 @@ document.getElementById('email-signup-field').addEventListener('input', checkEma
 // Event listener for the button click
 document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
   const emailFieldDiv = document.getElementById('email-signup-field');
-  const emailButtonIconDiv = document.getElementById('.subscribe-to-notifications-button');
+  const emailButtonDiv = document.getElementById('subscribe-to-notifications-button');
 
   // Check if email field and button are active
-  if (emailFieldDiv.classList.contains('active') && emailButtonIconDiv.classList.contains('active')) {
+  if (emailFieldDiv.classList.contains('active') && emailButtonDiv.classList.contains('active')) {
     const email = getEmail();
     if (!isValidEmail(email)) {
       console.error('Invalid email:', email);
