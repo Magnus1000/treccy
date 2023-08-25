@@ -164,6 +164,10 @@ function isValidEmail(email) {
 function checkEmailRealTime() {
   const emailElement = document.getElementById('email-signup-field');
   const feedbackElement = document.getElementById('email-feedback');
+  if (!feedbackElement) {
+    console.warn('Feedback element not found');
+    return; // Exit if the feedback element is not found
+  }
   if (isValidEmail(emailElement.value)) {
     feedbackElement.style.display = 'none';
   } else {
@@ -171,6 +175,7 @@ function checkEmailRealTime() {
     feedbackElement.textContent = 'Invalid email format';
   }
 }
+
 
 function sendWebhook(email, params) {
   // Check if the email is valid
