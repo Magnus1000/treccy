@@ -133,6 +133,22 @@ function hideFilterForm() {
 document.getElementById('filter-open').addEventListener('click', showFilterForm);
 document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
+//Add classes to Show and Hide Email Signup
+function toggleEmailClasses() {
+  // Get the div elements by class name
+  const emailFieldDiv = document.getElementById('email-signup-field');
+  const emailButtonTextDiv = document.querySelector('.email-submit-button-text');
+
+  // Check if the elements are found
+  if (emailFieldDiv && emailButtonTextDiv) {
+    // Toggle the active class for both divs
+    emailFieldDiv.classList.toggle('active');
+    emailButtonTextDiv.classList.toggle('active');
+  } else {
+    console.warn('Email elements not found');
+  }
+}
+
 // Add an event listener to the form with id="filterForm"
 document.getElementById('filterForm').addEventListener('submit', function(event) {
   // Prevent the default form submission behavior
@@ -218,7 +234,6 @@ function sendWebhook(email, params) {
   }); 
 }
 
-
 // Event listener for real-time email validation
 document.getElementById('email-signup-field').addEventListener('input', checkEmailRealTime);
 
@@ -232,6 +247,9 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
   const params = getQueryParams(); // Assuming you have a getQueryParams function to get URL parameters
   console.log('Sending webhook with email:', email, 'and parameters:', params);
   sendWebhook(email, params);
+
+  // Call the function to toggle classes
+  toggleEmailClasses();
 });
 
 </script>
