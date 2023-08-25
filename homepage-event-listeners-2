@@ -244,8 +244,12 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
   const emailFieldDiv = document.getElementById('email-signup-field');
   const emailButtonDiv = document.getElementById('subscribe-to-notifications-button');
 
-  // Check if email field and button are active
-  if (emailFieldDiv.classList.contains('active') && emailButtonDiv.classList.contains('active')) {
+  // If email field is not active, or if it's active and empty, toggle the active state
+  if (!emailFieldDiv.classList.contains('active') || (emailFieldDiv.classList.contains('active') && emailFieldDiv.value === '')) {
+    // Toggle the active state if email field is not active or if it's active and empty
+    toggleEmailClasses();
+  } else {
+    // Process the email if the field is active and not empty
     const email = getEmail();
     if (!isValidEmail(email)) {
       console.error('Invalid email:', email);
@@ -259,9 +263,6 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
     document.getElementById('email-signup-field').value = '';
 
     // Call the function to toggle classes
-    toggleEmailClasses();
-  } else {
-    // Toggle the active state if email field and button are not active
     toggleEmailClasses();
   }
 });
