@@ -148,4 +148,73 @@ document.getElementById('filterForm').addEventListener('submit', function(event)
     checkAndLoadAlgoliaResults();
 });
 
+// Function to get the email from the form
+function getEmail() {
+  const emailElement = document.getElementById('email-signup-field');
+  return emailElement ? emailElement.value : '';
+}
+
+// Function to validate email format
+function isValidEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
+// Function to validate email in real-time
+function checkEmailRealTime() {
+  const emailElement = document.getElementById('email-signup-field');
+  const feedbackElement = document.getElementById('email-feedback');
+  if (isValidEmail(emailElement.value)) {
+    feedbackElement.style.display = 'none';
+  } else {
+    feedbackElement.style.display = 'block';
+    feedbackElement.textContent = 'Invalid email format';
+  }
+}
+
+// Function to send the webhook
+function sendWebhook(email, params) {
+  // Check if the email is valid
+  if (!isValidEmail(email)) {
+    console.error('Invalid email:', email);
+    return; // Exit the function if the email is not valid
+  }
+
+  // Construct the payload with email and parameters
+  const payload = {
+    email,
+    params
+  };
+
+  // Webhook URL
+  const url = 'https://hook.us1.make.com/chr1792n4xwbkd96ea3zhcdmnn9khntl';
+
+   // Send a POST request to the webhook
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log('Webhook response:', data);
+}
+
+// Event listener for real-time email validation
+document.getElementById('email-signup-field').addEventListener('input', checkEmailRealTime);
+
+// Event listener for the button click
+document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
+  const email = getEmail();
+  if (!isValidEmail(email)) {
+    console.error('Invalid email:', email);
+    return;
+  }
+  const params = getQueryParams(); // Assuming you have a getQueryParams function to get URL parameters
+  console.log('Sending webhook with email:', email, 'and parameters:', params);
+  sendWebhook(email, params);
+});
+
 </script>
