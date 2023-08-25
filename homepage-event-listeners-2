@@ -172,7 +172,6 @@ function checkEmailRealTime() {
   }
 }
 
-// Function to send the webhook
 function sendWebhook(email, params) {
   // Check if the email is valid
   if (!isValidEmail(email)) {
@@ -200,7 +199,9 @@ function sendWebhook(email, params) {
   .then(response => response.text())
   .then(data => {
     console.log('Webhook response:', data);
+  }); 
 }
+
 
 // Event listener for real-time email validation
 document.getElementById('email-signup-field').addEventListener('input', checkEmailRealTime);
