@@ -137,8 +137,8 @@ document.getElementById('filter-close').addEventListener('click', hideFilterForm
 function toggleEmailClasses() {
   // Get the div elements by class name
   const emailFieldDiv = document.getElementById('email-signup-field');
-  const emailButtonTextDiv = document.getElementById('.email-submit-button-text');
-  const emailButtonIconDiv = document.getElementById('.subscribe-to-notifications-button');
+  const emailButtonTextDiv = document.getElementById('email-submit-button-text');
+  const emailButtonIconDiv = document.getElementById('subscribe-to-notifications-button');
 
   // Check if the elements are found
   if (emailFieldDiv && emailButtonTextDiv) {
