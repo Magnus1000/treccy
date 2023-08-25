@@ -176,6 +176,17 @@ function checkEmailRealTime() {
   }
 }
 
+function getQueryParams() {
+  const params = {};
+  const queryString = window.location.search.substring(1);
+  const pairs = queryString.split('&');
+  for (const pair of pairs) {
+    const [key, value] = pair.split('=');
+    params[decodeURIComponent(key)] = decodeURIComponent(value);
+  }
+  return params;
+}
+
 
 function sendWebhook(email, params) {
   // Check if the email is valid
