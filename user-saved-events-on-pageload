@@ -1,4 +1,6 @@
 <script>
+// Common API Key for Airtable
+const API_KEY = 'keyEiGPuqmRTtXcZ0';
 
 // Function to format date
   // Date formatting function
@@ -16,7 +18,6 @@
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
   const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}?fields[]=name_at&fields[]=slug_at&fields[]=item_id_at&fields[]=country_at&fields[]=city_at&fields[]=photo_main_at&fields[]=start_date_at`;
-  const API_KEY = 'keyEiGPuqmRTtXcZ0';
 
   const headers = new Headers({
     'Authorization': `Bearer ${API_KEY}`
@@ -40,7 +41,6 @@ async function fetchEventDetails(eventId) {
 // Function to fetch 'saved_events_at'
 async function fetchFromAirtable(id) {
   const API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblDiS6ivTOlm7nZ8?filterByFormula={user_id_at}="${id}"&fields[]=saved_events_at`;
-  const API_KEY = 'keyEiGPuqmRTtXcZ0';
 
   const headers = new Headers({
     'Authorization': `Bearer ${API_KEY}`
