@@ -74,7 +74,7 @@ async function toggleView(showMap) {
     document.getElementById('map').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showListrow').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showMaprow').style.display = showMap ? 'none' : 'flex';
-    document.getElementById('race-grid').style.display = showMap ? 'none' : 'flex';
+    document.getElementById('algoliaRaces').style.display = showMap ? 'none' : 'flex';
 
     if (showMap) {
         const coordinates = getCoordinatesFromUrl();
