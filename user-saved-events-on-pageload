@@ -1,9 +1,14 @@
 <script>
-// Extract the user ID
-var userId = document.documentElement.getAttribute('data-wf-page');
+MemberStack.onReady.then(function(member) {  
+  // do things with the member object
+  member["email"]
+  member["name"]
+  member["id"] //current member id  
 
-// Append the user ID to the URL
-if (userId) {
-    var newUrl = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'userID=' + userId;
-    window.history.pushState({}, '', newUrl);
-}
+  // member's specific page if set.
+  member.memberPage
+
+  // check if member is logged in  
+  member.loggedIn // returns true or false
+})
+<script>
