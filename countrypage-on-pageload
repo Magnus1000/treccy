@@ -126,35 +126,31 @@ async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
   algoliaRacesDiv.innerHTML = '';  // Clear any previous data
 
-  // Assuming you have at least one 'race-card' in the DOM, clone it as a template
-  const raceCardTemplate = document.querySelector('.race-card').cloneNode(true);
-
-  results.forEach(result => {
-    const formattedDate = formatDate(result.date_ag); // Format the date using your function
-    
-  // Use safeCloneNode to clone an element
-  const clonedElement = safeCloneNode('#elementToClone');
+  // Use safeCloneNode to clone the '.race-card' element
+  const raceCardTemplate = safeCloneNode('.race-card');
   
   // Log the cloned element to the console to debug
-  console.log('Cloned element: ', clonedElement);
+  console.log('Race card template: ', raceCardTemplate);
   
-  // Proceed only if the cloned element exists
-  if (clonedElement !== null) {
-    // Your code to manipulate or append the cloned element
+  // Proceed only if the raceCardTemplate exists
+  if (raceCardTemplate !== null) {
+    results.forEach(result => {
+      const newRaceCard = raceCardTemplate.cloneNode(true); // Clone the template
+      const formattedDate = formatDate(result.date_ag); // Format the date using your function
+    
+      // Populate data
+      newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
+      newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
+      newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
+      newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
+      newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
+      newRaceCard.querySelector('.race-grid-location').textContent = result.city_ag;
+      newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+    
+      // Append the new race card to the parent div
+      algoliaRacesDiv.appendChild(newRaceCard);
+    });
   }
-    
-    // Populate data
-    newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
-    newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
-    newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
-    newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
-    newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
-    newRaceCard.querySelector('.race-grid-location').textContent = result.city_ag;
-    newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
-    
-    // Append the new race card to the parent div
-    algoliaRacesDiv.appendChild(newRaceCard);
-  });
 }
 
 // Function to check if there are any URL parameters and load Algolia results
