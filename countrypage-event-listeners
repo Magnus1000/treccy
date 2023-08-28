@@ -1,5 +1,5 @@
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+window.onload = function() {
 
   console.log("DOM Loaded. Adding Click Listener.");  // Debugging line
 
