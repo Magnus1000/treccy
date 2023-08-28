@@ -34,12 +34,14 @@ function populateRaceCards(results) {
     const formattedDate = formatDate(result.date_ag); // Format the date
   
     // Populate data
-    newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
+    newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
     newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
+    newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
     newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
-    newRaceCard.querySelector('.race-grid-location').textContent = result.city_ag;
+    newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
+    newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
   
     // Append the new race card to the parent div
