@@ -1,7 +1,7 @@
 <script>
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
-  const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}`;
+  const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}?fields[]=name_at&fields[]=slug_at&fields[]=item_id_at&fields[]=country_at&fields[]=city_at&fields[]=photo_main_at&fields[]=start_date_at`;
   const API_KEY = 'keyEiGPuqmRTtXcZ0';
 
   const headers = new Headers({
@@ -12,16 +12,18 @@ async function fetchEventDetails(eventId) {
     const response = await fetch(EVENT_API_URL, { headers });
     if (response.ok) {
       const data = await response.json();
-      console.log("Event Details:", data.fields.name_at);
+      return data.fields;
     } else {
       console.log("Failed to fetch event details:", response.status);
+      return null;
     }
   } catch (error) {
     console.log("An error occurred:", error);
+    return null;
   }
 }
 
-// Existing function to fetch 'saved_events_at'
+// Function to fetch 'saved_events_at'
 async function fetchFromAirtable(id) {
   const API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblDiS6ivTOlm7nZ8?filterByFormula={user_id_at}="${id}"&fields[]=saved_events_at`;
   const API_KEY = 'keyEiGPuqmRTtXcZ0';
@@ -30,18 +32,25 @@ async function fetchFromAirtable(id) {
     'Authorization': `Bearer ${API_KEY}`
   });
 
+  let results = [];
+
   try {
     const response = await fetch(API_URL, { headers });
     if (response.ok) {
       const data = await response.json();
       if (data.records && data.records.length > 0) {
         const savedEvents = data.records[0].fields.saved_events_at;
-        console.log("Saved Events:", savedEvents);
         
         // Fetch additional details for each saved event
-        savedEvents.forEach(eventId => {
-          fetchEventDetails(eventId);
-        });
+        for (const eventId of savedEvents) {
+          const details = await fetchEventDetails(eventId);
+          if (details) {
+            results.push(details);
+          }
+        }
+
+        // Populate the race cards
+        populateRaceCards(results);
       } else {
         console.log("No matching records found.");
       }
@@ -53,11 +62,38 @@ async function fetchFromAirtable(id) {
   }
 }
 
+// Function to populate race cards
+function populateRaceCards(results) {
+  const algoliaRacesDiv = document.getElementById('algoliaRaces');
+  
+  results.forEach(result => {
+    const raceCardTemplate = document.getElementById("race-card");
+    const newRaceCard = raceCardTemplate.cloneNode(true);
+  
+    newRaceCard.removeAttribute('id');
+    newRaceCard.style.display = 'block';
+
+    // Replace this line with your actual date formatting function if needed
+    const formattedDate = result.start_date_at; 
+  
+    newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_at}`;
+    newRaceCard.querySelector('.race-card-image').src = result.photo_main_at;
+    newRaceCard.querySelector('.race-card-image').alt = result.name_at;
+    newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_at}`;
+    newRaceCard.querySelector('.race-card-heading').textContent = result.name_at;
+    newRaceCard.querySelector('.race-card-heading-right').textContent = result.item_id_at;
+    newRaceCard.querySelector('.race-city-text').textContent = result.city_at;
+    newRaceCard.querySelector('.race-country-text').textContent = result.country_at;
+    newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+  
+    algoliaRacesDiv.appendChild(newRaceCard);
+  });
+}
+
 // Get member ID and then fetch data from Airtable
 window.$memberstackDom.getCurrentMember().then(({ data: member }) => {   
   if (member) {
     let id = member.id;
-    console.log("Member ID:", id);
     fetchFromAirtable(id);
   }
 });
