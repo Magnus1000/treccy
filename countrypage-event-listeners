@@ -1,23 +1,22 @@
 <script>
-// Attach click event listeners to elements with 'heart-full' and 'heart-empty' classes
-function addClickListeners() {
+function addHeartClickListeners() {
   // Get all elements with class 'heart-full'
-  const heartFullElements = document.querySelectorAll('.heart-full');
-  
-  // Loop through each element and add click event listener
-  heartFullElements.forEach(element => {
-    element.addEventListener('click', function() {
-      console.log('heart-full-clicked');  // Log message to console when clicked
+  const heartFullDivs = document.querySelectorAll('.heart-full');
+
+  // Attach click event listeners to elements with class 'heart-full'
+  heartFullDivs.forEach(div => {
+    div.addEventListener('click', function() {
+      console.log('heart-full-clicked');
     });
   });
-  
+
   // Get all elements with class 'heart-empty'
-  const heartEmptyElements = document.querySelectorAll('.heart-empty');
-  
-  // Loop through each element and add click event listener
-  heartEmptyElements.forEach(element => {
-    element.addEventListener('click', function() {
-      console.log('heart-empty-clicked');  // Log message to console when clicked
+  const heartEmptyDivs = document.querySelectorAll('.heart-empty');
+
+  // Attach click event listeners to elements with class 'heart-empty'
+  heartEmptyDivs.forEach(div => {
+    div.addEventListener('click', function() {
+      console.log('heart-empty-clicked');
     });
   });
 }
