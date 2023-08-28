@@ -1,0 +1,9 @@
+<script>
+// Extract the user ID
+var userId = document.documentElement.getAttribute('data-wf-page');
+
+// Append the user ID to the URL
+if (userId) {
+    var newUrl = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'userID=' + userId;
+    window.history.pushState({}, '', newUrl);
+}
