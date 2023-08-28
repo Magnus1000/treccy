@@ -23,6 +23,9 @@ function populateRaceCards(results) {
   // algoliaRacesDiv.innerHTML = ''; // Clear any previous data
   
   results.forEach(result => {
+    // Debugging: Output the value of result.slug_ag
+    console.log("result.slug_ag:", result.slug_ag);
+
     // Clone '.race-card' into 'newRaceCard'
     const raceCardTemplate = document.getElementById("race-card");
     const newRaceCard = raceCardTemplate.cloneNode(true);
@@ -44,9 +47,14 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
 
-    // Find the hidden input element and set its value
+    // Try finding the jetboost-list-item input
     const hiddenInput = newRaceCard.querySelector('.jetboost-list-item');
-    hiddenInput.value = `/races/${result.slug_ag}`;
+    if (hiddenInput) {
+      hiddenInput.value = `/races/${result.slug_ag}`;
+      console.log("Updated jetboost-list-item with:", `/races/${result.slug_ag}`);
+    } else {
+      console.log("Could not find element with class jetboost-list-item");
+    }
   
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
