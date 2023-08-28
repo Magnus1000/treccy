@@ -3,17 +3,15 @@
 const API_KEY = 'keyEiGPuqmRTtXcZ0';
 
 // Function to format date
-  // Date formatting function
-  function formatDate(dateString) {
-      const date = new Date(dateString);
-      const day = date.getDate();
-      const month = date.toLocaleString('en-US', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      const formattedDate = `${day} ${month} ${year}`;
-      
-      console.log("Formatted date:", formattedDate);
-      return formattedDate;
-  }
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString('en-US', { month: 'short' });
+  const year = date.getFullYear().toString().substr(-2);
+  const formattedDate = `${day} ${month} ${year}`;
+  console.log("Formatted date:", formattedDate);
+  return formattedDate;
+}
 
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
@@ -25,6 +23,7 @@ async function fetchEventDetails(eventId) {
 
   try {
     const response = await fetch(EVENT_API_URL, { headers });
+    console.log("Fetch Event Details Response:", response);  // Logging the response
     if (response.ok) {
       const data = await response.json();
       return data.fields;
@@ -50,20 +49,17 @@ async function fetchFromAirtable(id) {
 
   try {
     const response = await fetch(API_URL, { headers });
+    console.log("Fetch from Airtable Response:", response);  // Logging the response
     if (response.ok) {
       const data = await response.json();
       if (data.records && data.records.length > 0) {
         const savedEvents = data.records[0].fields.saved_events_at;
-        
-        // Fetch additional details for each saved event
         for (const eventId of savedEvents) {
           const details = await fetchEventDetails(eventId);
           if (details) {
             results.push(details);
           }
         }
-
-        // Populate the race cards
         populateRaceCards(results);
       } else {
         console.log("No matching records found.");
