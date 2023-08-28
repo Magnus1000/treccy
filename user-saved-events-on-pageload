@@ -82,6 +82,38 @@ function populateRaceCards(results) {
   });
 }
 
+// Existing function to fetch 'saved_events_at'
+async function fetchFromAirtable(id) {
+  const API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblDiS6ivTOlm7nZ8?filterByFormula={user_id_at}="${id}"&fields[]=saved_events_at`;
+  const API_KEY = 'keyEiGPuqmRTtXcZ0';
+
+  const headers = new Headers({
+    'Authorization': `Bearer ${API_KEY}`
+  });
+
+  try {
+    const response = await fetch(API_URL, { headers });
+    if (response.ok) {
+      const data = await response.json();
+      if (data.records && data.records.length > 0) {
+        const savedEvents = data.records[0].fields.saved_events_at;
+        console.log("Saved Events:", savedEvents);
+        
+        // Fetch additional details for each saved event
+        savedEvents.forEach(eventId => {
+          fetchEventDetails(eventId);
+        });
+      } else {
+        console.log("No matching records found.");
+      }
+    } else {
+      console.log("Failed to fetch from Airtable:", response.status);
+    }
+  } catch (error) {
+    console.log("An error occurred:", error);
+  }
+}
+
 // Get member ID and then fetch data from Airtable
 window.$memberstackDom.getCurrentMember().then(({ data: member }) => {   
   if (member) {
