@@ -46,6 +46,16 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+
+    // Get the like button within the new card and set the data attribute
+    const likeButton = newRaceCard.querySelector('.like-button');
+    likeButton.setAttribute('data-object-id', result.objectID);
+
+    // Attach event listener to this specific like button
+    likeButton.addEventListener('click', function() {
+      // Your logic for handling the click event
+      console.log(`Button with objectID ${result.objectID} clicked!`);
+    });
   
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
