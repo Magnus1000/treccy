@@ -15,35 +15,6 @@ function formatDate(dateString) {
 
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
-  const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}?fields[]=name_at&fields[]=slug_at&fields[]=item_id_at&fields[]=country_at&fields[]=city_at&fields[]=photo_main_at&fields[]=start_date_at`;
-  
-  const headers = new Headers({
-    'Authorization': `Bearer ${API_KEY}`
-  });
-
-  try {
-    const response = await fetch(EVENT_API_URL, { headers });
-    
-    // Log the URL for debugging
-    console.log(`Fetching from: ${EVENT_API_URL}`);
-    
-    // Log the response for debugging
-    console.log("Fetch Event Details Response:", response);
-
-    if (response.ok) {
-      const data = await response.json();
-      return data.fields;
-    } else {
-      console.log("Failed to fetch event details:", response.status);
-      return null;
-    }
-  } catch (error) {
-    console.log("An error occurred:", error);
-    return null;
-  }
-}
-
-async function fetchEventDetails(eventId) {
   const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}`;
   
   const headers = new Headers({
@@ -51,7 +22,15 @@ async function fetchEventDetails(eventId) {
   });
 
   const queryParams = new URLSearchParams({
-    fields: JSON.stringify(["name_at", "slug_at", "item_id_at", "country_at", "city_at", "photo_main_at", "start_date_at"])
+    fields: JSON.stringify([
+      "name_at",
+      "slug_at",
+      "item_id_at",
+      "country_at",
+      "city_at",
+      "photo_main_at",
+      "start_date_at"
+    ])
   });
 
   try {
@@ -75,7 +54,6 @@ async function fetchEventDetails(eventId) {
     return null;
   }
 }
-
 // Function to populate race cards
 function populateRaceCards(results) {
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
