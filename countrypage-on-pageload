@@ -124,7 +124,7 @@ async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   const results = await fetchAlgoliaResults(lat, lng, radius, page);
 
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
-  algoliaRacesDiv.innerHTML = '';  // Clear any previous data
+  // algoliaRacesDiv.innerHTML = '';  // Clear any previous data
 
   // Use safeCloneNode to clone the '.race-card' element
   const raceCardTemplate = safeCloneNode('.race-card');
