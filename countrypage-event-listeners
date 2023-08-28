@@ -1,63 +1,24 @@
 <script>
-window.onload = function() {
-
-  console.log("DOM Loaded. Adding Click Listener.");  // Debugging line
-
-  document.addEventListener('click', async function(event) {
-    
-    console.log('Document was clicked');  // Debugging line
-    
-    // Check if the clicked element is an image
-    if (event.target.matches('img')) {
-      console.log('Image was clicked');  // Debugging line
-      
-      // Check if the clicked element is a heart SVG
-      if (event.target.matches('.heart-empty, .heart-full')) {
-        
-        console.log('Heart was clicked');  // Debugging line
-        
-        // Your existing code for handling heart click...
-
-        // Get the closest race-card parent to identify which card was clicked
-        const raceCard = event.target.closest('.race-card');
-        const raceId = raceCard.getAttribute('data-race-id');
-        
-        // Toggle SVG visibility based on existing favorite state
-        const heartEmpty = raceCard.querySelector('.heart-empty');
-        const heartFull = raceCard.querySelector('.heart-full');
-        
-        if (favoritedRaces.includes(raceId)) {
-          // Remove from favorites
-          favoritedRaces = favoritedRaces.filter(id => id !== raceId);
-          heartEmpty.style.display = 'block';
-          heartFull.style.display = 'none';
-        } else {
-          // Add to favorites
-          favoritedRaces.push(raceId);
-          heartEmpty.style.display = 'none';
-          heartFull.style.display = 'block';
-        }
-        
-        // Fetch the current Memberstack member JSON data
-        const member = await window.$memberstackDom.getMemberJSON();
-        
-        // Update the JSON data with the new list of favorited races
-        member.data.favoritedRaces = favoritedRaces;
-        
-        // Update the member JSON data on Memberstack
-        await window.$memberstackDom.updateMemberJSON({ json: member.data });
-        
-        // Log for debugging
-        console.log(`Member JSON updated with favorited races: ${favoritedRaces}`);
-
-      } else {
-        console.log('Image was clicked, but it is not a heart.');  // Debugging line
-      }
-      
-    } else {
-      console.log('Clicked element is not an image.');  // Debugging line
-    }
-
+// Attach click event listeners to elements with 'heart-full' and 'heart-empty' classes
+function addClickListeners() {
+  // Get all elements with class 'heart-full'
+  const heartFullElements = document.querySelectorAll('.heart-full');
+  
+  // Loop through each element and add click event listener
+  heartFullElements.forEach(element => {
+    element.addEventListener('click', function() {
+      console.log('heart-full-clicked');  // Log message to console when clicked
+    });
   });
-
+  
+  // Get all elements with class 'heart-empty'
+  const heartEmptyElements = document.querySelectorAll('.heart-empty');
+  
+  // Loop through each element and add click event listener
+  heartEmptyElements.forEach(element => {
+    element.addEventListener('click', function() {
+      console.log('heart-empty-clicked');  // Log message to console when clicked
+    });
+  });
+}
 </script>
