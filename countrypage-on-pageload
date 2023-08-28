@@ -16,7 +16,37 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
-// --------------- Utility Functions (Not dependent on DOM) ---------------
+// Function to populate race cards
+function populateRaceCards(results) {
+  console.log("Populating Race Cards...");
+  const algoliaRacesDiv = document.getElementById('algoliaRaces');
+  algoliaRacesDiv.innerHTML = ''; // Clear any previous data
+  
+  results.forEach(result => {
+    // Clone '.race-card' into 'newRaceCard'
+    const raceCardTemplate = document.getElementById("race-card");
+    const newRaceCard = raceCardTemplate.cloneNode(true);
+  
+    // Remove the ID from the new race card and make it visible
+    newRaceCard.removeAttribute('id');
+    newRaceCard.style.display = 'block';
+
+    const formattedDate = formatDate(result.date_ag); // Format the date
+  
+    // Populate data
+    newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
+    newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
+    newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
+    newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
+    newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
+    newRaceCard.querySelector('.race-grid-location').textContent = result.city_ag;
+    newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+  
+    // Append the new race card to the parent div
+    algoliaRacesDiv.appendChild(newRaceCard);
+  });
+}
+
 // Function to extract country from URL
 function getCountryFromURL() {
   const urlPathname = window.location.pathname; // Get the current URL path
@@ -117,54 +147,13 @@ function handleScroll() {
     }
 }
 
-// --------------- DOM Dependent Code ---------------
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM fully loaded and parsed");
-    // Function to safely clone a node by its selector
-    function safeCloneNode(selector) {
-      const element = document.querySelector(selector);
-      console.log("Element fetched for cloning:", element);
-      if (!element) {
-        console.log(`Element with selector ${selector} not found.`);
-        return null;
-      }
-      return element.cloneNode(true);
-    }
-
-    // Load Algolia Results
-    async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
-      console.log("Fetching and Displaying Algolia Results in Div...");
-      const results = await fetchAlgoliaResults(lat, lng, radius, page);
-
-      const algoliaRacesDiv = document.getElementById('algoliaRaces');
-      algoliaRacesDiv.innerHTML = ''; // Clear any previous data
-
-      results.forEach(result => {
-        // Safely clone '.race-card' into 'newRaceCard'
-        const newRaceCard = safeCloneNode('.race-card');
-
-        // Skip this loop iteration if cloning was unsuccessful
-        if (!newRaceCard) {
-          console.log("Skipping this loop iteration as newRaceCard is null.");
-          return;
-        }
-
-        const formattedDate = formatDate(result.date_ag); // Format the date using your function
-
-        // Populate data safely (assuming newRaceCard is not null)
-        newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
-        newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
-        newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
-        newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
-        newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
-        newRaceCard.querySelector('.race-grid-location').textContent = result.city_ag;
-        newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
-
-        // Append the new race card to the parent div
-        algoliaRacesDiv.appendChild(newRaceCard);
-      });
-    }
-
+async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
+  console.log("Fetching and Displaying Algolia Results in Div...");
+  const results = await fetchAlgoliaResults(lat, lng, radius, page);
+  
+  // Populate the race cards
+  populateRaceCards(results);
+}
     // Function to check if there are any URL parameters and load Algolia results
     function checkAndLoadAlgoliaResults() {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -189,6 +178,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
    // Now, invoke the function to start the DOM-dependent logic
     checkAndLoadAlgoliaResults();
-}
-);  
 </script>
