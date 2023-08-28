@@ -20,7 +20,7 @@ const algoliaConfig = {
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
-  algoliaRacesDiv.innerHTML = ''; // Clear any previous data
+  // algoliaRacesDiv.innerHTML = ''; // Clear any previous data
   
   results.forEach(result => {
     // Clone '.race-card' into 'newRaceCard'
@@ -176,6 +176,9 @@ async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
     // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
 
-   // Now, invoke the function to start the DOM-dependent logic
-    checkAndLoadAlgoliaResults();
+document.addEventListener("DOMContentLoaded", function() {
+  // Now, invoke the function to start the DOM-dependent logic
+  checkAndLoadAlgoliaResults();
+});
+
 </script>
