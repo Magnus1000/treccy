@@ -16,14 +16,20 @@ function formatDate(dateString) {
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
   const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}?fields[]=name_at&fields[]=slug_at&fields[]=item_id_at&fields[]=country_at&fields[]=city_at&fields[]=photo_main_at&fields[]=start_date_at`;
-
+  
   const headers = new Headers({
     'Authorization': `Bearer ${API_KEY}`
   });
 
   try {
     const response = await fetch(EVENT_API_URL, { headers });
-    console.log("Fetch Event Details Response:", response);  // Logging the response
+    
+    // Log the URL for debugging
+    console.log(`Fetching from: ${EVENT_API_URL}`);
+    
+    // Log the response for debugging
+    console.log("Fetch Event Details Response:", response);
+
     if (response.ok) {
       const data = await response.json();
       return data.fields;
@@ -50,10 +56,13 @@ async function fetchFromAirtable(id) {
   try {
     const response = await fetch(API_URL, { headers });
     console.log("Fetch from Airtable Response:", response);  // Logging the response
+    
     if (response.ok) {
       const data = await response.json();
+      
+      let savedEvents = []; // Initialize savedEvents as an empty array
       if (data.records && data.records.length > 0) {
-        const savedEvents = data.records[0].fields.saved_events_at;
+        savedEvents = data.records[0].fields.saved_events_at || []; // Added fallback to empty array
         for (const eventId of savedEvents) {
           const details = await fetchEventDetails(eventId);
           if (details) {
@@ -64,6 +73,19 @@ async function fetchFromAirtable(id) {
       } else {
         console.log("No matching records found.");
       }
+      
+      // Moved inside the try block and removed redundancy
+      for (const eventId of savedEvents) {
+        if (eventId && typeof eventId === 'string') {
+          const details = await fetchEventDetails(eventId);
+          if (details) {
+            results.push(details);
+          }
+        } else {
+          console.log(`Invalid eventId: ${eventId}`);
+        }
+      }
+      
     } else {
       console.log("Failed to fetch from Airtable:", response.status);
     }
