@@ -99,6 +99,24 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     }
 }
 
+// Function to check if race-card component exists
+function safeCloneNode(selector) {
+  // Fetch the element using the selector
+  const element = document.querySelector(selector);
+  
+  // Log the element to the console to debug
+  console.log('Element fetched: ', element);
+  
+  // Check if the element actually exists
+  if (element === null) {
+    console.log(`Element with selector ${selector} not found.`);
+    return null;
+  }
+  
+  // Clone the element and return
+  return element.cloneNode(true);
+}
+
 // Load Algolia Results
 async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   console.log("Fetching and Displaying Algolia Results in Div...");
@@ -114,8 +132,16 @@ async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   results.forEach(result => {
     const formattedDate = formatDate(result.date_ag); // Format the date using your function
     
-    // Clone the template
-    const newRaceCard = raceCardTemplate.cloneNode(true);
+  // Use safeCloneNode to clone an element
+  const clonedElement = safeCloneNode('#elementToClone');
+  
+  // Log the cloned element to the console to debug
+  console.log('Cloned element: ', clonedElement);
+  
+  // Proceed only if the cloned element exists
+  if (clonedElement !== null) {
+    // Your code to manipulate or append the cloned element
+  }
     
     // Populate data
     newRaceCard.querySelector('.race-card-image-link-block').href = `/races/${result.slug_ag}`;
