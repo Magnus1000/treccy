@@ -43,6 +43,10 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+
+    // Find the hidden input element and set its value
+    const hiddenInput = newRaceCard.querySelector('.jetboost-list-item');
+    hiddenInput.value = result.slug_ag;
   
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
