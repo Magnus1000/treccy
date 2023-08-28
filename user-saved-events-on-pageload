@@ -16,7 +16,6 @@ function formatDate(dateString) {
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
   const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}`;
-  
   const headers = new Headers({
     'Authorization': `Bearer ${API_KEY}`
   });
@@ -42,15 +41,14 @@ async function fetchEventDetails(eventId) {
 // Function to populate race cards
 function populateRaceCards(results) {
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
-  
+  const docFragment = document.createDocumentFragment(); // Create a document fragment
+
   results.forEach(result => {
     const raceCardTemplate = document.getElementById("race-card");
     const newRaceCard = raceCardTemplate.cloneNode(true);
-  
     newRaceCard.removeAttribute('id');
     newRaceCard.style.display = 'block';
-  
-    const formattedDate = formatDate(result.start_date_at);  // Call date formatting function
+    const formattedDate = formatDate(result.start_date_at);
 
     newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_at}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_at;
@@ -61,15 +59,16 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-city-text').textContent = result.city_at;
     newRaceCard.querySelector('.race-country-text').textContent = result.country_text_at;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
-  
-    algoliaRacesDiv.appendChild(newRaceCard);
+    
+    docFragment.appendChild(newRaceCard); // Append newRaceCard to document fragment
   });
+
+  algoliaRacesDiv.appendChild(docFragment); // Append document fragment to DOM in one go
 }
 
 // Existing function to fetch 'saved_events_at'
 async function fetchFromAirtable(id) {
   const API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblDiS6ivTOlm7nZ8?filterByFormula={user_id_at}="${id}"&fields[]=saved_events_at`;
-  
   const headers = new Headers({
     'Authorization': `Bearer ${API_KEY}`
   });
@@ -81,17 +80,10 @@ async function fetchFromAirtable(id) {
       if (data.records && data.records.length > 0) {
         const savedEvents = data.records[0].fields.saved_events_at;
         console.log("Saved Events:", savedEvents);
-        
-        const allEventData = [];
 
-        for (const eventId of savedEvents) {
-          const eventData = await fetchEventDetails(eventId);
-          if (eventData) {
-            allEventData.push(eventData);
-          }
-        }
-
-        populateRaceCards(allEventData);
+        // Use Promise.all for parallel fetches
+        const allEventData = await Promise.all(savedEvents.map(fetchEventDetails));
+        populateRaceCards(allEventData.filter(eventData => eventData != null));
       } else {
         console.log("No matching records found.");
       }
@@ -104,11 +96,10 @@ async function fetchFromAirtable(id) {
 }
 
 // Get member ID and then fetch data from Airtable
-window.$memberstackDom.getCurrentMember().then(({ data: member }) => {   
+window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
   if (member) {
     let id = member.id;
     fetchFromAirtable(id);
   }
 });
-
 </script>
