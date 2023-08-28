@@ -46,15 +46,6 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
-
-    // Try finding the jetboost-list-item input
-    const hiddenInput = newRaceCard.querySelector('.jetboost-list-item');
-    if (hiddenInput) {
-      hiddenInput.value = `/races/${result.slug_ag}`;
-      console.log("Updated jetboost-list-item with:", `/races/${result.slug_ag}`);
-    } else {
-      console.log("Could not find element with class jetboost-list-item");
-    }
   
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
