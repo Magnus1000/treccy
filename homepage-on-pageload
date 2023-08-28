@@ -46,7 +46,7 @@ function populateRaceCards(results) {
 
     // Find the hidden input element and set its value
     const hiddenInput = newRaceCard.querySelector('.jetboost-list-item');
-    hiddenInput.value = result.slug_ag;
+    hiddenInput.value = `/races/${result.slug_ag}`;
   
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
