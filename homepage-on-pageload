@@ -20,23 +20,15 @@ const algoliaConfig = {
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
-  // algoliaRacesDiv.innerHTML = ''; // Clear any previous data
-  
-  results.forEach(result => {
-    // Debugging: Output the value of result.slug_ag
-    console.log("result.slug_ag:", result.slug_ag);
 
-    // Clone '.race-card' into 'newRaceCard'
+  results.forEach(result => {
+    console.log("result.slug_ag:", result.slug_ag);
     const raceCardTemplate = document.getElementById("race-card");
     const newRaceCard = raceCardTemplate.cloneNode(true);
-  
-    // Remove the ID from the new race card and make it visible
     newRaceCard.removeAttribute('id');
     newRaceCard.style.display = 'block';
 
-    const formattedDate = formatDate(result.date_ag); // Format the date
-  
-    // Populate data
+    const formattedDate = formatDate(result.date_ag); 
     newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
     newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
@@ -44,39 +36,29 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
     newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
-    newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
+    newRaceCard.querySelector('.race-country-text').textContent = result.country_ag; // Changed from city_ag to country_ag
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
 
-    // Get the like button within the new card and set the data attribute
     const likeButton = newRaceCard.querySelector('.like-button');
     likeButton.setAttribute('data-object-id', result.objectID);
-
-    // Attach event listener to this specific like button
     likeButton.addEventListener('click', function() {
-      // Your logic for handling the click event
       console.log(`Button with objectID ${result.objectID} clicked!`);
     });
   
-    // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
   });
 }
 
-// Declare a variable to store Algolia results globally
-let algoliaResults = [];
-
-// STEP 1 - CHECK IF URL PARAMS EXIST
-  // Date formatting function
-  function formatDate(dateString) {
-      const date = new Date(dateString);
-      const day = date.getDate();
-      const month = date.toLocaleString('en-US', { month: 'short' });
-      const year = date.getFullYear().toString().substr(-2);
-      const formattedDate = `${day} ${month} ${year}`;
-      
-      console.log("Formatted date:", formattedDate);
-      return formattedDate;
-  }
+// Date formatting function
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const year = date.getFullYear().toString().substr(-2);
+    const formattedDate = `${day} ${month} ${year}`;
+    console.log("Formatted date:", formattedDate);
+    return formattedDate;
+}
 
   // Function to fetch Algolia Results
 async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
@@ -143,8 +125,6 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
   console.log("Fetching and Displaying Algolia Results in Div...");
   const results = await fetchAlgoliaResults(lat, lng, radius, page);
-  
-  // Populate the race cards
   populateRaceCards(results);
 }
 
