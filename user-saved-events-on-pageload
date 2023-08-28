@@ -1,4 +1,18 @@
 <script>
+
+// Function to format date
+  // Date formatting function
+  function formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'short' });
+      const year = date.getFullYear().toString().substr(-2);
+      const formattedDate = `${day} ${month} ${year}`;
+      
+      console.log("Formatted date:", formattedDate);
+      return formattedDate;
+  }
+
 // Function to fetch additional details from Airtable for each record in 'saved_events_at'
 async function fetchEventDetails(eventId) {
   const EVENT_API_URL = `https://api.airtable.com/v0/app1buEm2yEqxilPh/tblS5SD7MxfZUl3wf/${eventId}?fields[]=name_at&fields[]=slug_at&fields[]=item_id_at&fields[]=country_at&fields[]=city_at&fields[]=photo_main_at&fields[]=start_date_at`;
@@ -73,9 +87,9 @@ function populateRaceCards(results) {
     newRaceCard.removeAttribute('id');
     newRaceCard.style.display = 'block';
 
-    // Replace this line with your actual date formatting function if needed
-    const formattedDate = result.start_date_at; 
-  
+    // Call date formatting function
+    const formattedDate = formatDate(result.start_date_at);  
+
     newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_at}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_at;
     newRaceCard.querySelector('.race-card-image').alt = result.name_at;
