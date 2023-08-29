@@ -9,6 +9,14 @@
 // Globals and Configuration
 console.log("Script Initiated");
 
+  let memberJson; // Global variable to hold member data
+
+  // Initialize memberJson once the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", async function() {
+    memberJson = await initializeMemberJson(); 
+    checkAndLoadAlgoliaResults();
+  });
+
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 const algoliaConfig = {
     appId: "CWUIX0EWFE",
@@ -16,8 +24,22 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
+async function initializeMemberJson() {
+    let memberJson = await memberstack.getMemberJSON();
+    while (memberJson.data) {
+      memberJson = memberJson.data;
+    }
+    
+    if (!memberJson.likes) {
+      memberJson.likes = [];
+    }
+
+    // Return the populated memberJson
+    return memberJson;
+  }
+
 // Function to populate race cards
-function populateRaceCards(results) {
+function populateRaceCards(results, memberJson) {
   console.log("Populating Race Cards...");
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
 
