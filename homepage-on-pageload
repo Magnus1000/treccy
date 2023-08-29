@@ -18,8 +18,13 @@ document.addEventListener("DOMContentLoaded", async function() {
     checkAndLoadAlgoliaResults();
 });
 
-// New code starts here
 function handleLikeButtonClick(event) {
+    const now = Date.now();
+    if (now - likeButtonLastClickedAt < 500) {
+        return;
+    }
+    likeButtonLastClickedAt = now;
+
     const likeButton = event.currentTarget;
     const objectId = likeButton.getAttribute('data-object-id');
 
@@ -39,7 +44,6 @@ function handleLikeButtonClick(event) {
 
   let likeButtons = document.querySelectorAll('.like-button');
   likeButtons.forEach(likeButton => {
-    let likeButtonLastClickedAt = 0;
 
     // Add click event listener for each like button
     likeButtons.forEach(button => {
