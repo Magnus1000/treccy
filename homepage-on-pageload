@@ -48,10 +48,17 @@
   }
 
   // Function to handle like button clicks
-  // Function to handle like button clicks
   async function handleLikeButtonClick(event) {
     // Prevent the default behavior of the click event
     event.preventDefault();
+    
+    // Limit rapid successive clicks
+    const now = Date.now();
+    if (now - likeButtonLastClickedAt < 500) { // 500 milliseconds
+        console.log("Button clicked too quickly, ignoring this click.");
+        return;
+    }
+    likeButtonLastClickedAt = now;
     
     // Retrieve the objectID from the clicked element
     const objectId = event.target.dataset.objectid;
@@ -95,7 +102,6 @@
       console.log("Failed to update Memberstack data: ", error);
     }
   }
-
 
 // Function to populate race cards
 function populateRaceCards(results, memberJson) {
