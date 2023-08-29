@@ -207,10 +207,4 @@ function handleScroll() {
 // Add scroll event listener
 window.addEventListener('scroll', handleScroll);
 
-// Wrap this function call in a DOMContentLoaded event
-document.addEventListener("DOMContentLoaded", function() {
-  // Now, invoke the function to start the DOM-dependent logic
-  checkAndLoadAlgoliaResults();
-});
-
 </script>
