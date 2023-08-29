@@ -18,6 +18,14 @@
   };
   let likeButtonLastClickedAt = 0; // Moved to the outer scope
 
+  // Function to attach click event to like buttons
+  function attachLikeButtonEvent() {
+    const likeButtons = document.querySelectorAll('.like-button');
+    likeButtons.forEach(button => {
+      button.addEventListener('click', handleLikeButtonClick);
+    });
+  }
+
   // Initialize memberJson once the DOM is fully loaded
   document.addEventListener("DOMContentLoaded", async function() {
       memberJson = await initializeMemberJson();
