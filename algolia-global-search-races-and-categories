@@ -1,5 +1,5 @@
 <script>
-
+// Placeholder texts for search bar
 const placeholderTexts = [
   "Search for Kayak races",
   "Search for Running races",
@@ -9,6 +9,7 @@ const placeholderTexts = [
 
 let placeholderIndex = 0;
 
+// Function to update the placeholder text
 function updatePlaceholder(autocompleteInstance) {
   autocompleteInstance.update({
     placeholder: placeholderTexts[placeholderIndex]
@@ -16,70 +17,99 @@ function updatePlaceholder(autocompleteInstance) {
   placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
 }
 
+// Popular races to display when no query is entered
+const popularRaces = [
+  // You'll populate this array with popular race details
+];
+
+// Set interval for placeholder rotation
 let interval;
 const startPlaceholderRotation = (autocompleteInstance) => {
   interval = setInterval(() => updatePlaceholder(autocompleteInstance), 2000);
 };
 
+// Convert text to Title Case
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
 
+// Algolia setup
 const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
 const appId = "CWUIX0EWFE";
 const apiKey = "4cd4c82105f395affbc472c07a9789c8";
 const searchClient = algoliasearch(appId, apiKey);
 const indexName = "treccy_races_all";
 
-console.log("Initializing Algolia autocomplete...");
-
-// Capture the entire autocomplete instance here
+// Initialize Algolia Autocomplete
 const autocompleteInstance = autocomplete({
   container: "#global-race-search",
-  placeholder: placeholderTexts[placeholderIndex], // Set the initial placeholder text,
+  placeholder: placeholderTexts[placeholderIndex],
   detachedMediaQuery: '',
   openOnFocus: true,
-    getSources({ query, state }) {
-      console.log("Query received:", query);
+  getSources({ query, state }) {
+    console.log("Query received:", query);
 
-      if (!query) {
-        return [];
-      }
-
+    if (!query) {
+      console.log("No query. Displaying popular races.");
       return [
         {
-          sourceId: "races",
-          async getItems() {
-            console.log("Fetching results from Algolia...");
-            console.log("Query being sent:", query);
-
-            try {
-              const results = await getAlgoliaResults({
-                searchClient,
-                queries: [
-                  {
-                    indexName: indexName,
-                    query,
-                    params: {
-                      attributesToSnippet: ['name_ag:10', 'description_ag:35'],
-                      snippetEllipsisText: '…',
-                      hitsPerPage: 5,
-                      facets: ['disciplines_ag', 'city_ag', 'state_province_ag', 'country_ag']
-                    }
-                  }
-                ]
-              });
-
-              console.log("Results from Algolia:", results);
-              return results;
-            } catch (error) {
-              console.error("Error fetching results from Algolia:", error);
-              return [];
-            }
+          sourceId: "popularRaces",
+          getItems() {
+            return popularRaces;
           },
           templates: {
+            header() {
+              return 'Popular races';
+            },
+            item({ item, components, html }) {
+              return html`
+                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                  <div class="aa-ItemContent">
+                    <div class="aa-ItemContentBody">
+                      <div class="aa-ItemContentTitle">
+                        ${item.name_ag}
+                      </div>
+                    </div>
+                  </div>
+                </a>`;
+            }
+          }
+        }
+      ];
+    }
+
+    // Rest of the code for Algolia search results
+    return [
+      {
+        sourceId: "races",
+        async getItems() {
+          console.log("Fetching results from Algolia...");
+          try {
+            const results = await getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: indexName,
+                  query,
+                  params: {
+                    attributesToSnippet: ['name_ag:10', 'description_ag:35'],
+                    snippetEllipsisText: '…',
+                    hitsPerPage: 5,
+                    facets: ['disciplines_ag', 'city_ag', 'state_province_ag', 'country_ag']
+                  }
+                }
+              ]
+            });
+            console.log("Results from Algolia:", results);
+            return results;
+          } catch (error) {
+            console.error("Error fetching results from Algolia:", error);
+            return [];
+          }
+        },
+        templates: {
             item({ item, components, html }) {
               // Extract the date from item.date_ag and format it
               const date = new Date(item.date_ag);
