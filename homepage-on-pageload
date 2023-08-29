@@ -22,17 +22,8 @@
   document.addEventListener("DOMContentLoaded", async function() {
       memberJson = await initializeMemberJson();
       console.log("memberJson after initialization: ", memberJson);
-      checkAndLoadAlgoliaResults();
+      // Rest of your code
   });
-
-  // Function to attach click event to like buttons
-  function attachLikeButtonEvent() {
-    const likeButtons = document.querySelectorAll('.like-button');
-    likeButtons.forEach(button => {
-      console.log("Attaching click event to like button with ID:", button.id); // Logging the ID of the button
-      button.addEventListener('click', handleLikeButtonClick);
-    });
-  }
 
   async function initializeMemberJson() {
       const member = await memberstack.getCurrentMember();
@@ -48,57 +39,30 @@
       return memberJson;
   }
 
-async function handleLikeButtonClick(event) {
-  // Timestamp to prevent rapid clicks
-  const now = Date.now();
-  if (now - likeButtonLastClickedAt < 500) {
-    console.log("Button clicked too quickly. Ignoring this click.");
-    return;
-  }
-  likeButtonLastClickedAt = now;
-  
-  // Retrieve the objectID from the clicked element
-  const algoliaObjectID = event.target.getAttribute('data-object-id');
-  
-  // Toggle the "is-liked" class
-  event.target.classList.toggle('is-liked');
-  
-  // Fetch Memberstack data
-  let member = await memberstack.getCurrentMember();
-  if (!member || !member.data) {
-    console.log('Redirecting to sign-up');
-    window.location.href = '/sign-up-auth';
-    return;
+  // Function to handle like button clicks
+  function handleLikeButtonClick(event) {
+      const now = Date.now();
+      if (now - likeButtonLastClickedAt < 500) {
+          return;
+      }
+      likeButtonLastClickedAt = now;
+
+      const likeButton = event.currentTarget;
+      const objectId = likeButton.getAttribute('data-object-id');
+      likeButton.classList.toggle('is-liked');
+      const isLiked = likeButton.classList.contains('is-liked');
+
+      if (isLiked) {
+          memberJson.likes.push({ id: objectId, timestamp: Date.now() });
+      } else {
+          const index = memberJson.likes.findIndex(item => item.id === objectId);
+          if (index > -1) {
+              memberJson.likes.splice(index, 1);
+          }
+      }
+      console.log("Updated memberJson:", memberJson);
   }
 
-  let memberJson = await memberstack.getMemberJSON();
-  while (memberJson.data) {
-    memberJson = memberJson.data;
-  }
-
-  // Initialize likes array if it doesn't exist
-  if (!memberJson.likes) {
-    memberJson.likes = [];
-  }
-
-  // Check if this object is already liked or not
-  const index = memberJson.likes.findIndex(item => item.id === algoliaObjectID);
-
-  // If not liked, add it to likes, else remove it
-  if (index === -1) {
-    memberJson.likes.push({ id: algoliaObjectID, timestamp: Date.now() });
-  } else {
-    memberJson.likes.splice(index, 1);
-  }
-
-  try {
-    await memberstack.updateMemberJSON({ json: memberJson });
-    console.log("Member JSON updated successfully.");
-  } catch (error) {
-    console.log("Failed to update member JSON: ", error);
-    event.target.classList.toggle('is-liked');  // Toggle the class back if the update fails
-  }
-}
 
 // Function to populate race cards
 function populateRaceCards(results, memberJson) {
@@ -209,6 +173,7 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 
         return results.hits;
     } catch (error) {
+        console.error("An error occurred while fetching Algolia results:", error);
         return [];
     }
 }
@@ -226,6 +191,14 @@ function checkAndLoadAlgoliaResults() {
     const lat = parseFloat(urlSearchParams.get('lat'));
     const lng = parseFloat(urlSearchParams.get('lng'));
     const locationRange = parseFloat(urlSearchParams.get('locationRange')); // Parse the locationRange parameter
+
+    if (isNaN(lat) || isNaN(lng)) {
+        console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
+    }
+
+    if (isNaN(locationRange)) {
+        console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
+    }
 
     // Call the load function with the parsed lat, lng, and locationRange
     loadAlgoliaResultsToDiv(lat, lng, locationRange);
