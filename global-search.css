@@ -115,16 +115,13 @@ body.dark,body[data-theme=dark]{
     order:1
 }
 
-.aa-Label{
-	margin-botton: 0px;
-}
-
 .aa-Label,.aa-LoadingIndicator{
     cursor:auto;
     flex-shrink:0;
     height:100%;
     padding:0;
-    text-align:left
+    text-align:left;
+    margin-botton: 0px
 }
 .aa-Label svg,.aa-LoadingIndicator svg{
     color:rgba(62, 52, 211,1);
