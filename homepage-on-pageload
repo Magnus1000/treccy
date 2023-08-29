@@ -39,12 +39,6 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-country-text').textContent = result.country_ag; // Changed from city_ag to country_ag
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
 
-    const likeButton = newRaceCard.querySelector('.like-button');
-    likeButton.setAttribute('data-object-id', result.objectID);
-    likeButton.addEventListener('click', function() {
-      console.log(`Button with objectID ${result.objectID} clicked!`);
-    });
-
     // Here, we set up the like button
     const likeButton = newRaceCard.querySelector('.like-button');
     likeButton.setAttribute('data-object-id', result.objectID);
