@@ -267,4 +267,25 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
   }
 });
 
+// Function to initialize the date picker
+function initializeDatePicker() {
+  console.log("Initializing Date Picker...");
+
+  // The rest of your existing date picker code goes here
+  const dateInput = document.querySelector('input[ms-code-input="date-range"]');
+  
+  $(dateInput).daterangepicker({
+    // Your existing date picker options here
+  });
+
+  // Event listeners for your date picker
+  $(dateInput).on('apply.daterangepicker', function(ev, picker) {
+    this.value = picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY');
+  });
+
+  $(dateInput).on('cancel.daterangepicker', function(ev, picker) {
+    this.value = '';
+  });
+}
+
 </script>
