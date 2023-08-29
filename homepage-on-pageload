@@ -48,27 +48,52 @@
   }
 
   // Function to handle like button clicks
-  function handleLikeButtonClick(event) {
-      const now = Date.now();
-      if (now - likeButtonLastClickedAt < 500) {
-          return;
-      }
-      likeButtonLastClickedAt = now;
+  // Function to handle like button clicks
+  async function handleLikeButtonClick(event) {
+    // Prevent the default behavior of the click event
+    event.preventDefault();
+    
+    // Retrieve the objectID from the clicked element
+    const objectId = event.target.dataset.objectid;
+    if (!objectId) {
+      console.log('Object ID not found.');
+      return;
+    }
 
-      const likeButton = event.currentTarget;
-      const objectId = likeButton.getAttribute('data-object-id');
-      likeButton.classList.toggle('is-liked');
-      const isLiked = likeButton.classList.contains('is-liked');
+    // Initialize the member JSON, getting data from Memberstack
+    let memberJson = await initializeMemberJson();
+    if (!memberJson) {
+      console.log('Member not authenticated or member JSON not found.');
+      return;
+    }
 
-      if (isLiked) {
-          memberJson.likes.push({ id: objectId, timestamp: Date.now() });
-      } else {
-          const index = memberJson.likes.findIndex(item => item.id === objectId);
-          if (index > -1) {
-              memberJson.likes.splice(index, 1);
-          }
+    // Toggle the like status
+    let isLiked = false;
+    if (event.target.classList.contains('is-liked')) {
+      event.target.classList.remove('is-liked');
+    } else {
+      event.target.classList.add('is-liked');
+      isLiked = true;
+    }
+
+    // Update the member JSON based on the like status
+    if (isLiked) {
+      memberJson.likes.push({ id: objectId, timestamp: Date.now() });
+    } else {
+      const index = memberJson.likes.findIndex(item => item.id === objectId);
+      if (index > -1) {
+        memberJson.likes.splice(index, 1);
       }
-      console.log("Updated memberJson:", memberJson);
+    }
+    console.log("Updated memberJson:", memberJson);
+
+    // Update the Memberstack data
+    try {
+      await memberstack.updateCurrentMember({ 'customField': memberJson.likes });
+      console.log("Memberstack data updated successfully.");
+    } catch (error) {
+      console.log("Failed to update Memberstack data: ", error);
+    }
   }
 
 
