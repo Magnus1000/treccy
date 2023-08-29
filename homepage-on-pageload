@@ -6,70 +6,49 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
 
 <script>
-// Globals and Configuration
-console.log("Script Initiated");
-const memberstack = window.$memberstackDom;
-let memberJson; // Global variable to hold member data
+  // Globals and Configuration
+  console.log("Script Initiated");
+  const memberstack = window.$memberstackDom;
+  let memberJson; // Global variable to hold member data
+  const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+  const algoliaConfig = {
+      appId: "CWUIX0EWFE",
+      apiKey: "4cd4c82105f395affbc472c07a9789c8",
+      indexName: 'treccy_races_all'
+  };
+  let likeButtonLastClickedAt = 0; // Moved to the outer scope
 
-// Initialize memberJson once the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", async function() {
-    memberJson = await initializeMemberJson(); 
-    console.log("memberJson after initialization: ", memberJson);
-    checkAndLoadAlgoliaResults();
-});
+  // Initialize memberJson once the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", async function() {
+      memberJson = await initializeMemberJson();
+      console.log("memberJson after initialization: ", memberJson);
+      checkAndLoadAlgoliaResults();
+  });
 
-function handleLikeButtonClick(event) {
-    const now = Date.now();
-    if (now - likeButtonLastClickedAt < 500) {
-        return;
-    }
-    likeButtonLastClickedAt = now;
+  // Function to handle like button clicks
+  function handleLikeButtonClick(event) {
+      const now = Date.now();
+      if (now - likeButtonLastClickedAt < 500) {
+          return;
+      }
+      likeButtonLastClickedAt = now;
 
-    const likeButton = event.currentTarget;
-    const objectId = likeButton.getAttribute('data-object-id');
+      const likeButton = event.currentTarget;
+      const objectId = likeButton.getAttribute('data-object-id');
+      likeButton.classList.toggle('is-liked');
+      const isLiked = likeButton.classList.contains('is-liked');
 
-    likeButton.classList.toggle('is-liked');
-    const isLiked = likeButton.classList.contains('is-liked');
-
-    if (isLiked) {
-        memberJson.likes.push({ id: objectId, timestamp: Date.now() });
-    } else {
-        const index = memberJson.likes.findIndex(item => item.id === objectId);
-        if (index > -1) {
-            memberJson.likes.splice(index, 1);
-        }
-    }
-    console.log("Updated memberJson:", memberJson);
-}
-
-  let likeButtons = document.querySelectorAll('.like-button');
-  likeButtons.forEach(likeButton => {
-
-    // Add click event listener for each like button
-    likeButtons.forEach(button => {
-        button.addEventListener('click', handleLikeButtonClick);
-    });
-
-const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
-const algoliaConfig = {
-    appId: "CWUIX0EWFE",
-    apiKey: "4cd4c82105f395affbc472c07a9789c8",
-    indexName: 'treccy_races_all'
-};
-
-async function initializeMemberJson() {
-    let memberJson = await memberstack.getMemberJSON();
-    while (memberJson.data) {
-      memberJson = memberJson.data;
-    }
-    
-    if (!memberJson.likes) {
-      memberJson.likes = [];
-    }
-
-    // Return the populated memberJson
-    return memberJson;
+      if (isLiked) {
+          memberJson.likes.push({ id: objectId, timestamp: Date.now() });
+      } else {
+          const index = memberJson.likes.findIndex(item => item.id === objectId);
+          if (index > -1) {
+              memberJson.likes.splice(index, 1);
+          }
+      }
+      console.log("Updated memberJson:", memberJson);
   }
+
 
 // Function to populate race cards
 function populateRaceCards(results, memberJson) {
@@ -103,9 +82,6 @@ function populateRaceCards(results, memberJson) {
     // Here, we set up the like button
     const likeButton = newRaceCard.querySelector('.like-button');
     likeButton.setAttribute('data-object-id', result.objectID);
-    likeButton.addEventListener('click', function() {
-      console.log(`Button with objectID ${result.objectID} clicked!`);
-    });
 
     // Check if this object is liked by the user
     if (memberJson.likes && memberJson.likes.some(item => item.id === result.objectID)) {
@@ -190,10 +166,9 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 
 // Load Algolia Results
   async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
-    console.log("Fetching and Displaying Algolia Results in Div...");
-    const results = await fetchAlgoliaResults(lat, lng, radius, page);
-    console.log("memberJson before populating cards: ", memberJson);
-    populateRaceCards(results, memberJson);
+      const results = await fetchAlgoliaResults(lat, lng, radius, page);
+      populateRaceCards(results, memberJson);
+      attachLikeButtonEvent(); // Re-attach event listeners after populating cards
   }
 
 // Function to check if there are any URL parameters and load Algolia results
