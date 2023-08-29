@@ -29,6 +29,7 @@
   function attachLikeButtonEvent() {
     const likeButtons = document.querySelectorAll('.like-button');
     likeButtons.forEach(button => {
+      console.log("Attaching click event to like button with ID:", button.id); // Logging the ID of the button
       button.addEventListener('click', handleLikeButtonClick);
     });
   }
