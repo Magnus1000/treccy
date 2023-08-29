@@ -93,7 +93,7 @@ body.dark,body[data-theme=dark]{
     background-color:rgba(var(--aa-input-background-color-rgb),var(--aa-input-background-color-alpha));
     border:1px solid rgba(128, 126, 163,0.8);
     border:1px solid rgba(var(--aa-input-border-color-rgb),var(--aa-input-border-color-alpha));
-    border-radius:5px;
+    border-radius:50%;
     display:flex;
     line-height:1em;
     margin:0;
