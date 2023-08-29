@@ -212,7 +212,6 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 
         return results.hits;
     } catch (error) {
-        console.error("An error occurred while fetching Algolia results:", error);
         return [];
     }
 }
@@ -230,14 +229,6 @@ function checkAndLoadAlgoliaResults() {
     const lat = parseFloat(urlSearchParams.get('lat'));
     const lng = parseFloat(urlSearchParams.get('lng'));
     const locationRange = parseFloat(urlSearchParams.get('locationRange')); // Parse the locationRange parameter
-
-    if (isNaN(lat) || isNaN(lng)) {
-        console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
-    }
-
-    if (isNaN(locationRange)) {
-        console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
-    }
 
     // Call the load function with the parsed lat, lng, and locationRange
     loadAlgoliaResultsToDiv(lat, lng, locationRange);
