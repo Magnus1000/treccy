@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             likeButtonLastClickedAt = now;
 
             // Optimistically update the UI
-            const cmsData = this.getAttribute('data-object-id');
+            const algoliaObjectID = this.getAttribute('data-object-id');
             if (this.classList.contains('is-liked')) {
                 this.classList.remove('is-liked');
             } else {
@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 memberJson.likes = [];
             }
 
-            // Check if cmsData is already in the array, if not, add it
+            // Check if algoliaObjectID is already in the array, if not, add it
             if (!memberJson.likes.includes(algoliaObjectID)) {
                 memberJson.likes.push(algoliaObjectID);
             } else {
                 // If the item is already liked, remove it from the array
-                memberJson.likes = memberJson.likes.filter(item => item !== cmsData);
+                memberJson.likes = memberJson.likes.filter(item => item !== algoliaObjectID);
             }
 
             // Update member's JSON asynchronously
