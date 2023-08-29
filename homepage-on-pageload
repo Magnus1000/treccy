@@ -25,6 +25,14 @@
       checkAndLoadAlgoliaResults();
   });
 
+  // Function to attach click event to like buttons
+  function attachLikeButtonEvent() {
+    const likeButtons = document.querySelectorAll('.like-button');
+    likeButtons.forEach(button => {
+      button.addEventListener('click', handleLikeButtonClick);
+    });
+  }
+
   // Function to handle like button clicks
   function handleLikeButtonClick(event) {
       const now = Date.now();
