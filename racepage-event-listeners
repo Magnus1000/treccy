@@ -1,93 +1,66 @@
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
     const memberstack = window.$memberstackDom;
-
-    // Get all the like buttons
     let likeButtons = document.querySelectorAll('.like-button');
 
-    // Add an event listener to each like button
     likeButtons.forEach(likeButton => {
         let likeButtonLastClickedAt = 0;
 
         likeButton.addEventListener('click', async function () {
-            // If the last click was less than 500ms ago, ignore this one
             const now = Date.now();
             if (now - likeButtonLastClickedAt < 500) {
                 return;
             }
             likeButtonLastClickedAt = now;
 
-            // Optimistically update the UI
             const algoliaObjectID = this.getAttribute('data-object-id');
-            if (this.classList.contains('is-liked')) {
-                this.classList.remove('is-liked');
-            } else {
-                this.classList.add('is-liked');
-            }
+            this.classList.toggle('is-liked');  // A more concise way to toggle the class
 
-            // Get the current member
             let member = await memberstack.getCurrentMember();
-
-            // If the member is not logged in, redirect to /signup
             if (!member || !member.data) {
                 window.location.href = '/sign-up-auth';
                 return;
             }
 
-            // Get current member's JSON
             let memberJson = await memberstack.getMemberJSON();
-
-            // Unwrap unnecessary "data" objects
             while (memberJson.data) {
                 memberJson = memberJson.data;
             }
 
-            // Create the likes array if it doesn't exist
             if (!memberJson.likes) {
                 memberJson.likes = [];
             }
 
-            // Check if algoliaObjectID is already in the array, if not, add it
-            if (!memberJson.likes.includes(algoliaObjectID)) {
-                memberJson.likes.push(algoliaObjectID);
+            // Find the index of the object with the corresponding algoliaObjectID
+            const index = memberJson.likes.findIndex(item => item.id === algoliaObjectID);
+
+            // If not found, add it, otherwise remove it
+            if (index === -1) {
+                memberJson.likes.push({ id: algoliaObjectID, timestamp: Date.now() });
             } else {
-                // If the item is already liked, remove it from the array
-                memberJson.likes = memberJson.likes.filter(item => item !== algoliaObjectID);
+                memberJson.likes.splice(index, 1);
             }
 
-            // Update member's JSON asynchronously
             memberstack.updateMemberJSON({ json: memberJson }).catch((error) => {
                 console.error("Failed to update member JSON: ", error);
-                // If there was an error updating the JSON, revert the button style
-                if (this.classList.contains('is-liked')) {
-                    this.classList.remove('is-liked');
-                } else {
-                    this.classList.add('is-liked');
-                }
+                this.classList.toggle('is-liked');  // Toggle the class back if the update fails
             });
         });
 
-        // Initialise the button state based on the member's likes
         (async function initButtonState() {
-            // Get the current member
             let member = await memberstack.getCurrentMember();
-
-            // If the member is not logged in, do nothing
             if (!member || !member.data) {
                 return;
             }
 
             let memberJson = await memberstack.getMemberJSON();
-
-            // Unwrap unnecessary "data" objects
             while (memberJson.data) {
                 memberJson = memberJson.data;
             }
 
             let algoliaObjectID = likeButton.getAttribute('data-object-id');
-
-            // If the member has already liked the item, style the button as 'is-liked'
-            if (memberJson.likes && memberJson.likes.includes(algoliaObjectID)) {
+            const isLiked = memberJson.likes && memberJson.likes.some(item => item.id === algoliaObjectID);
+            if (isLiked) {
                 likeButton.classList.add('is-liked');
             }
         })();
