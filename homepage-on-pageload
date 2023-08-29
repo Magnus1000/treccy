@@ -33,6 +33,20 @@
     });
   }
 
+  async function initializeMemberJson() {
+      const member = await memberstack.getCurrentMember();
+      if (!member || !member.data) {
+          window.location.href = '/sign-up-auth';
+          return;
+      }
+
+      let memberJson = await memberstack.getMemberJSON();
+      while (memberJson.data) {
+          memberJson = memberJson.data;
+      }
+      return memberJson;
+  }
+
   // Function to handle like button clicks
   function handleLikeButtonClick(event) {
       const now = Date.now();
