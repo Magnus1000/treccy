@@ -42,6 +42,12 @@ async function initializeMemberJson() {
 // Function to populate race cards
 function populateRaceCards(results, memberJson) {
   console.log("Populating Race Cards...");
+  
+  if (!memberJson) {
+    console.error("memberJson is undefined");
+    return;
+  }
+
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
 
   results.forEach(result => {
