@@ -877,7 +877,7 @@ body.dark,body[data-theme=dark]{
     background-color:rgba(var(--aa-input-background-color-rgb),var(--aa-input-background-color-alpha));
     border:1.5px solid rgba(128, 126, 163,0.8);
     border:1.5px solid rgba(var(--aa-input-border-color-rgb),var(--aa-input-border-color-alpha));
-    border-radius:5px;
+    border-radius:50px;
     color:rgba(128, 126, 163,0.6);
     color:rgba(var(--aa-muted-color-rgb),var(--aa-muted-color-alpha));
     cursor:pointer;
