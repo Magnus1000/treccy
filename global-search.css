@@ -93,7 +93,7 @@ body.dark,body[data-theme=dark]{
     background-color:rgba(var(--aa-input-background-color-rgb),var(--aa-input-background-color-alpha));
     border:1px solid rgba(128, 126, 163,0.8);
     border:1px solid rgba(var(--aa-input-border-color-rgb),var(--aa-input-border-color-alpha));
-    border-radius:50%;
+    border-radius:50px;
     display:flex;
     line-height:1em;
     margin:0;
@@ -115,6 +115,11 @@ body.dark,body[data-theme=dark]{
     height:var(--aa-search-input-height);
     order:1
 }
+
+.aa-Label{
+	margin-botton: 0px;
+}
+
 .aa-Label,.aa-LoadingIndicator{
     cursor:auto;
     flex-shrink:0;
