@@ -44,6 +44,18 @@ function populateRaceCards(results) {
     likeButton.addEventListener('click', function() {
       console.log(`Button with objectID ${result.objectID} clicked!`);
     });
+
+    // Here, we set up the like button
+    const likeButton = newRaceCard.querySelector('.like-button');
+    likeButton.setAttribute('data-object-id', result.objectID);
+    likeButton.addEventListener('click', function() {
+      console.log(`Button with objectID ${result.objectID} clicked!`);
+    });
+
+    // Check if this object is liked by the user
+    if (memberJson.likes && memberJson.likes.some(item => item.id === result.objectID)) {
+      likeButton.classList.add('is-liked');
+    }
   
     algoliaRacesDiv.appendChild(newRaceCard);
   });
