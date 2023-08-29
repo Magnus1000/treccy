@@ -827,9 +827,7 @@ body.dark,body[data-theme=dark]{
     flex-direction:row;
     justify-content:space-between;
     margin:0;
-    padding:calc((16 * 1 * 1px) / 2);
-    padding:calc(calc(16 * 1 * 1px) / 2);
-    padding:var(--aa-spacing-half)
+    padding:20px
 }
 .aa-DetachedCancelButton{
 		display: none;
