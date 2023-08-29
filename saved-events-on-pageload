@@ -13,10 +13,10 @@ function formatDate(dateString) {
 // Function to fetch saved events from Algolia
 async function fetchSavedEventsFromAlgolia(objectIDs) {
   console.log("Fetching saved events from Algolia...");
-
+  
   const searchClient = algoliasearch('CWUIX0EWFE', '4cd4c82105f395affbc472c07a9789c8');
   const index = searchClient.initIndex('treccy_races_all');
-
+  
   try {
     const results = await index.getObjects(objectIDs);
     console.log("Algolia Search Results:", results);
@@ -31,12 +31,6 @@ async function fetchSavedEventsFromAlgolia(objectIDs) {
     console.log("An error occurred while fetching Algolia results:", error);
   }
 }
-
-const algoliaConfig = {
-    appId: "CWUIX0EWFE",
-    apiKey: "4cd4c82105f395affbc472c07a9789c8",
-    indexName: 'treccy_races_all'
-};
 
 // Function to populate race cards
 function populateRaceCards(results) {
@@ -44,13 +38,13 @@ function populateRaceCards(results) {
   const algoliaRacesDiv = document.getElementById('algoliaRaces');
 
   results.forEach(result => {
-    console.log("result.slug_ag:", result.slug_ag);
     const raceCardTemplate = document.getElementById("race-card");
     const newRaceCard = raceCardTemplate.cloneNode(true);
     newRaceCard.removeAttribute('id');
     newRaceCard.style.display = 'block';
 
-    const formattedDate = formatDate(result.date_ag); 
+    const formattedDate = formatDate(result.date_ag);
+    // Fill in the race card details using querySelector
     newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
     newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
@@ -58,38 +52,18 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
     newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
-    newRaceCard.querySelector('.race-country-text').textContent = result.country_ag; // Changed from city_ag to country_ag
+    newRaceCard.querySelector('.race-country-text').textContent = result.country_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
 
+    // Add click event to like button
     const likeButton = newRaceCard.querySelector('.like-button');
     likeButton.setAttribute('data-object-id', result.objectID);
     likeButton.addEventListener('click', function() {
       console.log(`Button with objectID ${result.objectID} clicked!`);
     });
-  
+
+    // Append the new race card to the main div
     algoliaRacesDiv.appendChild(newRaceCard);
   });
-}
-
-// Function to fetch saved events from Algolia
-async function fetchSavedEventsFromAlgolia(objectIDs) {
-  console.log("Fetching saved events from Algolia...");
-
-  const searchClient = algoliasearch('CWUIX0EWFE', '4cd4c82105f395affbc472c07a9789c8');
-  const index = searchClient.initIndex('treccy_races_all');
-
-  try {
-    const results = await index.getObjects(objectIDs);
-    console.log("Algolia Search Results:", results);
-    
-    // If results are available, populate the race cards
-    if (results && results.results.length > 0) {
-      populateRaceCards(results.results);
-    } else {
-      console.log("No saved events found in Algolia.");
-    }
-  } catch (error) {
-    console.log("An error occurred while fetching Algolia results:", error);
-  }
 }
 </script>
