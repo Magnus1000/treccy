@@ -8,6 +8,7 @@
 <script>
 // Globals and Configuration
 console.log("Script Initiated");
+const memberstack = window.$memberstackDom;
 
   let memberJson; // Global variable to hold member data
 
