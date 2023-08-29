@@ -15,6 +15,7 @@ const memberstack = window.$memberstackDom;
   // Initialize memberJson once the DOM is fully loaded
   document.addEventListener("DOMContentLoaded", async function() {
     memberJson = await initializeMemberJson(); 
+    console.log("memberJson after initialization: ", memberJson);
     checkAndLoadAlgoliaResults();
   });
 
@@ -157,11 +158,12 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 }
 
 // Load Algolia Results
-async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
-  console.log("Fetching and Displaying Algolia Results in Div...");
-  const results = await fetchAlgoliaResults(lat, lng, radius, page);
-  populateRaceCards(results);
-}
+  async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
+    console.log("Fetching and Displaying Algolia Results in Div...");
+    const results = await fetchAlgoliaResults(lat, lng, radius, page);
+    console.log("memberJson before populating cards: ", memberJson);
+    populateRaceCards(results, memberJson);
+  }
 
 // Function to check if there are any URL parameters and load Algolia results
 function checkAndLoadAlgoliaResults() {
