@@ -232,9 +232,9 @@ function handleScroll() {
     }
 }
 
-checkAndLoadAlgoliaResults();
-
 // Add scroll event listener
 window.addEventListener('scroll', handleScroll);
+
+checkAndLoadAlgoliaResults();
 
 </script>
