@@ -48,57 +48,54 @@
   }
 
 async function handleLikeButtonClick(event) {
-  // Prevent the default behavior of the click event
-  event.preventDefault();
-  
-  // Limit rapid successive clicks
+  // Timestamp to prevent rapid clicks
   const now = Date.now();
-  if (now - likeButtonLastClickedAt < 500) { // 500 milliseconds
-      console.log("Button clicked too quickly, ignoring this click.");
-      return;
+  if (now - likeButtonLastClickedAt < 500) {
+    console.log("Button clicked too quickly. Ignoring this click.");
+    return;
   }
   likeButtonLastClickedAt = now;
   
   // Retrieve the objectID from the clicked element
-  const objectId = event.target.dataset.objectid;
-  if (!objectId) {
-    console.log('Object ID not found.');
+  const algoliaObjectID = event.target.getAttribute('data-object-id');
+  
+  // Toggle the "is-liked" class
+  event.target.classList.toggle('is-liked');
+  
+  // Fetch Memberstack data
+  let member = await memberstack.getCurrentMember();
+  if (!member || !member.data) {
+    console.log('Redirecting to sign-up');
+    window.location.href = '/sign-up-auth';
     return;
   }
 
-  // Initialize the member JSON, getting data from Memberstack
-  let memberJson = await initializeMemberJson();
-  if (!memberJson) {
-    console.log('Member not authenticated or member JSON not found.');
-    return;
+  let memberJson = await memberstack.getMemberJSON();
+  while (memberJson.data) {
+    memberJson = memberJson.data;
   }
 
-  // Toggle the like status
-  let isLiked = false;
-  if (event.target.classList.contains('is-liked')) {
-    event.target.classList.remove('is-liked');
+  // Initialize likes array if it doesn't exist
+  if (!memberJson.likes) {
+    memberJson.likes = [];
+  }
+
+  // Check if this object is already liked or not
+  const index = memberJson.likes.findIndex(item => item.id === algoliaObjectID);
+
+  // If not liked, add it to likes, else remove it
+  if (index === -1) {
+    memberJson.likes.push({ id: algoliaObjectID, timestamp: Date.now() });
   } else {
-    event.target.classList.add('is-liked');
-    isLiked = true;
+    memberJson.likes.splice(index, 1);
   }
 
-  // Update the member JSON based on the like status
-  if (isLiked) {
-    memberJson.likes.push({ id: objectId, timestamp: Date.now() });
-  } else {
-    const index = memberJson.likes.findIndex(item => item.id === objectId);
-    if (index > -1) {
-      memberJson.likes.splice(index, 1);
-    }
-  }
-  console.log("Updated memberJson:", memberJson);
-
-  // Update the Memberstack data
   try {
-    await memberstack.updateCurrentMember({ 'customField': memberJson.likes });
-    console.log("Memberstack data updated successfully.");
+    await memberstack.updateMemberJSON({ json: memberJson });
+    console.log("Member JSON updated successfully.");
   } catch (error) {
-    console.log("Failed to update Memberstack data: ", error);
+    console.log("Failed to update member JSON: ", error);
+    event.target.classList.toggle('is-liked');  // Toggle the class back if the update fails
   }
 }
 
