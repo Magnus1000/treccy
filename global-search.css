@@ -900,12 +900,6 @@ body.dark,body[data-theme=dark]{
     border-color:rgba(62, 52, 211,1);
     border-color:rgba(var(--aa-primary-color-rgb),1);
     box-shadow: none;
-    /*
-    box-shadow:rgba(62, 52, 211,0.2) 0 0 0 1px,inset rgba(62, 52, 211,0.2) 0 0 0 1px;
-    box-shadow:rgba(var(--aa-primary-color-rgb),var(--aa-primary-color-alpha)) 0 0 0 1px,inset rgba(var(--aa-primary-color-rgb),var(--aa-primary-color-alpha)) 0 0 0 1px;
-    outline:medium none currentColor
-    */
-
 }
 .aa-DetachedSearchButtonIcon{
     align-items:center;
