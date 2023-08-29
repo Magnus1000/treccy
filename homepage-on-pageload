@@ -30,7 +30,7 @@
   document.addEventListener("DOMContentLoaded", async function() {
       memberJson = await initializeMemberJson();
       console.log("memberJson after initialization: ", memberJson);
-      // Rest of your code
+      checkAndLoadAlgoliaResults();  // Call it here after memberJson is initialized
   });
 
   async function initializeMemberJson() {
@@ -234,7 +234,5 @@ function handleScroll() {
 
 // Add scroll event listener
 window.addEventListener('scroll', handleScroll);
-
-checkAndLoadAlgoliaResults();
 
 </script>
