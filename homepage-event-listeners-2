@@ -122,15 +122,16 @@ function hideFilterForm() {
   const filtersModalDiv = document.getElementById('filters-modal');
   
   if (filterFormDiv) {
-    filterFormDiv.style.display = 'none'; // Hide the entire filterForm div
+    filterFormDiv.style.display = 'none'; 
   }
 
   if (filtersModalDiv) {
-    filtersModalDiv.style.display = 'flex'; // Ensure that filters-modal div stays visible
+    filtersModalDiv.style.display = 'flex'; 
   }
 }
 
 document.getElementById('filter-open').addEventListener('click', showFilterForm);
+document.getElementById('filter-open-mobile').addEventListener('click', showFilterForm);
 document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
 //Add classes to Show and Hide Email Signup
