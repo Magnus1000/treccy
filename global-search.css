@@ -24,23 +24,23 @@
     --aa-primary-color-alpha:0.2;
     --aa-muted-color-rgb:128,126,163;
     --aa-muted-color-alpha:0.6;
-    --aa-panel-border-color-rgb:128,126,163;
-    --aa-panel-border-color-alpha:0.3;
+    --aa-panel-border-color-rgb:230,228,213;
+    --aa-panel-border-color-alpha:1;
     /* Colour of Input Border */
-    --aa-input-border-color-rgb: 10, 15, 13;
+    --aa-input-border-color-rgb: 27, 43, 28;
     /* Opacity of Input Border */
     --aa-primary-color-alpha: 1;
     --aa-input-background-color-rgb:255,255,255;
     --aa-input-background-color-alpha:1;
     --aa-selected-color-rgb:179,173,214;
     --aa-selected-color-alpha:0.205;
-    --aa-description-highlight-background-color-rgb:245,223,77;
-    --aa-description-highlight-background-color-alpha:0.5;
+    --aa-description-highlight-background-color-rgb:230,228,213;
+    --aa-description-highlight-background-color-alpha:0.4;
     --aa-detached-media-query:(max-width:680px);
     --aa-detached-modal-media-query:(min-width:680px);
     --aa-detached-modal-max-width:680px;
     --aa-detached-modal-max-height:500px;
-    --aa-overlay-color-rgb:115,114,129;
+    --aa-overlay-color-rgb: 27, 43, 28;
     --aa-overlay-color-alpha:0.4;
     --aa-panel-shadow:0 0 0 1px rgba(35,38,59,0.1),0 6px 16px -4px rgba(35,38,59,0.15);
     --aa-scrollbar-width:13px;
@@ -935,3 +935,11 @@ body.dark,body[data-theme=dark]{
         display:none
     }
 }
+
+/*Style Changes*/
+/*Styling the Placeholder Text*/
+.aa-DetachedSearchButtonPlaceholder {
+    color: #807E77;
+}
+
+
