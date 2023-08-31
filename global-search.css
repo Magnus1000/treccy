@@ -942,4 +942,8 @@ body.dark,body[data-theme=dark]{
     color: #807E77;
 }
 
+/* Hiding the Search Icon*/
+#autocomplete-0-label {
+    margin: 0;
+}
 
