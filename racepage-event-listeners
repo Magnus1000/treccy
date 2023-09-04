@@ -70,24 +70,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 <script>
 // Function to open the modal
-function openModal() {
+function openClaimRaceModal() {
   const modal = document.getElementById('claim-race-modal');
-  modal.style.display = 'block';
+  modal.style.display = 'flex';
 }
 
 // Function to close the modal
-function closeModal() {
+function closeClaimRaceModal() {
   const modal = document.getElementById('claim-race-modal');
   modal.style.display = 'none';
 }
 
 // Attaching the click event to the open button
 const button = document.getElementById('added_by_treccy');
-button.addEventListener('click', openModal);
+button.addEventListener('click', openClaimRaceModal);
 
 // Attaching the click event to the close button
 const closeButton = document.getElementById('close_claim_modal');
-closeButton.addEventListener('click', closeModal);
+closeButton.addEventListener('click', closeClaimRaceModal);
 
 </script>
 
@@ -107,7 +107,7 @@ closeButton.addEventListener('click', closeModal);
 
 <script>
   // Close all modals with the class 'popup-modal-wrapper'
-  function closeModal() {
+  function closeCourseMapModal() {
     const modals = document.querySelectorAll('.popup-modal-wrapper');
     modals.forEach(modal => {
       modal.style.display = 'none';
@@ -116,7 +116,7 @@ closeButton.addEventListener('click', closeModal);
   }
 
   // Show Modal based on data-item attribute
-  function showModal(event) {
+  function showCourseMapModal(event) {
     const itemID = event.target.getAttribute('data-item');
     const modal = document.getElementById(itemID);
     modal.style.display = 'flex';
@@ -126,23 +126,12 @@ closeButton.addEventListener('click', closeModal);
   // Add event listeners to all buttons with the class 'button-outline-small' to open modals
   document.querySelectorAll('.button-outline-small').forEach(button => {
     button.addEventListener('click', function() {
-      showModal();  
+      showCourseMapModal();  
       loadCourseMap();  
     });
 
   // Add event listeners to all divs with the class 'close-modal' to close modals
   document.querySelectorAll('.exit-cross-div').forEach(button => {
-    button.addEventListener('click', closeModal);
+    button.addEventListener('click', closeCourseMapModall);
   });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function () {
-  // Targeting class of .strava-embed
-  $(".strava-embed").each(function () {
-    $(this).hide(); // Hide so code is not displayed (better to hide in CSS)
-    $(this).html(he.decode($(this).html())); // Decode the text
-    $(this).show(); // Show the decoded element
-  });
-});
 </script>
