@@ -67,3 +67,80 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 </script>
+
+<script>
+// Function to open the modal
+function openModal() {
+  const modal = document.getElementById('claim-race-modal');
+  modal.style.display = 'block';
+}
+
+// Function to close the modal
+function closeModal() {
+  const modal = document.getElementById('claim-race-modal');
+  modal.style.display = 'none';
+}
+
+// Attaching the click event to the open button
+const button = document.getElementById('added_by_treccy');
+button.addEventListener('click', openModal);
+
+// Attaching the click event to the close button
+const closeButton = document.getElementById('close_claim_modal');
+closeButton.addEventListener('click', closeModal);
+
+</script>
+
+<script>
+  // Function to go back in the user's history
+  function goBack() {
+    // Go back one step in the browser's history
+    window.history.back();
+      
+    // Log to console
+    console.log("Back button was clicked.");
+  }
+    
+  // Adding an event listener to the button with ID 'backButton'
+  document.getElementById("backButton").addEventListener("click", goBack);
+</script>
+
+<script>
+  // Close all modals with the class 'popup-modal-wrapper'
+  function closeModal() {
+    const modals = document.querySelectorAll('.popup-modal-wrapper');
+    modals.forEach(modal => {
+      modal.style.display = 'none';
+    });
+    console.log('Closed all modals');
+  }
+
+  // Show Modal based on data-item attribute
+  function showModal(event) {
+    const itemID = event.target.getAttribute('data-item');
+    const modal = document.getElementById(itemID);
+    modal.style.display = 'flex';
+    console.log(`Showing modal with ID: ${itemID}`);
+  }
+
+  // Add event listeners to all buttons with the ID 'seeMoreButton' to open modals
+  document.querySelectorAll('.button-outline-small').forEach(button => {
+    button.addEventListener('click', showModal);
+  });
+
+  // Add event listeners to all divs with the class 'close-modal' to close modals
+  document.querySelectorAll('.exit-cross-div').forEach(button => {
+    button.addEventListener('click', closeModal);
+  });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  // Targeting class of .strava-embed
+  $(".strava-embed").each(function () {
+    $(this).hide(); // Hide so code is not displayed (better to hide in CSS)
+    $(this).html(he.decode($(this).html())); // Decode the text
+    $(this).show(); // Show the decoded element
+  });
+});
+</script>
