@@ -29,6 +29,20 @@
   .then(geojsonData => {
     console.log("Fetched GeoJSON Data:", geojsonData);
 
+    if (!geojsonData.features || !geojsonData.features[0] || !geojsonData.features[0].geometry.coordinates) {
+      console.error("Invalid GeoJSON data.");
+      return;
+    }
+
+    const coordinates = geojsonData.features[0].geometry.coordinates;
+    console.log("First Coordinate:", coordinates[0]);
+    console.log("Last Coordinate:", coordinates[coordinates.length - 1]);
+
+    if (!Array.isArray(coordinates[0]) || coordinates[0].length < 2 || !Array.isArray(coordinates[coordinates.length - 1]) || coordinates[coordinates.length - 1].length < 2) {
+      console.error("Invalid start or end coordinates.");
+      return;
+    }
+
     // Initialize Mapbox
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
     const map = new mapboxgl.Map({
@@ -54,28 +68,19 @@
         }
       });
 
-      // Calculate bounds of the GeoJSON data
-      const coordinates = geojsonData.features[0].geometry.coordinates;
-      let bounds = coordinates.reduce(function(bounds, coord) {
-        return bounds.extend(coord);
-      }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+      // Adapted to handle the 3-element sub-array structure
+      const firstCoord = geojsonData.features[0].geometry.coordinates[0].slice(0, 2);
+      const lastCoord = geojsonData.features[0].geometry.coordinates[geojsonData.features[0].geometry.coordinates.length - 1].slice(0, 2);
 
-      // Fit map to bounds
-      map.fitBounds(bounds, {
-        padding: 20
-      });
+      // Define bounds based on these points
+      const bounds = new mapboxgl.LngLatBounds(firstCoord, lastCoord);
+      map.fitBounds(bounds, { padding: 20 });
 
       // Create a marker for the start point and add it to the map
-      const startPoint = coordinates[0];
-      new mapboxgl.Marker({ color: 'green' })
-        .setLngLat(startPoint)
-        .addTo(map);
+      new mapboxgl.Marker({ color: 'green' }).setLngLat(firstCoord).addTo(map);
 
       // Create a marker for the end point and add it to the map
-      const endPoint = coordinates[coordinates.length - 1];
-      new mapboxgl.Marker({ color: 'red' })
-        .setLngLat(endPoint)
-        .addTo(map);
+      new mapboxgl.Marker({ color: 'red' }).setLngLat(lastCoord).addTo(map);
     });
   })
   .catch(error => {
