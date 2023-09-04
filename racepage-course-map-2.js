@@ -1,6 +1,6 @@
 <script>
   // Function to display modal and load Mapbox and Airtable data
-  function loadCourseMap() {
+  function loadCourseMap(AIRTABLE_RECORD_ID) {
   // Initialize your specific Airtable and API information
   const API_KEY = "keyEiGPuqmRTtXcZ0";
   const BASE_ID = "app1buEm2yEqxilPh";
@@ -87,15 +87,6 @@
     console.error("There was a problem:", error);
   });
   }
-  
-  // Close all modals with the class 'popup-modal-wrapper'
-  function closeCourseMapModal() {
-    const modals = document.querySelectorAll('.popup-modal-wrapper');
-    modals.forEach(modal => {
-      modal.style.display = 'none';
-    });
-    console.log('Closed all modals');
-  }
 
   // Show Modal based on data-item attribute
   function showCourseMapModal(event) {
@@ -108,13 +99,14 @@
   // Add event listeners to all buttons with the class 'button-outline-small' to open modals
   document.querySelectorAll('.button-outline-small').forEach(button => {
     button.addEventListener('click', function(event) {
-      showCourseMapModal(event);
-      loadCourseMap();  // loadCourseMap function called here
-    });
-  });
+      // Get the Airtable record ID from the button attribute
+      const airtableRecordId = event.target.getAttribute('data-at-id');
+      console.log(`Using Airtable record ID: ${airtableRecordId}`);  // Log the Airtable record ID for debugging
 
-  // Add event listeners to all divs with the class 'exit-cross-div' to close modals
-  document.querySelectorAll('.exit-cross-div').forEach(button => {
-    button.addEventListener('click', closeCourseMapModal);
+      showCourseMapModal(event);
+
+      // Pass the Airtable record ID to loadCourseMap function
+      loadCourseMap(airtableRecordId);
+    });
   });
 </script>
