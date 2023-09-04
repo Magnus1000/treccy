@@ -1,0 +1,19 @@
+<script>
+// Function to open the modal
+  function openClaimRaceModal() {
+    const modal = document.getElementById('claim-race-modal');
+    modal.style.display = 'flex';
+  }
+
+  // Function to close the modal
+  function closeClaimRaceModal() {
+    const modal = document.getElementById('claim-race-modal');
+    modal.style.display = 'none';
+  }
+
+  // Function to go back in the user's history
+  function goBack() {
+    window.history.back();
+    console.log("Back button was clicked.");
+  }
+</script>
