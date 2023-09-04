@@ -123,10 +123,12 @@ closeButton.addEventListener('click', closeModal);
     console.log(`Showing modal with ID: ${itemID}`);
   }
 
-  // Add event listeners to all buttons with the ID 'seeMoreButton' to open modals
+  // Add event listeners to all buttons with the class 'button-outline-small' to open modals
   document.querySelectorAll('.button-outline-small').forEach(button => {
-    button.addEventListener('click', showModal);
-  });
+    button.addEventListener('click', function() {
+      showModal();  
+      loadCourseMap();  
+    });
 
   // Add event listeners to all divs with the class 'close-modal' to close modals
   document.querySelectorAll('.exit-cross-div').forEach(button => {
