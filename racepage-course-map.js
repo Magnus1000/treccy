@@ -11,6 +11,11 @@
   // Construct the API URL for Airtable
   const API_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${AIRTABLE_RECORD_ID}`;
 
+  // Function to convert 3D coordinates to 2D
+  function convertTo2DCoordinates(coord3D) {
+    return [coord3D[0], coord3D[1]]; // Take only the first two elements: longitude and latitude
+  }
+
   // Fetch GeoJSON from Airtable based on the record ID
   fetch(API_URL, {
     headers: {
@@ -29,17 +34,9 @@
   .then(geojsonData => {
     console.log("Fetched GeoJSON Data:", geojsonData);
 
+    // Validate the GeoJSON data
     if (!geojsonData.features || !geojsonData.features[0] || !geojsonData.features[0].geometry.coordinates) {
       console.error("Invalid GeoJSON data.");
-      return;
-    }
-
-    const coordinates = geojsonData.features[0].geometry.coordinates;
-    console.log("First Coordinate:", coordinates[0]);
-    console.log("Last Coordinate:", coordinates[coordinates.length - 1]);
-
-    if (!Array.isArray(coordinates[0]) || coordinates[0].length < 2 || !Array.isArray(coordinates[coordinates.length - 1]) || coordinates[coordinates.length - 1].length < 2) {
-      console.error("Invalid start or end coordinates.");
       return;
     }
 
@@ -68,9 +65,9 @@
         }
       });
 
-      // Adapted to handle the 3-element sub-array structure
-      const firstCoord = geojsonData.features[0].geometry.coordinates[0].slice(0, 2);
-      const lastCoord = geojsonData.features[0].geometry.coordinates[geojsonData.features[0].geometry.coordinates.length - 1].slice(0, 2);
+      // Convert the 3D coordinates to 2D
+      const firstCoord = convertTo2DCoordinates(geojsonData.features[0].geometry.coordinates[0]);
+      const lastCoord = convertTo2DCoordinates(geojsonData.features[0].geometry.coordinates[geojsonData.features[0].geometry.coordinates.length - 1]);
 
       // Define bounds based on these points
       const bounds = new mapboxgl.LngLatBounds(firstCoord, lastCoord);
