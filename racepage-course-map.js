@@ -40,22 +40,31 @@
     .then(response => response.json())
     .then(geojsonData => {
       console.log("Fetched GeoJSON Data:", geojsonData);
-
-      // Store the fetched data in localStorage for future use
       localStorage.setItem(AIRTABLE_RECORD_ID, JSON.stringify(geojsonData));
-
+      
       // Locate the appropriate div where the map should be loaded
       const mapDiv = document.querySelector(`div[map-data-item="${AIRTABLE_RECORD_ID}"]`);
       if (!mapDiv) {
         console.error(`No div found with map-data-item="${AIRTABLE_RECORD_ID}"`);
         return;
       }
-
-      // Initialize Mapbox
+      
+      // Initialize Mapbox here to avoid flashing
       mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+      const firstSetOfCoords = geojsonData.features[0].geometry.coordinates[0];
+      console.log("First set of 3D coordinates:", firstSetOfCoords);
+
+      const firstCoord3D = firstSetOfCoords[0];
+      console.log("First 3D coordinate from the set:", firstCoord3D);
+
+      const firstCoord2D = convertTo2DCoordinates(firstCoord3D);
+      console.log("First 2D coordinate:", firstCoord2D);
+
       const map = new mapboxgl.Map({
         container: mapDiv,
-        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv'
+        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+        center: firstCoord2D,
+        zoom: 12
       });
 
       map.on('load', function() {
@@ -73,34 +82,14 @@
             'line-width': 8
           }
         });
-
-        const firstSetOfCoords = geojsonData.features[0].geometry.coordinates[0];
-        console.log("First set of 3D coordinates:", firstSetOfCoords);
-
-        if (firstSetOfCoords.length > 0) {
-          const firstCoord3D = firstSetOfCoords[0];
-          console.log("First 3D coordinate from the set:", firstCoord3D);
-
-          const firstCoord2D = convertTo2DCoordinates(firstCoord3D);
-          console.log("First 2D coordinate:", firstCoord2D);
-
-          try {
-            map.setCenter(firstCoord2D);
-          } catch (error) {
-            console.error("Error setting center:", error);
-          }
-        }
-        map.setZoom(12);
       });
-      
-      return geojsonData;
     })
     .catch(error => {
       console.error("There was a problem:", error);
     });
   }
 
-  // Function to show the modal
+  // Function to show modal based on data-item attribute
   function showCourseMapModal(event) {
     const itemID = event.target.getAttribute('data-item');
     const modal = document.getElementById(itemID);
@@ -115,7 +104,6 @@
       console.log(`Using Airtable record ID: ${airtableRecordId}`);
 
       showCourseMapModal(event);
-
       loadCourseMap(airtableRecordId);
     });
   });
