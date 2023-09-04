@@ -67,19 +67,14 @@
         }
       });
 
-      // Convert the 3D coordinates to 2D
-      const firstCoord = convertTo2DCoordinates(geojsonData.features[0].geometry.coordinates[0]);
-      const lastCoord = convertTo2DCoordinates(geojsonData.features[0].geometry.coordinates[geojsonData.features[0].geometry.coordinates.length - 1]);
+      // Use only the first 3D coordinate to center the map
+      const firstCoord3D = geojsonData.features[0].geometry.coordinates[0];
+      const firstCoord2D = convertTo2DCoordinates(firstCoord3D);
 
-      // Define bounds based on these points
-      const bounds = new mapboxgl.LngLatBounds(firstCoord, lastCoord);
-      map.fitBounds(bounds, { padding: 20 });
+      // Center the map on the first 2D coordinate
+      map.setCenter(firstCoord2D);
+      map.setZoom(12); // Set an appropriate zoom level
 
-      // Create a marker for the start point and add it to the map
-      new mapboxgl.Marker({ color: 'green' }).setLngLat(firstCoord).addTo(map);
-
-      // Create a marker for the end point and add it to the map
-      new mapboxgl.Marker({ color: 'red' }).setLngLat(lastCoord).addTo(map);
     });
   })
   .catch(error => {
