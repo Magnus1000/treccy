@@ -6,7 +6,6 @@
   const BASE_ID = "app1buEm2yEqxilPh";
   const TABLE_NAME = "tblFeROOPk4T3fLyr";
   const FIELD_NAME = "course_map_geojson_at";
-  const AIRTABLE_RECORD_ID = "{{wf {&quot;path&quot;:&quot;airtable-record-id-wf&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}";
 
   // Construct the API URL for Airtable
   const API_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${AIRTABLE_RECORD_ID}`;
