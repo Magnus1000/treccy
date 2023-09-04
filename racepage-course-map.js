@@ -45,25 +45,29 @@
       style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv'
     });
 
-    map.on('load', function() {
-      map.addSource('route', {
-        type: 'geojson',
-        data: geojsonData
-      });
-      map.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
-        layout: {},
-        paint: {
-          'line-color': '#888',
-          'line-width': 8
-        }
-      });
+  map.on('load', function() {
+    map.addSource('route', {
+      type: 'geojson',
+      data: geojsonData
+    });
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: 'route',
+      layout: {},
+      paint: {
+        'line-color': '#888',
+        'line-width': 8
+      }
+    });
 
-      // Use only the first 3D coordinate to center the map
-      const firstCoord3D = geojsonData.features[0].geometry.coordinates[0];
-      console.log("First 3D coordinate:", firstCoord3D);  // Log the first 3D coordinate
+    // Use only the first coordinate from the first set of 3D coordinates to center the map
+    const firstSetOfCoords = geojsonData.features[0].geometry.coordinates[0];
+    console.log("First set of 3D coordinates:", firstSetOfCoords);  // Log the first set of 3D coordinates
+
+    if (firstSetOfCoords.length > 0) {
+      const firstCoord3D = firstSetOfCoords[0];
+      console.log("First 3D coordinate from the set:", firstCoord3D);  // Log the first 3D coordinate from the set
 
       const firstCoord2D = convertTo2DCoordinates(firstCoord3D);
       console.log("First 2D coordinate:", firstCoord2D);  // Log the first 2D coordinate
@@ -73,9 +77,9 @@
       } catch (error) {
         console.error("Error setting center:", error);
       }
-      map.setZoom(12);  // Set an appropriate zoom level
-    });
-  })
+    }
+    map.setZoom(12);  // Set an appropriate zoom level
+  });
   .catch(error => {
     console.error("There was a problem:", error);
   });
