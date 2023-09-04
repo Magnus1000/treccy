@@ -4,8 +4,6 @@
   const BASE_ID = "app1buEm2yEqxilPh";
   const TABLE_NAME = "tblFeROOPk4T3fLyr";
   const FIELD_NAME = "course_map_geojson_at";
-
-  // This should be dynamically fetched from Webflow CMS
   const AIRTABLE_RECORD_ID = "{{wf {&quot;path&quot;:&quot;airtable-record-id-wf&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}";
 
   // Construct the API URL for Airtable
@@ -29,8 +27,6 @@
   .then(data => {
     const fileUrl = data.fields[FIELD_NAME][0].url;
     console.log("GeoJSON File URL:", fileUrl);
-
-    // Fetch the actual GeoJSON file
     return fetch(fileUrl);
   })
   .then(response => response.json())
@@ -49,13 +45,11 @@
       style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv'
     });
 
-    // Add GeoJSON data to the map
     map.on('load', function() {
       map.addSource('route', {
         type: 'geojson',
         data: geojsonData
       });
-
       map.addLayer({
         id: 'route',
         type: 'line',
@@ -69,12 +63,17 @@
 
       // Use only the first 3D coordinate to center the map
       const firstCoord3D = geojsonData.features[0].geometry.coordinates[0];
+      console.log("First 3D coordinate:", firstCoord3D);  // Log the first 3D coordinate
+
       const firstCoord2D = convertTo2DCoordinates(firstCoord3D);
+      console.log("First 2D coordinate:", firstCoord2D);  // Log the first 2D coordinate
 
-      // Center the map on the first 2D coordinate
-      map.setCenter(firstCoord2D);
-      map.setZoom(12); // Set an appropriate zoom level
-
+      try {
+        map.setCenter(firstCoord2D);
+      } catch (error) {
+        console.error("Error setting center:", error);
+      }
+      map.setZoom(12);  // Set an appropriate zoom level
     });
   })
   .catch(error => {
