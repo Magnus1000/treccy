@@ -125,13 +125,14 @@ closeButton.addEventListener('click', closeClaimRaceModal);
 
   // Add event listeners to all buttons with the class 'button-outline-small' to open modals
   document.querySelectorAll('.button-outline-small').forEach(button => {
-    button.addEventListener('click', function() {
-      showCourseMapModal();  
+    button.addEventListener('click', function(event) {
+      showCourseMapModal(event);  
       loadCourseMap();  
     });
+  });
 
-  // Add event listeners to all divs with the class 'close-modal' to close modals
+  // Add event listeners to all divs with the class 'exit-cross-div' to close modals
   document.querySelectorAll('.exit-cross-div').forEach(button => {
-    button.addEventListener('click', closeCourseMapModall);
+    button.addEventListener('click', closeCourseMapModal);
   });
 </script>
