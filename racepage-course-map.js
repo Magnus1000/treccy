@@ -13,7 +13,10 @@
 
   // Function to convert 3D coordinates to 2D
   function convertTo2DCoordinates(coord3D) {
-    return [coord3D[0], coord3D[1]]; // Take only the first two elements: longitude and latitude
+    console.log("Original 3D coordinates:", coord3D); // Log original 3D coordinates
+    const coord2D = [coord3D[0], coord3D[1]]; // Take only the first two elements: longitude and latitude
+    console.log("Converted 2D coordinates:", coord2D); // Log converted 2D coordinates
+    return coord2D;
   }
 
   // Fetch GeoJSON from Airtable based on the record ID
@@ -34,7 +37,6 @@
   .then(geojsonData => {
     console.log("Fetched GeoJSON Data:", geojsonData);
 
-    // Validate the GeoJSON data
     if (!geojsonData.features || !geojsonData.features[0] || !geojsonData.features[0].geometry.coordinates) {
       console.error("Invalid GeoJSON data.");
       return;
