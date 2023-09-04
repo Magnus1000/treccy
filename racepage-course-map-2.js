@@ -117,15 +117,4 @@
   document.querySelectorAll('.exit-cross-div').forEach(button => {
     button.addEventListener('click', closeCourseMapModal);
   });
-
-  // Attaching the click event to the open button
-  const button = document.getElementById('added_by_treccy');
-  button.addEventListener('click', openClaimRaceModal);
-
-  // Attaching the click event to the close button
-  const closeButton = document.getElementById('close_claim_modal');
-  closeButton.addEventListener('click', closeClaimRaceModal);
-
-  // Adding an event listener to the button with ID 'backButton'
-  document.getElementById("backButton").addEventListener("click", goBack);
 </script>
