@@ -70,43 +70,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 <script>
 // Function to open the modal
-function openClaimRaceModal() {
-  const modal = document.getElementById('claim-race-modal');
-  modal.style.display = 'flex';
-}
+  function openClaimRaceModal() {
+    const modal = document.getElementById('claim-race-modal');
+    modal.style.display = 'flex';
+  }
 
-// Function to close the modal
-function closeClaimRaceModal() {
-  const modal = document.getElementById('claim-race-modal');
-  modal.style.display = 'none';
-}
+  // Function to close the modal
+  function closeClaimRaceModal() {
+    const modal = document.getElementById('claim-race-modal');
+    modal.style.display = 'none';
+  }
 
-// Attaching the click event to the open button
-const button = document.getElementById('added_by_treccy');
-button.addEventListener('click', openClaimRaceModal);
-
-// Attaching the click event to the close button
-const closeButton = document.getElementById('close_claim_modal');
-closeButton.addEventListener('click', closeClaimRaceModal);
-
-</script>
-
-<script>
   // Function to go back in the user's history
   function goBack() {
-    // Go back one step in the browser's history
     window.history.back();
-      
-    // Log to console
     console.log("Back button was clicked.");
   }
-    
+
+  // Attaching the click event to the open button
+  const button = document.getElementById('added_by_treccy');
+  button.addEventListener('click', openClaimRaceModal);
+
+  // Attaching the click event to the close button
+  const closeButton = document.getElementById('close_claim_modal');
+  closeButton.addEventListener('click', closeClaimRaceModal);
+
   // Adding an event listener to the button with ID 'backButton'
   document.getElementById("backButton").addEventListener("click", goBack);
-</script>
-
-<script>
-  // Close all modals with the class 'popup-modal-wrapper'
+  
+    // Close all modals with the class 'popup-modal-wrapper'
   function closeCourseMapModal() {
     const modals = document.querySelectorAll('.popup-modal-wrapper');
     modals.forEach(modal => {
@@ -115,24 +107,9 @@ closeButton.addEventListener('click', closeClaimRaceModal);
     console.log('Closed all modals');
   }
 
-  // Show Modal based on data-item attribute
-  function showCourseMapModal(event) {
-    const itemID = event.target.getAttribute('data-item');
-    const modal = document.getElementById(itemID);
-    modal.style.display = 'flex';
-    console.log(`Showing modal with ID: ${itemID}`);
-  }
-
-  // Add event listeners to all buttons with the class 'button-outline-small' to open modals
-  document.querySelectorAll('.button-outline-small').forEach(button => {
-    button.addEventListener('click', function(event) {
-      showCourseMapModal(event);  
-      loadCourseMap();  
-    });
-  });
-
   // Add event listeners to all divs with the class 'exit-cross-div' to close modals
   document.querySelectorAll('.exit-cross-div').forEach(button => {
     button.addEventListener('click', closeCourseMapModal);
   });
+
 </script>
