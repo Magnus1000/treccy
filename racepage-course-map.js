@@ -6,7 +6,7 @@
   const FIELD_NAME = "course_map_geojson_at";
   
   // This should be dynamically fetched from Webflow CMS
-  const AIRTABLE_RECORD_ID = "your_fetched_airtable_record_id_here";
+  const AIRTABLE_RECORD_ID = "{{wf {&quot;path&quot;:&quot;airtable-record-id-wf&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}";
 
   // Construct the API URL for Airtable
   const API_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${AIRTABLE_RECORD_ID}`;
@@ -28,10 +28,10 @@
   .then(response => response.json())
   .then(geojsonData => {
     // Initialize Mapbox
-    mapboxgl.accessToken = 'your_mapbox_access_token_here';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
     const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11'
+      container: 'mapbox-course-map',
+      style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv'
     });
 
     // Add GeoJSON data to the map
