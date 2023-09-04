@@ -39,10 +39,17 @@
       return;
     }
 
+    // Locate the appropriate div where the map should be loaded
+    const mapDiv = document.querySelector(`div[map-data-item="${AIRTABLE_RECORD_ID}"]`);
+    if (!mapDiv) {
+      console.error(`No div found with map-data-item="${AIRTABLE_RECORD_ID}"`);
+      return;
+    }
+
     // Initialize Mapbox
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
     const map = new mapboxgl.Map({
-      container: 'mapbox-course-map',
+      container: mapDiv,
       style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv'
     });
 
