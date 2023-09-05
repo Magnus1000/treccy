@@ -7,13 +7,27 @@ function getElementValue(id) {
   return document.getElementById(id).value;
 }
 
+// Function to convert date string to ISO format
+function convertToISO(dateStr) {
+  const parts = dateStr.split(" ");
+  const months = {
+    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+  };
+  return new Date(Date.UTC(parseInt("20" + parts[2]), months[parts[1]], parseInt(parts[0]))).toISOString();
+}
+
 // Function to get date range from the date picker input
 function getDateRange() {
-  const dateRange = $('input[name="datefilter"]').val();
+  const dateRange = document.getElementById('dateRange').value;
   if (!dateRange) {
     return { fromDate: '', toDate: '' };
   }
-  const [fromDate, toDate] = dateRange.split(' - ');
+  const [fromDateStr, toDateStr] = dateRange.split(' - ');
+  
+  const fromDate = convertToISO(fromDateStr);
+  const toDate = convertToISO(toDateStr);
+  
   return { fromDate, toDate };
 }
 
