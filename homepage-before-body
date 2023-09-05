@@ -1,3 +1,53 @@
+<!-- 💙 MEMBERSCRIPT #62 v0.1 💙 DATE RANGE PICKER -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+<!-- Original date picker CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<!-- Your custom date picker CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/Magnus1000/treccy@main/date-range-picker.css" />
+
+<style>
+
+	.daterangepicker .drp-buttons .btn {
+    	font-weight: 400;
+	}
+  .daterangepicker td.active {
+    background-color: #BFF103 !important ;
+  }
+  .daterangepicker {
+      z-index:100000!important ;
+			border-radius: 5px;
+  		font-family: inherit;
+}
+
+	.daterangepicker td.in-range {	
+  background-color: #E6E4D5;	
+  color: #1B2B1C;	
+}
+td.off.ends.active.start-date.available {
+    background-color: transparent!important;
+}
+
+td.off.ends.active.end-date.in-range.available {
+    background-color: transparent!important;
+}
+
+</style>
+
+<!-- Hide Checkbox CSS -->
+<style>
+input[type="checkbox"]{
+    display: none;
+  }
+  
+.w-checkbox.checkbox-buttons.active-filter {
+background-color: #1B2B1C;
+color: #ffffff;
+</style>
+
 <script type="text/javascript">
 $(function() {
 
