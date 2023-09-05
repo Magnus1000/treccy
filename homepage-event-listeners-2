@@ -7,60 +7,57 @@ function getElementValue(id) {
   return document.getElementById(id).value;
 }
 
-// Function to get date range from the date picker input
-function getDateRange() {
-  const dateRange = $('input[name="datefilter"]').val();
-  if (!dateRange) {
-    return { fromDate: '', toDate: '' };
-  }
-  const [fromDate, toDate] = dateRange.split(' - ');
-  return { fromDate, toDate };
-}
-
-// Update URL params with filters
-function updateURLWithFilters() {
-  // Get discipline values from checked checkboxes
-  const selectedDisciplines = Array.from(document.querySelectorAll('.disciplinefilter_checkbox'))
-    .filter(checkbox => checkbox.checked)
-    .map(checkbox => checkbox.getAttribute('filter-value'));
-
-  // Log the selected disciplines to the console
-  console.log('Selected discipline filters:', selectedDisciplines);
-
- // Get the fromDate and toDate from the date picker
- const { fromDate, toDate } = getDateRange();
-
-  // Filters collection
-  const filters = {
-    minDist: getElementValue('minimum-distance'),
-    maxDist: getElementValue('maximum-distance'),
-    locationRange: getElementValue('location_range'),
-    fromDate,
-    toDate,
-    type: document.querySelector('input[name="type"]:checked')?.value,
-    location: getElementValue('location-search-bar'),
-    lat: document.getElementById('location-search-bar').getAttribute('data-lat'),
-    lng: document.getElementById('location-search-bar').getAttribute('data-lon'),
-  };
-
-  let params = new URLSearchParams();
-
-  // Add selected disciplines to URL parameters
-  selectedDisciplines.forEach((discipline, index) => {
-    params.append(`discipline${index}`, discipline);
-  });
-
-  // Add other filters to URL parameters
-  for (const [key, value] of Object.entries(filters)) {
-    if (value) params.set(key, value);
+  // Function to get date range from the date picker input
+  function getDateRange() {
+    const dateRange = $('input[name="datefilter"]').val();
+    if (!dateRange) {
+      return { fromDate: '', toDate: '' };
+    }
+    const [fromDate, toDate] = dateRange.split(' - ');
+    return { fromDate, toDate };
   }
 
-  // Log the final parameters to the console
-  console.log('Final URL parameters:', params.toString());
+  // Update URL params with filters
+  function updateURLWithFilters() {
+    // Get discipline values from checked checkboxes
+    const selectedDisciplines = Array.from(document.querySelectorAll('.disciplinefilter_checkbox'))
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.getAttribute('filter-value'));
 
-  // Update the URL without causing a page reload
-  history.pushState({}, '', '?' + params.toString());
-}
+    // Log the selected disciplines to the console
+    console.log('Selected discipline filters:', selectedDisciplines);
+
+    // Get the fromDate and toDate from the date picker
+    const { fromDate, toDate } = getDateRange();
+
+    // Filters collection
+    const filters = {
+      minDist: getElementValue('minimum-distance'),
+      maxDist: getElementValue('maximum-distance'),
+      locationRange: getElementValue('location_range'),
+      fromDate,  // Add the fromDate
+      toDate,  // Add the toDate
+      // Existing filters ...
+    };
+
+    let params = new URLSearchParams();
+
+    // Add selected disciplines to URL parameters
+    selectedDisciplines.forEach((discipline, index) => {
+      params.append(`discipline${index}`, discipline);
+    });
+
+    // Add other filters to URL parameters
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) params.set(key, value);
+    }
+
+    // Log the final parameters to the console
+    console.log('Final URL parameters:', params.toString());
+
+    // Update the URL without causing a page reload
+    history.pushState({}, '', '?' + params.toString());
+  }
 
 function showFilterForm() {
   const filterFormDiv = document.getElementById('filterForm');
