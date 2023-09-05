@@ -51,7 +51,7 @@ $(function() {
   $('input[ms-code-input="date-range"]').daterangepicker({
       "opens": "center",
       "locale": {
-        "format": "DD/MM/YYYY",
+        "format": "D MMM YY",
         "separator": " - ",
         "applyLabel": "Apply",
         "cancelLabel": "Cancel",
@@ -86,7 +86,7 @@ $(function() {
   });
 
   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+      $(this).val(picker.startDate.format('D MMM YY') + ' - ' + picker.endDate.format('D MMM YY'));
   });
 
   $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
