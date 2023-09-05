@@ -78,8 +78,9 @@
           source: 'route',
           layout: {},
           paint: {
-            'line-color': '#888',
-            'line-width': 8
+            'line-color': '#FF6201',
+            'line-width': 2,
+            'line-gap-width': 2
           }
         });
       });
