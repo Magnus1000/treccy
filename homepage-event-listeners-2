@@ -7,27 +7,41 @@ function getElementValue(id) {
   return document.getElementById(id).value;
 }
 
-// Function to convert date string to ISO format
-function convertToISO(dateStr) {
+// Function to convert date string to Unix timestamp
+function convertToUnix(dateStr) {
+  // Split the date string into its parts (day, month, year)
   const parts = dateStr.split(" ");
   const months = {
     Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
     Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
   };
-  return new Date(Date.UTC(parseInt("20" + parts[2]), months[parts[1]], parseInt(parts[0]))).toISOString();
+  const date = new Date(Date.UTC(parseInt("20" + parts[2]), months[parts[1]], parseInt(parts[0])));
+  const unixTimestamp = date.getTime();
+  console.log(`The Unix timestamp is ${unixTimestamp}`);
+  return unixTimestamp;
 }
 
 // Function to get date range from the date picker input
 function getDateRange() {
   const dateRange = document.getElementById('dateRange').value;
   if (!dateRange) {
+    window.fromDate = '';
+    window.toDate = '';
     return { fromDate: '', toDate: '' };
   }
   const [fromDateStr, toDateStr] = dateRange.split(' - ');
-  
-  const fromDate = convertToISO(fromDateStr);
-  const toDate = convertToISO(toDateStr);
-  
+
+  // Convert the date strings to Unix timestamps
+  const fromDate = convertToUnix(fromDateStr);
+  const toDate = convertToUnix(toDateStr);
+
+  // Assign the values to the window object, making them global
+  window.fromDate = fromDate;
+  window.toDate = toDate;
+
+  // Log the date ranges to the console for debugging
+  console.log(`The from date is ${fromDate} and the to date is ${toDate}`);
+
   return { fromDate, toDate };
 }
 
