@@ -1,4 +1,5 @@
 <!-- ############################################ EVENT LISTENERS 2 ############################################ -->
+<!-- This script contains the logic to add the filters to the URL params -->
 <script>
 
 const searchInput = document.getElementById('location-search-bar');
