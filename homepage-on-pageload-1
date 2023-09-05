@@ -126,17 +126,20 @@ function formatDate(dateString) {
 }
 
 // Function to fetch Algolia Results
-async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
+async function fetchAlgoliaResults(lat, lng, radius, fromDateUnix, toDateUnix, page = 0) {
     console.log("Fetching Algolia Results...");
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const filters = [];
 
-    // Add your date filters for Algolia here (in Unix timestamp format)
-    filters.push("date_ag >= 1678896000000 AND date_ag <= 1694768400000");
+    // Use fromDateUnix and toDateUnix if they are valid
+    if (fromDateUnix && toDateUnix) {
+      filters.push(`date_ag >= ${fromDateUnix} AND date_ag <= ${toDateUnix}`);
+    }
     
     let minDist = null;
     let maxDist = null;
+
     // Iterate through all parameters and build the filters dynamically
     urlSearchParams.forEach((value, key) => {
         if (key === 'view' || value === '' || value === 'NaN') {
