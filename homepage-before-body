@@ -46,9 +46,10 @@ color: #ffffff;
 </style>
 
 <script type="text/javascript">
-$(function() {
-
-  $('input[ms-code-input="date-range"]').daterangepicker({
+  $(document).ready(function() {
+    // Initialize date picker with autoUpdateInput set to false
+    $('input[ms-code-input="date-range"]').daterangepicker({
+      autoUpdateInput: false,  // This ensures that the input field starts empty
       "opens": "center",
       "locale": {
         "format": "D MMM YY",
@@ -59,39 +60,22 @@ $(function() {
         "toLabel": "To",
         "customRangeLabel": "Custom",
         "weekLabel": "W",
-        "daysOfWeek": [
-            "Su",
-            "Mo",
-            "Tu",
-            "We",
-            "Th",
-            "Fr",
-            "Sa"
-        ],
-        "monthNames": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        ],
-    },
-  });
+        "daysOfWeek": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+        "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      }
+    });
+    console.log("Date picker initialized without auto update"); // Log message to console
 
-  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+    // When the 'Apply' button is clicked on the date picker
+    $('input[ms-code-input="date-range"]').on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('D MMM YY') + ' - ' + picker.endDate.format('D MMM YY'));
-  });
+      console.log("Date range applied");  // Log message to console
+    });
 
-  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-      $(this).val('');
+    // When the 'Cancel' button is clicked on the date picker
+    $('input[ms-code-input="date-range"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');  // This ensures that the input field is cleared
+      console.log("Date range cleared");  // Log message to console
+    });
   });
-
-});
 </script>
