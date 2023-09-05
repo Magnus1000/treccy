@@ -142,6 +142,10 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
         if (key.startsWith('discipline')) {
             // Handle discipline parameters separately since they are arrays
             filters.push(`disciplines_ag:${value}`);
+        } else if (key === 'minDist') {
+            filters.push(`distance_ag >= ${value}`);
+        } else if (key === 'maxDist') {
+            filters.push(`distance_ag <= ${value}`);
         } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
             // Handle other parameters as key-value pairs
             filters.push(`${key}:${value}`);
