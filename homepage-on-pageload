@@ -126,32 +126,39 @@ function formatDate(dateString) {
     return formattedDate;
 }
 
-  // Function to fetch Algolia Results
+// Function to fetch Algolia Results
 async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     console.log("Fetching Algolia Results...");
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const filters = [];
-
+    
+    let minDist = null;
+    let maxDist = null;
     // Iterate through all parameters and build the filters dynamically
     urlSearchParams.forEach((value, key) => {
-        if (key === 'view') {
-            // Ignore the "view" parameter
+        if (key === 'view' || value === '' || value === 'NaN') {
+            // Ignore the "view" parameter and any empty or 'NaN' values
             return;
         }
         if (key.startsWith('discipline')) {
-            // Handle discipline parameters separately since they are arrays
             filters.push(`disciplines_ag:${value}`);
         } else if (key === 'minDist') {
-            filters.push(`distances_ag >= ${value}`);
+            minDist = value;
         } else if (key === 'maxDist') {
-            filters.push(`distances_ag <= ${value}`);
+            maxDist = value;
         } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
-            // Handle other parameters as key-value pairs
             filters.push(`${key}:${value}`);
         }
     });
 
+    if (minDist && maxDist) {
+        filters.push(`distances_ag:${minDist} TO ${maxDist}`);
+    } else if (minDist) {
+        filters.push(`distances_ag >= ${minDist}`);
+    } else if (maxDist) {
+        filters.push(`distances_ag <= ${maxDist}`);
+    }
     // Prepare search parameters
     const searchParams = {
         hitsPerPage: 20,
