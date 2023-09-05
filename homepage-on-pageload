@@ -126,34 +126,40 @@ function formatDate(dateString) {
     return formattedDate;
 }
 
-  // Function to fetch Algolia Results
+// Function to fetch Algolia Results
 async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
-    console.log("Fetching Algolia Results...");
+  // Initialize an empty array to hold filters
+  const filters = [];
 
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const filters = [];
+  // Your other Algolia configurations
+  const client = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
+  const index = client.initIndex('YourIndexName');
 
-    // Iterate through all parameters and build the filters dynamically
-    urlSearchParams.forEach((value, key) => {
-        if (key === 'view') {
-            // Ignore the "view" parameter
-            return;
-        }
+  // Iterate through all parameters and build the filters dynamically
+  urlSearchParams.forEach((value, key) => {
+    if (key === 'view') {
+      // Ignore the "view" parameter
+      return;
+    }
 
-        if (key.startsWith('discipline')) {
-            filters.push(`disciplines_ag:${value}`);
-        } else if (key === 'minDist') {
-            filters.push(`distance_ag >= ${value}`);
-        } else if (key === 'maxDist') {
-            filters.push(`distance_ag <= ${value}`);
-        } else if (key === 'fromDate') {
-            filters.push(`date_ag >= ${value}`);
-        } else if (key === 'toDate') {
-            filters.push(`date_ag <= ${value}`);
-        } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
-            filters.push(`${key}:${value}`);
-        }
-    });
+    if (key.startsWith('discipline')) {
+      filters.push(`disciplines_ag:${value}`);
+    } else if (key === 'minDist') {
+      filters.push(`distance_ag >= ${value}`);
+    } else if (key === 'maxDist') {
+      filters.push(`distance_ag <= ${value}`);
+    } else if (key === 'fromDate') {
+      // Convert the date to a Unix timestamp
+      const fromDateTimestamp = new Date(value).getTime();
+      filters.push(`date_ag >= ${fromDateTimestamp}`);
+    } else if (key === 'toDate') {
+      // Convert the date to a Unix timestamp
+      const toDateTimestamp = new Date(value).getTime();
+      filters.push(`date_ag <= ${toDateTimestamp}`);
+    } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
+      filters.push(`${key}:${value}`);
+    }
+  });
 
     // Prepare search parameters
     const searchParams = {
