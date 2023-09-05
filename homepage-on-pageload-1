@@ -132,6 +132,9 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const filters = [];
+
+    // Add your date filters for Algolia here (in Unix timestamp format)
+    filters.push("date_ag >= 1678896000000 AND date_ag <= 1694768400000");
     
     let minDist = null;
     let maxDist = null;
