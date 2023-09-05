@@ -6,9 +6,6 @@
 <!-- Original date picker CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-<!-- Your custom date picker CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/Magnus1000/treccy@main/date-range-picker.css" />
-
 <style>
 
 	.daterangepicker .drp-buttons .btn {
