@@ -1,3 +1,5 @@
+<!-- ############################################ EVENT LISTENERS 3 ############################################ -->
+<!-- This script handles all of the favoriting/likes functionality including displaying the hearts, styling them and adding event listeners -->
 <script>
 document.addEventListener('DOMContentLoaded', async (event) => {
   console.log("DOM fully loaded and parsed");
