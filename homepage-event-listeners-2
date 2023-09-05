@@ -62,6 +62,16 @@ function getElementValue(id) {
   return document.getElementById(id).value;
 }
 
+// Function to get date range from the date picker input
+function getDateRange() {
+  const dateRange = $('input[name="datefilter"]').val();
+  if (!dateRange) {
+    return { fromDate: '', toDate: '' };
+  }
+  const [fromDate, toDate] = dateRange.split(' - ');
+  return { fromDate, toDate };
+}
+
 // Update URL params with filters
 function updateURLWithFilters() {
   // Get discipline values from checked checkboxes
@@ -72,13 +82,16 @@ function updateURLWithFilters() {
   // Log the selected disciplines to the console
   console.log('Selected discipline filters:', selectedDisciplines);
 
+ // Get the fromDate and toDate from the date picker
+ const { fromDate, toDate } = getDateRange();
+
   // Filters collection
   const filters = {
     minDist: getElementValue('minimum-distance'),
     maxDist: getElementValue('maximum-distance'),
     locationRange: getElementValue('location_range'),
-    fromDate: getElementValue('dateFrom'),
-    toDate: getElementValue('dateTo'),
+    fromDate,
+    toDate,
     type: document.querySelector('input[name="type"]:checked')?.value,
     location: getElementValue('location-search-bar'),
     lat: document.getElementById('location-search-bar').getAttribute('data-lat'),
