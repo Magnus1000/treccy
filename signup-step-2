@@ -1,0 +1,10 @@
+<!-- Hide Checkbox CSS -->
+<style>
+input[type="checkbox"]{
+    display: none;
+  }
+  
+.w-checkbox.checkbox-buttons.active-filter {
+background-color: #1B2B1C;
+color: #ffffff;
+</style>
