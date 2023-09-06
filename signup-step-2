@@ -1,3 +1,10 @@
+<!-- This script loads the necessary scripts for the homepage and loads the results from Algolia based on the URL params. It also adds event handlers to the like buttons. -->
+<!-- Mapbox styles and scripts -->
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+
 <!-- Hide Checkbox CSS -->
 <style>
 input[type="checkbox"]{
@@ -5,26 +12,104 @@ input[type="checkbox"]{
   }
   
 .w-checkbox.checkbox-buttons.active-filter {
-background-color: #1B2B1C;
-color: #ffffff;
+    background-color: #1B2B1C;
+    color: #ffffff;
+}
 </style>
 
 <script>
 function initializeCheckboxStyling() {
     function updateCheckboxStyling() {
+        console.log('Checkbox changed');  // Debug: Log when a checkbox changes
         const spanElement = this.nextElementSibling;
         const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
+        console.log('Parent label:', parentLabel);  // Debug: Log the parent label
+
         if (this.checked) {
+            console.log('Checkbox is checked');  // Debug: Log when checkbox is checked
             parentLabel.classList.add("active-filter");
         } else {
+            console.log('Checkbox is not checked');  // Debug: Log when checkbox is not checked
             parentLabel.classList.remove("active-filter");
         }
     }
 
     const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
+    console.log('Found checkboxes:', checkboxes);  // Debug: Log the checkboxes found
+
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener("change", updateCheckboxStyling);
-        updateCheckboxStyling.call(checkbox); // Call it initially for each checkbox
+        updateCheckboxStyling.call(checkbox);  // Call it initially for each checkbox
     });
 }
+
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("Document Ready...");
+    initializeCheckboxStyling();
+
+});
+</script>
+
+<!-- This script contains the logic to auto-fill the country dropdown on the filter form -->
+<script>
+const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+const searchInput = document.getElementById('location-search-bar');
+const suggestionsBox = document.getElementById('suggestions');
+
+// Attach event listener to search input
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+
+    if (query === "") {
+        suggestionsBox.innerHTML = "";
+        suggestionsBox.classList.remove('active'); // Hide suggestions
+        suggestionsBox.style.display = "none"; // Hide using CSS
+        return; // Exit if the query is empty
+    }
+
+    // Call the Mapbox Geocoding endpoint
+    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxToken}&types=place,region,country`)
+        .then(response => response.json())
+        .then(data => {
+            // Check if features are available
+            if (data.features && data.features.length > 0) {
+                suggestionsBox.classList.add('active'); // Show suggestions
+                suggestionsBox.style.display = "flex"; // Show using CSS
+                suggestionsBox.innerHTML = "";
+
+                const suggestions = data.features;
+                suggestions.forEach(suggestion => {
+                    // Create suggestion text
+                    const placeName = suggestion.place_name;
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.classList.add('suggestion-item'); // Assign class
+
+                    // Create and add Font Awesome icon
+                    const iconElement = document.createElement('i');
+                    iconElement.className = 'fa-light fa-location-dot';
+                    suggestionItem.appendChild(iconElement);
+
+                    suggestionItem.appendChild(document.createTextNode(placeName));
+                    suggestionsBox.appendChild(suggestionItem);
+
+                    // Add click event listener to each suggestion
+                    suggestionItem.addEventListener('click', () => {
+                        // Populate the search bar with the selected suggestion
+                        searchInput.value = placeName;
+                        // Store latitude and longitude as attributes
+                        searchInput.setAttribute('data-lat', suggestion.geometry.coordinates[1]);
+                        searchInput.setAttribute('data-lon', suggestion.geometry.coordinates[0]);
+                        // Clear the suggestions
+                        suggestionsBox.innerHTML = "";
+                        suggestionsBox.classList.remove('active'); // Hide suggestions
+                        suggestionsBox.style.display = "none"; // Hide using CSS
+                    });
+                });
+            } else {
+                suggestionsBox.classList.remove('active'); // Hide suggestions
+                suggestionsBox.style.display = "none"; // Hide using CSS
+            }
+        })
+        .catch(error => console.error(error));
+});
 </script>
