@@ -133,11 +133,26 @@ async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const filters = [];
 
-    // Add your date filters for Algolia here (in Unix timestamp format)
-    filters.push("date_ag >= 1678896000000 AND date_ag <= 1694768400000");
-    
+    // Check if fromDate and toDate are set in the global scope
+    let fromDate = window.fromDate;
+    let toDate = window.toDate;
+
+    // If not set, default to today and today + 60 days
+    if (!fromDate || !toDate) {
+      const today = new Date();
+      const sixtyDaysLater = new Date(today);
+      sixtyDaysLater.setDate(today.getDate() + 60);
+
+      fromDate = today.getTime();
+      toDate = sixtyDaysLater.getTime();
+    }
+
+    // Add date filters for Algolia
+    filters.push(`date_ag >= ${fromDate} AND date_ag <= ${toDate}`);
+
     let minDist = null;
     let maxDist = null;
+
     // Iterate through all parameters and build the filters dynamically
     urlSearchParams.forEach((value, key) => {
         if (key === 'view' || value === '' || value === 'NaN') {
