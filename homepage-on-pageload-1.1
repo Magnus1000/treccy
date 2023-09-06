@@ -1,0 +1,184 @@
+<!-- This script loads the necessary scripts for the homepage and loads the results from Algolia based on the URL params. -->
+<!-- Mapbox styles and scripts -->
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+
+<script>
+  // Log the initiation of the script
+  console.log("Script Initiated");
+
+  // Globals and Configuration
+  const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
+  const algoliaConfig = {
+    appId: "CWUIX0EWFE",
+    apiKey: "4cd4c82105f395affbc472c07a9789c8",
+    indexName: 'treccy_races_all'
+  };
+
+  // Initialize when the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    checkAndLoadAlgoliaResults(); // Call it here
+  });
+
+  // Function to populate race cards
+  function populateRaceCards(results) {
+    console.log("Populating Race Cards...");
+
+    const algoliaRacesDiv = document.getElementById('algoliaRaces');
+
+    results.forEach(result => {
+      console.log("result.slug_ag:", result.slug_ag);
+      const raceCardTemplate = document.getElementById("race-card");
+      const newRaceCard = raceCardTemplate.cloneNode(true);
+      newRaceCard.removeAttribute('id');
+      newRaceCard.style.display = 'flex';
+
+      const formattedDate = formatDate(result.date_ag); 
+      newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
+      newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
+      newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
+      newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
+      newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
+      newRaceCard.querySelector('.race-card-heading-right').textContent = result.distances_ag;
+      newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
+      newRaceCard.querySelector('.race-country-text').textContent = result.country_ag; 
+      newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+
+      algoliaRacesDiv.appendChild(newRaceCard);
+    });
+  }
+
+  // Date formatting function
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const year = date.getFullYear().toString().substr(-2);
+    const formattedDate = `${day} ${month} ${year}`;
+    console.log("Formatted date:", formattedDate);
+    return formattedDate;
+  }
+
+  // Asynchronous function to fetch Algolia Results
+  async function fetchAlgoliaResults(lat, lng, radius, page = 0) {
+    console.log("Fetching Algolia Results...");
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const filters = [];
+
+    // Check if fromDate and toDate are set in the global scope
+    let fromDate = window.fromDate;
+    let toDate = window.toDate;
+
+    // If not set, default to today and today + 60 days
+    if (!fromDate || !toDate) {
+      const today = new Date();
+      const sixtyDaysLater = new Date(today);
+      sixtyDaysLater.setDate(today.getDate() + 60);
+
+      fromDate = today.getTime();
+      toDate = sixtyDaysLater.getTime();
+    }
+
+    // Add date filters for Algolia
+    filters.push(`date_ag >= ${fromDate} AND date_ag <= ${toDate}`);
+
+    let minDist = null;
+    let maxDist = null;
+
+    // Iterate through all parameters and build the filters dynamically
+    urlSearchParams.forEach((value, key) => {
+        if (key === 'view' || value === '' || value === 'NaN') {
+            // Ignore the "view" parameter and any empty or 'NaN' values
+            return;
+        }
+        if (key.startsWith('discipline')) {
+            filters.push(`disciplines_ag:${value}`);
+        } else if (key === 'minDist') {
+            minDist = value;
+        } else if (key === 'maxDist') {
+            maxDist = value;
+        } else if (key !== 'lat' && key !== 'lng' && key !== 'locationRange') {
+            filters.push(`${key}:${value}`);
+        }
+    });
+
+    if (minDist && maxDist) {
+        filters.push(`distances_ag:${minDist} TO ${maxDist}`);
+    } else if (minDist) {
+        filters.push(`distances_ag >= ${minDist}`);
+    } else if (maxDist) {
+        filters.push(`distances_ag <= ${maxDist}`);
+    }
+    // Prepare search parameters
+    const searchParams = {
+        hitsPerPage: 20,
+        filters: filters.join(' AND '),
+        page: page
+    };
+
+    // Include aroundLatLng and aroundRadius if lat and lng are valid numbers
+    if (!isNaN(lat) && !isNaN(lng)) {
+        searchParams.aroundLatLng = `${lat},${lng}`;
+        if (!isNaN(radius)) {
+            searchParams.aroundRadius = radius;
+        }
+    }
+
+    const searchClient = algoliasearch(algoliaConfig.appId, algoliaConfig.apiKey);
+    const index = searchClient.initIndex(algoliaConfig.indexName);
+
+    console.log("Filters being sent to Algolia:", filters);
+
+    // URL encode the filters before building the debug URL
+    const encodedFilters = encodeURIComponent(filters.join(' AND '));
+    const debugURL = `https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/${algoliaConfig.indexName}/query?hitsPerPage=20&aroundLatLng=${lat},${lng}&aroundRadius=${radius}&filters=${encodedFilters}`;
+    console.log("Debug URL with parameters:", debugURL);
+
+    try {
+        const results = await index.search('', searchParams);
+        console.log("Algolia Search Results:", results);
+
+        // Update the global algoliaResults variable with the fetched results
+        algoliaResults = results.hits;
+
+        return results.hits;
+    } catch (error) {
+        console.error("An error occurred while fetching Algolia results:", error);
+        return [];
+    }
+}
+
+  // Asynchronous function to load Algolia Results into a HTML Div
+  async function loadAlgoliaResultsToDiv(lat, lng, radius, page = 0) {
+    const results = await fetchAlgoliaResults(lat, lng, radius, page);
+    if (results.length > 0) {
+      populateRaceCards(results);
+    } else {
+      console.log("No results found.");
+      // Optionally, insert a "No results found" message into the HTML here
+    }
+  }
+
+  // Function to check if URL parameters are available and load Algolia results based on that
+  function checkAndLoadAlgoliaResults() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlSearchParams.get('lat'));
+    const lng = parseFloat(urlSearchParams.get('lng'));
+    const locationRange = parseFloat(urlSearchParams.get('locationRange'));
+
+    // Check the lat, lng and locationRange values and log appropriate messages
+    if (isNaN(lat) || isNaN(lng)) {
+      console.log("Latitude and Longitude parameters are missing or invalid. Continuing without location-based search.");
+    }
+
+    if (isNaN(locationRange)) {
+      console.log("Location Range parameter is missing or invalid. Continuing with default or no radius.");
+    }
+
+    // Load Algolia Results into HTML Div
+    loadAlgoliaResultsToDiv(lat, lng, locationRange);
+  }
+</script>
