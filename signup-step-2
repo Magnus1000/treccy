@@ -8,3 +8,23 @@ input[type="checkbox"]{
 background-color: #1B2B1C;
 color: #ffffff;
 </style>
+
+<script>
+function initializeCheckboxStyling() {
+    function updateCheckboxStyling() {
+        const spanElement = this.nextElementSibling;
+        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
+        if (this.checked) {
+            parentLabel.classList.add("active-filter");
+        } else {
+            parentLabel.classList.remove("active-filter");
+        }
+    }
+
+    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateCheckboxStyling);
+        updateCheckboxStyling.call(checkbox); // Call it initially for each checkbox
+    });
+}
+</script>
