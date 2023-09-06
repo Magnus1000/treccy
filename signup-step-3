@@ -1,0 +1,51 @@
+<!-- Hide Checkbox CSS -->
+<style>
+input[type="checkbox"] {
+    display: none;
+}
+
+.w-checkbox.checkbox-buttons.active-filter {
+    background-color: #1B2B1C;
+    color: #ffffff;
+}
+</style>
+
+<!-- Combined Script -->
+<script>
+// This waits until the HTML is fully loaded
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("Document Ready...");
+
+    // Function to initialize checkbox styling
+    function initializeCheckboxStyling() {
+        // Here you'll put the code related to checkbox styling.
+    }
+
+    // Call function to initialize checkbox styling
+    initializeCheckboxStyling();
+
+    // Adding a timeout to give time for the button to be available in the DOM
+    setTimeout(() => {
+        // Debug: Log before trying to find the button
+        console.log("About to look for button...");
+
+        const button = document.getElementById("step-3-finish");
+
+        // Debug: Log the type of the button variable
+        console.log("Type of button variable: ", typeof button);
+
+        if (button !== null) {
+            // Debug: Log if the button is found
+            console.log("Button found");
+
+            button.addEventListener("click", () => {
+                console.log("Button clicked");  // Debug: Log if the button is clicked
+                window.location.href = "https://www.treccy.com/";
+            });
+        } else {
+            // Debug: Log if the button is not found
+            console.log("Button not found");
+        }
+    }, 1000); // Waiting 1 second before checking for the button
+});
+</script>
