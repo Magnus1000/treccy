@@ -14,15 +14,3 @@
     $(".horizontal-menu-item[data-url='" + path + "']").addClass("active-horizontal-menu-item");
   });
 </script>
-
-<style>
-input[type="checkbox"]{
-    display: none;
-}
-  
-.w-checkbox.checkbox-buttons.active-filter {
-  background-color: black !important;
-  color: white !important;
-}
-
-</style>
