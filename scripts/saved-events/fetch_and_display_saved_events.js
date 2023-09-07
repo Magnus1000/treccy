@@ -67,6 +67,10 @@ function populateRaceCards(results) {
 
     algoliaRacesDiv.appendChild(newRaceCard);
   });
+  
+    // Call initLikeButtons here, after new content has been added
+    console.log("New cards populated. Re-initializing like-buttons.");
+    initLikeButtons();  
 }
 
 // Fetching the member data and liked race IDs
