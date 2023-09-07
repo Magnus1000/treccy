@@ -1,5 +1,3 @@
-<!-- ############################################ EVENT LISTENERS 5 ############################################ -->
-<!-- This script contains the logic to auto-fill the country dropdown on the filter form -->
 <script>
 const searchInput = document.getElementById('location-search-bar');
 const suggestionsBox = document.getElementById('suggestions');
