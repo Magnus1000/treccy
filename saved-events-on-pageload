@@ -1,4 +1,6 @@
 <script>
+const memberstack = window.$memberstackDom;
+
 // Function to format date
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -10,28 +12,34 @@ function formatDate(dateString) {
   return formattedDate;
 }
 
-// Function to fetch saved events from Algolia
-async function fetchSavedEventsFromAlgolia(objectIDs) {
-  console.log("Fetching saved events from Algolia...");
-  
-  const searchClient = algoliasearch('CWUIX0EWFE', '4cd4c82105f395affbc472c07a9789c8');
-  const index = searchClient.initIndex('treccy_races_all');
-  
-  try {
-    const results = await index.getObjects(objectIDs);
-    console.log("Algolia Search Results:", results);
+  // Function to fetch saved events from Algolia
+  async function fetchSavedEventsFromAlgolia(objectIDs) {
+    console.log("Starting to fetch saved events from Algolia...");
     
-    // If results are available, populate the race cards
-    if (results && results.results.length > 0) {
-      populateRaceCards(results.results);
-    } else {
-      console.log("No saved events found in Algolia.");
-    }
-  } catch (error) {
-    console.log("An error occurred while fetching Algolia results:", error);
-  }
-}
+    const searchClient = algoliasearch('CWUIX0EWFE', '4cd4c82105f395affbc472c07a9789c8');
+    const index = searchClient.initIndex('treccy_races_all');
+    
+    console.log("Algolia index initialized as:", index);
+    console.log("Object IDs to search for:", objectIDs);
 
+    try {
+      index.getObjects(objectIDs).then(({ results }) => {
+        console.log("Algolia Search Results:", results);
+        
+        // If results are available, populate the race cards
+        if (results && results.length > 0) {
+          populateRaceCards(results);
+        } else {
+          console.log("No saved events found in Algolia.");
+        }
+      }).catch(error => {
+        console.log("An error occurred within the getObjects promise:", error);
+      });
+    } catch (error) {
+      console.log("An error occurred while fetching Algolia results:", error);
+    }
+  }
+  
 // Function to populate race cards
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
@@ -44,7 +52,6 @@ function populateRaceCards(results) {
     newRaceCard.style.display = 'block';
 
     const formattedDate = formatDate(result.date_ag);
-    // Fill in the race card details using querySelector
     newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
     newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
@@ -55,15 +62,33 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-country-text').textContent = result.country_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
 
-    // Add click event to like button
     const likeButton = newRaceCard.querySelector('.like-button');
     likeButton.setAttribute('data-object-id', result.objectID);
     likeButton.addEventListener('click', function() {
       console.log(`Button with objectID ${result.objectID} clicked!`);
     });
 
-    // Append the new race card to the main div
     algoliaRacesDiv.appendChild(newRaceCard);
   });
 }
+
+// Fetching the member data and liked event IDs
+async function fetchLikesAndFetchEvents() {
+  let memberJson = await memberstack.getMemberJSON();
+  while (memberJson.data) {
+    memberJson = memberJson.data;
+  }
+
+  // Check if likes exist and map them to an array of IDs
+  let likesArray = [];
+  if (memberJson.likes && memberJson.likes.length > 0) {
+    likesArray = memberJson.likes.map(like => like.id);
+  }
+
+  // Call fetchSavedEventsFromAlgolia with the likes
+  fetchSavedEventsFromAlgolia(likesArray);
+}
+
+// Trigger the entire process
+fetchLikesAndFetchEvents();
 </script>
