@@ -38,10 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Debug: Log if the button is found
             console.log("Button found");
 
-            button.addEventListener("click", () => {
-                console.log("Button clicked");  // Debug: Log if the button is clicked
-                window.location.href = "https://www.treccy.com/";
-            });
+            // Adding the new event listener
+            button.addEventListener("click", onStep3FinishClicked);
         } else {
             // Debug: Log if the button is not found
             console.log("Button not found");
