@@ -1,10 +1,17 @@
 <script>
-document.addEventListener('DOMContentLoaded', (event) => {
+// Function to initialize like buttons
+function initLikeButtons() {
     const memberstack = window.$memberstackDom;
     let likeButtons = document.querySelectorAll('.like-button');
 
+    // Log the count of "like-button" elements found
+    console.log(`Found ${likeButtons.length} 'like-button' elements.`);
+
     likeButtons.forEach(likeButton => {
         let likeButtonLastClickedAt = 0;
+
+        // Log that we're adding an event listener to this button
+        console.log('Adding event listener to a like-button.');
 
         likeButton.addEventListener('click', async function () {
             const now = Date.now();
@@ -14,7 +21,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             likeButtonLastClickedAt = now;
 
             const algoliaObjectID = this.getAttribute('data-object-id');
-            this.classList.toggle('is-liked');  // A more concise way to toggle the class
+            this.classList.toggle('is-liked');  
 
             let member = await memberstack.getCurrentMember();
             if (!member || !member.data) {
@@ -31,10 +38,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 memberJson.likes = [];
             }
 
-            // Find the index of the object with the corresponding algoliaObjectID
             const index = memberJson.likes.findIndex(item => item.id === algoliaObjectID);
 
-            // If not found, add it, otherwise remove it
             if (index === -1) {
                 memberJson.likes.push({ id: algoliaObjectID, timestamp: Date.now() });
             } else {
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             memberstack.updateMemberJSON({ json: memberJson }).catch((error) => {
                 console.error("Failed to update member JSON: ", error);
-                this.classList.toggle('is-liked');  // Toggle the class back if the update fails
+                this.classList.toggle('is-liked');
             });
         });
 
@@ -65,5 +70,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         })();
     });
+
+    // Log that event listeners have been successfully added
+    console.log('Successfully added event listeners to all like-buttons.');
+}
+
+// Initialize like buttons when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded. Initializing like-buttons.');
+    initLikeButtons();
 });
+
+// Call this function whenever you load new content
+// For example, after fetching new results from Algolia
+function onNewContentAdded() {
+    console.log('New content added. Reinitializing like-buttons.');
+    initLikeButtons();
+}
 </script>
