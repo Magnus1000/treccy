@@ -1,56 +1,3 @@
-
-<!-- Mapbox styles and scripts -->
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-
-<!-- Hide Checkbox CSS -->
-<style>
-input[type="checkbox"]{
-    display: none;
-  }
-  
-.w-checkbox.checkbox-buttons.active-filter {
-    background-color: #1B2B1C;
-    color: #ffffff;
-}
-</style>
-
-<script>
-function initializeCheckboxStyling() {
-    function updateCheckboxStyling() {
-        console.log('Checkbox changed');  // Debug: Log when a checkbox changes
-        const spanElement = this.nextElementSibling;
-        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
-        console.log('Parent label:', parentLabel);  // Debug: Log the parent label
-
-        if (this.checked) {
-            console.log('Checkbox is checked');  // Debug: Log when checkbox is checked
-            parentLabel.classList.add("active-filter");
-        } else {
-            console.log('Checkbox is not checked');  // Debug: Log when checkbox is not checked
-            parentLabel.classList.remove("active-filter");
-        }
-    }
-
-    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
-    console.log('Found checkboxes:', checkboxes);  // Debug: Log the checkboxes found
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", updateCheckboxStyling);
-        updateCheckboxStyling.call(checkbox);  // Call it initially for each checkbox
-    });
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log("Document Ready...");
-    initializeCheckboxStyling();
-
-});
-</script>
-
-<!-- This script contains the logic to auto-fill the country dropdown on the filter form -->
 <script>
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 const searchInput = document.getElementById('location-search-bar');
@@ -112,4 +59,10 @@ searchInput.addEventListener('input', (e) => {
         })
         .catch(error => console.error(error));
 });
+
+const button = document.getElementById("step-2-continue");
+button.addEventListener("click", () => {
+  window.location.href = "https://www.treccy.com/sign-up-step-3";
+});
+
 </script>
