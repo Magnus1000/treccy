@@ -1,4 +1,4 @@
-<!-- This script loads the necessary scripts for the homepage and loads the results from Algolia based on the URL params. It also adds event handlers to the like buttons. -->
+
 <!-- Mapbox styles and scripts -->
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
