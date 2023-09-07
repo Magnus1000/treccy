@@ -61,6 +61,9 @@ function populateRaceCards(results) {
     newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
     newRaceCard.querySelector('.race-country-text').textContent = result.country_ag;
     newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+    // Add this line within the loop to set the data-object-id attribute
+    newRaceCard.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
+
 
     algoliaRacesDiv.appendChild(newRaceCard);
   });
