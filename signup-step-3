@@ -10,41 +10,38 @@ input[type="checkbox"] {
 }
 </style>
 
-<!-- Combined Script -->
 <script>
-// This waits until the HTML is fully loaded
+// Function to be triggered when "step-3-finish" button is clicked
+async function onStep3FinishClicked() {
+    try {
+        await updateMemberJsonOnFormSubmit();
+        console.log("Member JSON Updated. Now redirecting...");
+        window.location.href = "https://www.treccy.com/";
+    } catch (error) {
+        console.error('Failed to update member JSON:', error);
+    }
+}
+
+// Wait for DOM to load fully
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("Document Ready...");
 
-    // Function to initialize checkbox styling
-    function initializeCheckboxStyling() {
-        // Here you'll put the code related to checkbox styling.
-    }
-
-    // Call function to initialize checkbox styling
+    // Call the checkbox styling function
     initializeCheckboxStyling();
 
-    // Adding a timeout to give time for the button to be available in the DOM
+    // Check for the button after a timeout to ensure it's loaded in DOM
     setTimeout(() => {
-        // Debug: Log before trying to find the button
         console.log("About to look for button...");
-
         const button = document.getElementById("step-3-finish");
-
-        // Debug: Log the type of the button variable
         console.log("Type of button variable: ", typeof button);
-
+        
         if (button !== null) {
-            // Debug: Log if the button is found
             console.log("Button found");
-
-            // Adding the new event listener
             button.addEventListener("click", onStep3FinishClicked);
         } else {
-            // Debug: Log if the button is not found
             console.log("Button not found");
         }
-    }, 1000); // Waiting 1 second before checking for the button
+    }, 1000);
 });
 </script>
 
