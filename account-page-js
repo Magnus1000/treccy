@@ -1,4 +1,4 @@
-<!-- This script contains the logic to auto-fill the country dropdown on the filter form -->
+<!-- This script contains the logic to autofill the country dropdown on the filter form -->
 <!-- Mapbox styles and scripts -->
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
