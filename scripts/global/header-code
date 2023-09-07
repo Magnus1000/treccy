@@ -1,6 +1,7 @@
-<!-- ############################################ PAGE LOAD ############################################ -->
-<!-- Algolia Global Search Script -->
+<!-- Memberstack webflow package -->
+<script data-memberstack-app="app_cllqszdmc001v0syzbq5bcnye" src="https://static.memberstack.com/scripts/v1/memberstack.js" type="text/javascript"></script>
 
+<!-- Algolia Global Search Script -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic" />
 <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
@@ -14,11 +15,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-P6GBQ545');</script>
 <!-- End Google Tag Manager -->
 
-<!-- UUID -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js"></script>
-
-<!-- Font Awesome CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Font Awesome Library -->
+<script src="https://kit.fontawesome.com/2152e2f06a.js" crossorigin="anonymous"></script>
 
 <!-- ############################################ EVENT LISTENERS ############################################ -->
 <script>
@@ -46,40 +44,25 @@ document.addEventListener('DOMContentLoaded', function() {
     font-weight: 700;
   }
   
-  .heart-icon {
-  display: block;
-  height: 24px;
-  width: 24px;
-  fill: rgba(0, 0, 0, 0.5);
-  stroke: rgba(0, 0, 0, 0.5); /* Default stroke color if the variable is not defined */
-  stroke-width: 2;
-  overflow: visible;
+/* Default state: Outline visible, filled hidden */
+#outlineHeart {
+  fill: #BFF103!important;
 }
 
-.heart-icon.saved {
-  fill: #0a0f0d; /* Saved color */
-  stroke: #0a0f0d;
-}
-  
-  .heart-icon-large {
-  display: block;
-  height: 44px;
-  width: 44px;
-  fill: rgba(0, 0, 0, 0.5);
-  stroke: rgba(0, 0, 0, 0.5); /* Default stroke color if the variable is not defined */
-  stroke-width: 2;
-  overflow: visible;
+/* Filled Heart, initially hidden */
+#filledHeart {
+  fill: #BFF103!important;
 }
 
-.heart-icon-large.saved {
-  fill: #0a0f0d; /* Saved color */
-  stroke: #0a0f0d;
+/* When class 'is-liked' is added to parent, hide outline and show filled */
+.like-button.is-liked #outlineHeart {
+  display: none!important;
 }
 
-input[type="checkbox"]{
-    display: none;
-  }
+.like-button.is-liked #filledHeart {
+  display: inline!important;
+}
 
 </style>
 
-<script id="jetboost-script" type="text/javascript"> window.JETBOOST_SITE_ID = "clltkw9du00h40qune0963pdz"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document); </script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/Magnus1000/treccy@main/global-search.css" />
