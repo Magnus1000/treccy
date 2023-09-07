@@ -106,3 +106,36 @@ function initScript() {
   }
 }
 </script>
+
+<script>
+function initializeCheckboxStyling() {
+    function updateCheckboxStyling() {
+        console.log('Checkbox changed');  // Debug: Log when a checkbox changes
+        const spanElement = this.nextElementSibling;
+        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
+        console.log('Parent label:', parentLabel);  // Debug: Log the parent label
+
+        if (this.checked) {
+            console.log('Checkbox is checked');  // Debug: Log when checkbox is checked
+            parentLabel.classList.add("active-filter");
+        } else {
+            console.log('Checkbox is not checked');  // Debug: Log when checkbox is not checked
+            parentLabel.classList.remove("active-filter");
+        }
+    }
+
+    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
+    console.log('Found checkboxes:', checkboxes);  // Debug: Log the checkboxes found
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateCheckboxStyling);
+        updateCheckboxStyling.call(checkbox);  // Call it initially for each checkbox
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("Document Ready...");
+    initializeCheckboxStyling();
+    const memberstack = window.$memberstackDom;
+});
+</script>
