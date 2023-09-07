@@ -47,6 +47,10 @@ function populateRaceCards(results) {
     // Append the new race card to the parent div
     algoliaRacesDiv.appendChild(newRaceCard);
   });
+
+    // Call initLikeButtons here, after new content has been added
+    console.log("New cards populated. Re-initializing like-buttons.");
+    initLikeButtons();
 }
 
 // Function to extract country from URL
