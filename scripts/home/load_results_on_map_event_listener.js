@@ -1,5 +1,3 @@
-<!-- ############################################ EVENT LISTENERS ############################################ -->
-<!-- This script loads the map when the "Show Map" button is clicked, and also toggles back to the grid/list -->
 <script>
 const disciplineMarkers = {
     'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
