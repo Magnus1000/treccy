@@ -32,33 +32,7 @@
     display: flex; /* Shown when there are suggestions */
 }
 
-/* Hide the default radio button */
-.type-radio-button {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 1px solid #69706d;
-  outline: none;
-  position: relative;
-  margin-right: 8px; /* Space between the radio and label */
-  vertical-align: middle;
-  border-radius: 50%;
-}
 
-/* Style for the unchecked state */
-.type-radio-button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background-color: #fff;
-  border-radius: 50%;
-}
 
 /* Style for the checked state */
 .type-radio-button:checked::before {
