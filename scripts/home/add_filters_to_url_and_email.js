@@ -1,5 +1,3 @@
-<!-- ############################################ EVENT LISTENERS 2 ############################################ -->
-<!-- This script contains the logic to add the filters to the URL params. It also contains the logic to create the email sign-up and send the URL params in the Webhook request body.  -->
 <script>
 
 // Function to get element value by ID
