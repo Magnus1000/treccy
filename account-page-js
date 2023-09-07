@@ -110,6 +110,63 @@ function initializeCheckboxStyling() {
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("Document Ready...");
     initializeCheckboxStyling();
-
+    const memberstack = window.$memberstackDom;
 });
+</script>
+
+<script>
+// Wait for MemberStack to load
+let checkMemberstack = setInterval(() => {
+  if (typeof window.$memberstackDom !== 'undefined') {
+    clearInterval(checkMemberstack);
+    initScript();
+  }
+}, 100);
+
+function initScript() {
+  // Getting reference to MemberStack DOM
+  const memberstack = window.$memberstackDom;
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('profile_preferences').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (typeof memberstack === 'undefined') {
+        console.error('MemberStack is not defined');
+        return;
+      }
+
+      await updateMemberJsonOnFormSubmit();
+    });
+  });
+
+  async function updateMemberJsonOnFormSubmit() {
+    let member = await memberstack.getCurrentMember();
+    let memberJson = await memberstack.getMemberJSON();
+    while (memberJson.data) {
+      memberJson = memberJson.data;
+    }
+
+    // Initialize a new array to hold selected sports
+    let newSportsArray = [];
+
+    document.querySelectorAll('.disciplinefilter_checkbox').forEach(checkbox => {
+      const sportValue = checkbox.getAttribute('filter-value');
+      const isChecked = checkbox.checked;
+
+      if (isChecked) {
+        newSportsArray.push(sportValue);
+      }
+    });
+
+    // Replace the entire 'sports' array with the new array
+    memberJson.sports = newSportsArray;
+
+    await memberstack.updateMemberJSON({ json: memberJson }).then(() => {
+      console.log('Member data updated:', memberJson);
+    }).catch((error) => {
+      console.error('Failed to update member JSON:', error);
+    });
+  }
+}
 </script>
