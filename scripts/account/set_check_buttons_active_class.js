@@ -1,23 +1,23 @@
 <script>
-document.addEventListener('DOMContentLoaded', (event) => {
-
-    // Make sure $memberstack is defined
-    if (typeof window.$memberstack === 'undefined') {
-      console.error('$memberstack is not defined');
-      return;
+  document.addEventListener('DOMContentLoaded', async (event) => {
+    function checkMemberstackDefined() {
+      return new Promise(resolve => {
+        const interval = setInterval(() => {
+          if (typeof window.$memberstack !== 'undefined') {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 100); // check every 100ms
+      });
     }
 
-  async function updateMemberJsonOnFormSubmit() {
-    // Make sure $memberstack is defined
-    if (typeof window.$memberstack === 'undefined') {
-      console.error('$memberstack is not defined');
-      return;
-    }
+    await checkMemberstackDefined();
 
     // Initialize member JSON data
-    let member = await window.$memberstack.getCurrentMember();
     let memberJson = await window.$memberstack.getMemberJSON();
-    while (memberJson.data) {
+
+    // Check for 'data' property and assign it to memberJson
+    if (memberJson && memberJson.data) {
       memberJson = memberJson.data;
     }
 
@@ -31,15 +31,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
       const sportValue = checkbox.getAttribute('filter-value');
       const isChecked = checkbox.checked;
 
+      // Log for debugging
+      console.log(`Sport Value: ${sportValue}, Is Checked: ${isChecked}`);
+
       if (isChecked) {
         memberJson.sports.push(sportValue);
+
+        // Set the 'active-filter' state
+        checkbox.classList.add('active-filter');
       } else {
         const index = memberJson.sports.indexOf(sportValue);
         if (index > -1) {
           memberJson.sports.splice(index, 1);
         }
+
+        // Remove the 'active-filter' state
+        checkbox.classList.remove('active-filter');
       }
     });
-  }
-});
+  });
 </script>
