@@ -1,36 +1,4 @@
 <script>
-// Wait for MemberStack to load
-let checkMemberstack = setInterval(() => {
-  if (typeof window.$memberstackDom !== 'undefined') {
-    clearInterval(checkMemberstack);
-    initScript();
-  }
-}, 100);
-
-function initScript() {
-  // Getting reference to MemberStack DOM
-  const memberstack = window.$memberstackDom;
-
-  document.addEventListener('DOMContentLoaded', async (event) => {
-    // Fetch memberJson on page load and apply active checkboxes
-    let memberJson = await memberstack.getMemberJSON();
-    while (memberJson.data) {
-      memberJson = memberJson.data;
-    }
-    setActiveCheckboxes(memberJson);
-
-    document.getElementById('profile_preferences').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      if (typeof memberstack === 'undefined') {
-        console.error('MemberStack is not defined');
-        return;
-      }
-
-      await updateMemberJsonOnFormSubmit();
-    });
-  });
-
   // Function to apply the active tag to checkboxes based on sports in memberJson
   async function setActiveCheckboxes(memberJson) {
     console.log('Fetched memberJson:', memberJson);
@@ -46,17 +14,27 @@ function initScript() {
     });
   }
 
+  // Assuming that memberstack is globally accessible
+  const memberstack = window.$memberstackDom;
+
   async function updateMemberJsonOnFormSubmit() {
+    // Check if memberstack is defined
+    if (typeof memberstack === 'undefined') {
+      console.error('MemberStack is not defined');
+      return;
+    }
+
     let member = await memberstack.getCurrentMember();
     let memberJson = await memberstack.getMemberJSON();
     while (memberJson.data) {
       memberJson = memberJson.data;
     }
 
-	  // Check if 'sports' exists in memberJson, if not initialize it
+    // Check if 'sports' exists in memberJson, if not initialize it
     if (!memberJson.sports) {
-        memberJson.sports = [];
+      memberJson.sports = [];
     }
+  
     // Initialize a new array to hold selected sports
     let newSportsArray = [];
 
@@ -77,5 +55,4 @@ function initScript() {
       console.error('Failed to update member JSON:', error);
     });
   }
-}
 </script>
