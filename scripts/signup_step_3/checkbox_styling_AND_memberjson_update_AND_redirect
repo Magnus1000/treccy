@@ -58,6 +58,11 @@ async function updateMemberJsonOnFormSubmit() {
       memberJson = memberJson.data;
     }
 
+    // Check if 'sports' exists in memberJson, if not initialize it
+    if (!memberJson.sports) {
+        memberJson.sports = [];
+    }
+
     // Initialize a new array to hold selected sports
     let newSportsArray = [];
 
