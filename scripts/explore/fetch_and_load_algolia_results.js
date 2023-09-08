@@ -57,10 +57,6 @@ async function fetchAlgoliaResults(sport, lat, lng, rowClone) {
       newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
       newRaceCard.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID); 
       innerContainer.appendChild(newRaceCard);
-      
-    // Call initLikeButtons here, after new content has been added
-    console.log("New cards populated. Re-initializing like-buttons.");
-    initLikeButtons();
     });
 
     // Append the inner container to the rowClone
