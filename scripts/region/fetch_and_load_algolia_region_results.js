@@ -8,6 +8,25 @@ const algoliaConfig = {
     indexName: 'treccy_races_all'
 };
 
+// Function to format distances from metres to kilometres
+function formatDistances(distancesArray) {
+    console.log("Formatting and sorting distances...");
+    
+    // Sort the array from smallest to largest
+    const sortedDistances = distancesArray.sort((a, b) => a - b);
+
+    const formattedDistances = sortedDistances.map(distance => {
+        // Convert distance from metres to kilometres
+        const inKm = distance / 1000;
+
+        // Format the distance to one decimal place if it's not a whole number
+        return (inKm % 1 === 0) ? inKm : inKm.toFixed(1);
+    });
+    
+    // Join the array elements into a string separated by ', '
+    return formattedDistances.join(", ") + "km";
+}
+
 // Function to populate race cards
 function populateRaceCards(results) {
     console.log("Populating Race Cards...");
@@ -23,6 +42,8 @@ function populateRaceCards(results) {
 
         // Formatting the date
         const formattedDate = formatDate(result.date_ag);
+        // Formatting the distances
+        const formattedDistances = formatDistances(result.distances_ag);
 
         // Populating the card data
         newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
@@ -30,11 +51,11 @@ function populateRaceCards(results) {
         newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
         newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
         newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
-        newRaceCard.querySelector('.race-card-heading-right').textContent = result.distances_ag;
+        newRaceCard.querySelector('.race-card-heading-right').textContent = formattedDistances;
         newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
         newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
         newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
-	// Add this line within the loop to set the data-object-id attribute
+        // Add this line within the loop to set the data-object-id attribute
       	newRaceCard.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
         
         // Adding the new card to the DOM
