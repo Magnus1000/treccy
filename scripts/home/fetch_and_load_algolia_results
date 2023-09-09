@@ -1,16 +1,9 @@
 <!-- This script loads the necessary scripts for the homepage and loads the results from Algolia based on the URL params. -->
-<!-- Mapbox styles and scripts -->
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-
 <script>
   // Log the initiation of the script
   console.log("Script Initiated");
 
   // Globals and Configuration
-  const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
   const algoliaConfig = {
     appId: "CWUIX0EWFE",
     apiKey: "4cd4c82105f395affbc472c07a9789c8",
