@@ -30,10 +30,12 @@ function populateRaceCards(results) {
         newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
         newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
         newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
-        newRaceCard.querySelector('.race-card-heading-right').textContent = result.distance_ag;
+        newRaceCard.querySelector('.race-card-heading-right').textContent = result.distances_ag;
         newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
         newRaceCard.querySelector('.race-country-text').textContent = result.city_ag;
         newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+	// Add this line within the loop to set the data-object-id attribute
+      	newRaceCard.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
         
         // Adding the new card to the DOM
         algoliaRacesDiv.appendChild(newRaceCard);
