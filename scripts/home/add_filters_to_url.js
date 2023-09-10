@@ -107,9 +107,41 @@
         filtersModalDiv.style.display = 'flex'; 
       }
     }
+    
+      // Function to push form values to divs
+function pushValuesToDivs() {
+  // Get the element and value of the search input field with ID 'location-search-bar'
+  const locationElement = document.getElementById('location-search-bar');
+  const locationValue = locationElement ? locationElement.value : null;
+
+  // Get the element and value of the range dropdown with ID 'location_range'
+  const rangeElement = document.getElementById('location_range');
+  const rangeValue = rangeElement ? parseInt(rangeElement.value) : null;
+
+  // If the location field has a value, push it to the div with ID 'location-text'
+  if (locationValue) {
+    const locationTextDiv = document.getElementById('location-text');
+    locationTextDiv.textContent = locationValue;
+    console.log(`Pushed ${locationValue} to location-text div`);
+  }
+
+  // If the range field has a value, convert it to km, push it to the div with ID 'range-text'
+  // and change its display property to 'flex'
+  if (rangeValue) {
+    const rangeTextDiv = document.getElementById('range-text');
+    const rangeInKm = rangeValue / 1000; // Convert meters to km
+    rangeTextDiv.textContent = `${rangeInKm}km`;
+
+    const locationRangeTextDivs = document.querySelectorAll('.location-range-text');
+    locationRangeTextDivs.forEach(div => div.style.display = 'flex');
+
+    console.log(`Pushed ${rangeInKm}km to range-text div and set its display to flex`);
+  }
+}
 
     document.getElementById('filter-open').addEventListener('click', showFilterForm);
     document.getElementById('filter-open-mobile').addEventListener('click', showFilterForm);
+    document.getElementById('location-div-left').addEventListener('click', showFilterForm);
     document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
     // Add an event listener to the form with id="filterForm"
@@ -122,6 +154,9 @@
 
       // Call the function to update URL with filters
       updateURLWithFilters();
+      
+      // Call the function to push form values to divs
+   	  pushValuesToDivs();
     });
   })();  // End of IIFE
 </script>
