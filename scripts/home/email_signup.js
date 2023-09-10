@@ -74,6 +74,35 @@ function toggleEmailAndButtonClasses() {
         console.log('Webhook response:', data);
       });
     }
+    
+    // Function to show and fade out the success notification
+function showAndFadeOutSuccessNotification() {
+  const successDiv = document.getElementById('success-notification-email');
+  if (!successDiv) {
+    console.warn('Success notification div not found');
+    return;
+  }
+
+  // Show the success div
+  successDiv.style.opacity = '1';
+  successDiv.style.display = 'block';
+  console.log('Displayed the success notification');
+
+  // Fade out after 3 seconds
+  setTimeout(function() {
+    let opacity = 1;
+
+    const fadeEffect = setInterval(function() {
+      if (opacity <= 0.1) {
+        clearInterval(fadeEffect);
+        successDiv.style.display = 'none';
+        console.log('Faded out the success notification');
+      }
+      successDiv.style.opacity = opacity;
+      opacity -= 0.1;
+    }, 50);
+  }, 3000);
+}
 
     // Event listener for the email submit button
     document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
@@ -91,6 +120,9 @@ function toggleEmailAndButtonClasses() {
         const params = getQueryParams();
         console.log('Sending webhook with email:', email, 'and parameters:', params);
         sendWebhook(email, params);
+        
+        // Show and fade out the success notification
+        showAndFadeOutSuccessNotification();
 
         // Clear the email field
         document.getElementById('email-signup-field').value = '';
@@ -100,4 +132,3 @@ function toggleEmailAndButtonClasses() {
 
   })();  // End of IIFE
 </script>
-
