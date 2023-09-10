@@ -6,8 +6,6 @@
 
 
 <script>
-const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
-
 const sportMarkers = {
     'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
     'paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d28340c9aa33055043be71_paddling-icon-50.svg',
@@ -141,41 +139,48 @@ function removeExistingMarkers() {
   
     return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
   }
-async function displayMapWithResults(lat, lng) {
-    console.log("Displaying Map with Results...");
+  async function displayMapWithResults(lat, lng) {
+    try {
+      console.log("Displaying Map with Results...");
 
-    if (!map) { // Only create a new map instance if it doesn't exist
+      // Check if map instance exists. If not, create one.
+      if (!map) {
         map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
-            center: [lng, lat],
-            zoom: 10,
-            accessToken: mapboxToken
+          container: 'map',
+          style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+          center: [lng, lat],
+          zoom: 10,
+          accessToken: mapboxToken
         });
 
-        // Add zoom and rotation controls to the map.
+        // Add controls to the map
         map.addControl(new mapboxgl.NavigationControl());
 
-    } else {
-        restoreMapState(map); // Restore the map state if map instance already exists
-    }
-    
-    // Log the Algolia results to verify they are as expected
-    console.log("Algolia Results:", algoliaResults);
+      } else {
+        // Restore previous map state
+        restoreMapState(map);
+      }
 
-    // Clear any existing markers
-    removeExistingMarkers();
+      // Log Algolia results for debugging
+      console.log("Algolia Results:", algoliaResults);
 
-    // Use the global Algolia results variable instead of fetching
-    const results = algoliaResults;
-    console.log("Using results for map:", results); // Additional logging
+      // Clear existing markers from the map
+      removeExistingMarkers();
 
-    results.forEach(result => {
+      // Use global Algolia results (assuming you have a variable called algoliaResults)
+      const results = algoliaResults;
+      console.log("Using results for map:", results); // Additional logging for debugging
+
+      // Loop through Algolia results and add new markers
+      results.forEach(result => {
         createMarkerOnMap(map, result);
-    });
+      });
 
-    map.resize();
-}
-
-});
+      // Resize map to fit new markers
+      map.resize();
+    } catch (error) {
+      // Log any errors that occur
+      console.error("Error displaying map with results:", error);
+    }
+  }
 </script>
