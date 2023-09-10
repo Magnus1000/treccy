@@ -7,15 +7,26 @@
       return regex.test(email);
     }
 
-    // Function to toggle email classes (Show and Hide Email Signup)
-    function toggleEmailClasses() {
-      const emailFieldDiv = document.getElementById('email-signup-field');
-      if (emailFieldDiv) {
-        emailFieldDiv.classList.toggle('active');
-      } else {
-        console.warn('Email elements not found');
-      }
-    }
+    // Function to toggle "active" class for both email field and button text
+function toggleEmailAndButtonClasses() {
+  // Toggle class for email field
+  const emailFieldDiv = document.getElementById('email-signup-field');
+  if (emailFieldDiv) {
+    emailFieldDiv.classList.toggle('active');
+    console.log('Toggled active class on email signup field');
+  } else {
+    console.warn('Email signup field not found');
+  }
+
+  // Toggle class for email subscribe button text
+  const emailButtonText = document.querySelector('.email-subscribe-button-text');
+  if (emailButtonText) {
+    emailButtonText.classList.toggle('active');
+    console.log('Toggled active class on email subscribe button text');
+  } else {
+    console.warn('Email subscribe button text not found');
+  }
+}
 
     // Function to get the email from the form
     function getEmail() {
