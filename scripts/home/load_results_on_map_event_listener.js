@@ -133,7 +133,7 @@ function removeExistingMarkers() {
     // Populate elements within the cloned div
     clonedDiv.querySelector('.map-popup-sport').innerText = result.sports_ag.join(', ');
     clonedDiv.querySelector('.map-popup-image').src = result.photo_main_ag;
-    clonedDiv.querySelector('.map-popup-link-block').href = `/races/${result.slug_ag}`;
+    clonedDiv.querySelector('.map-popup-link-block').href = `/race/${result.slug_ag}`;
     clonedDiv.querySelector('.map-popup-header').innerText = result.name_ag;
     clonedDiv.querySelector('.map-popup-city-text').innerText = result.city_ag;
     clonedDiv.querySelector('.map-popup-country-text').innerText = result.country_ag;
