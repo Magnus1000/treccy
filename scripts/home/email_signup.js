@@ -80,7 +80,7 @@ function toggleEmailAndButtonClasses() {
       const emailFieldDiv = document.getElementById('email-signup-field');
       
       if (!emailFieldDiv.classList.contains('active') || (emailFieldDiv.classList.contains('active') && emailFieldDiv.value === '')) {
-        toggleEmailClasses();
+        toggleEmailAndButtonClasses();
       } else {
         const email = getEmail();
         if (!isValidEmail(email)) {
@@ -94,7 +94,7 @@ function toggleEmailAndButtonClasses() {
 
         // Clear the email field
         document.getElementById('email-signup-field').value = '';
-        toggleEmailClasses();
+        toggleEmailAndButtonClasses();
       }
     });
 
