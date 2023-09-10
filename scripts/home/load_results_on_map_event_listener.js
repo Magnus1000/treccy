@@ -8,7 +8,7 @@
 <script>
 const mapboxToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
 
-const disciplineMarkers = {
+const sportMarkers = {
     'swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f1995f2e23c39eacc_swimming-icon-50.svg',
     'paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d28340c9aa33055043be71_paddling-icon-50.svg',
     'running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/64d2833f7badb96d1c86df8b_running-icon-50.svg',
@@ -79,7 +79,7 @@ function restoreMapState(map) {
 
 async function toggleView(showMap) {
     console.log(showMap ? "Show Map Button Clicked..." : "Show List Button Clicked...");
-    document.getElementById('map').style.display = showMap ? 'flex' : 'none';
+    document.getElementById('map-div-wrapper').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showListrow').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showMaprow').style.display = showMap ? 'none' : 'flex';
     document.getElementById('algoliaRaces').style.display = showMap ? 'none' : 'grid';
@@ -90,12 +90,12 @@ async function toggleView(showMap) {
     }
 }
 
-function getMarkerImageUrl(disciplines) {
-    if (disciplines.length === 1) {
-        const disciplineKey = disciplines[0].toLowerCase();
-        return disciplineMarkers[disciplineKey] || disciplineMarkers['default'];
+function getMarkerImageUrl(sports) {
+    if (sports.length === 1) {
+        const sportKey = sports[0].toLowerCase();
+        return sportMarkers[sportKey] || sportMarkers['default'];
     }
-    return disciplineMarkers['default'];
+    return sportMarkers['default'];
 }
 
 let currentMarkers = []; // Assuming this is previously declared
@@ -108,14 +108,14 @@ function removeExistingMarkers() {
 }
 
 function createMarkerOnMap(map, result) {
-    const markerImageUrl = getMarkerImageUrl(result.disciplines_ag);
+    const markerImageUrl = getMarkerImageUrl(result.sports_ag);
     const customMarker = new Image(50, 50);
     customMarker.src = markerImageUrl;
 
-    // Creating the disciplines div
-    let disciplinesDiv = '';
-    result.disciplines_ag.forEach(discipline => {
-        disciplinesDiv += `<div class="map-popup-discipline">${discipline}</div>`;
+    // Creating the sports div
+    let sportsDiv = '';
+    result.sports_ag.forEach(sport => {
+        sportsDiv += `<div class="map-popup-sport">${sport}</div>`;
     });
 
     // Formatted date
@@ -127,7 +127,7 @@ function createMarkerOnMap(map, result) {
                 <a href="/races/${result.slug_ag}" class="map-popup-link-block w-inline-block">
                     <img src="${result.photo_main_ag}" loading="lazy" alt="" class="map-popup-image">
                 </a>
-                <div class="map-popup-discipline-div">${disciplinesDiv}</div>
+                <div class="map-popup-sport-div">${sportsDiv}</div>
                 <div class="heart-icon-div"><div class="heart-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false">
   <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
 </svg></div>
@@ -194,30 +194,6 @@ async function displayMapWithResults(lat, lng) {
 
     map.resize();
 }
-
-function initializeCheckboxStyling() {
-    console.log("Adjusting Checkbox Styling...");
-
-    function updateCheckboxStyling() {
-        const spanElement = this.nextElementSibling;
-        const parentLabel = spanElement.closest(".w-checkbox.checkbox-buttons");
-        if (this.checked) {
-            parentLabel.classList.add("active-filter");
-        } else {
-            parentLabel.classList.remove("active-filter");
-        }
-    }
-
-    const checkboxes = document.querySelectorAll(".w-checkbox.checkbox-buttons input[type='checkbox']");
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", updateCheckboxStyling);
-        updateCheckboxStyling.call(checkbox); // Call it initially for each checkbox
-    });
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log("Document Ready...");
-    initializeCheckboxStyling();
 
 });
 </script>
