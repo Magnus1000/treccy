@@ -85,7 +85,7 @@ function showAndFadeOutSuccessNotification() {
 
   // Show the success div
   successDiv.style.opacity = '1';
-  successDiv.style.display = 'block';
+  successDiv.style.display = 'flex';
   console.log('Displayed the success notification');
 
   // Fade out after 3 seconds
