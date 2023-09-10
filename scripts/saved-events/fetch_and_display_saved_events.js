@@ -52,7 +52,7 @@ function populateRaceCards(results) {
     newRaceCard.style.display = 'block';
 
     const formattedDate = formatDate(result.date_ag);
-    newRaceCard.querySelector('.race-card-top-block').href = `/races/${result.slug_ag}`;
+    newRaceCard.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
     newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
     newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
     newRaceCard.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
