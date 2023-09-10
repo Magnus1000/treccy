@@ -1,7 +1,4 @@
 <script>
-// Set your Mapbox access token
-      mapboxgl.accessToken = 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ';
-
   // Listen for the DOM content to be loaded
   document.addEventListener("DOMContentLoaded", function() {
     const locationButton = document.getElementById("location-button");
@@ -28,7 +25,7 @@
         console.log("Longitude:", longitude);
 
         // Fetch location information using Mapbox
-        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}`;
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxToken}`;
         const response = await fetch(url);
         const data = await response.json();
         let city = "";
