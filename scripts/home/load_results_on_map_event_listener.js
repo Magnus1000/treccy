@@ -107,58 +107,40 @@ function removeExistingMarkers() {
     currentMarkers = [];
 }
 
-function createMarkerOnMap(map, result) {
+  function createMarkerOnMap(map, result) {
     const markerImageUrl = getMarkerImageUrl(result.sports_ag);
     const customMarker = new Image(50, 50);
     customMarker.src = markerImageUrl;
 
-    // Creating the sports div
-    let sportsDiv = '';
-    result.sports_ag.forEach(sport => {
-        sportsDiv += `<div class="map-popup-sport">${sport}</div>`;
-    });
+    // Clone and populate the div
+    const popupHTML = cloneAndPopulateDiv(result);
 
-    // Formatted date
-    const formattedDate = formatDate(result.date_ag);
-
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <div class="map-popup-div">
-            <div class="map-popup-image-div">
-                <a href="/races/${result.slug_ag}" class="map-popup-link-block w-inline-block">
-                    <img src="${result.photo_main_ag}" loading="lazy" alt="" class="map-popup-image">
-                </a>
-                <div class="map-popup-sport-div">${sportsDiv}</div>
-                <div class="heart-icon-div"><div class="heart-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false">
-  <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
-</svg></div>
-                </div>
-            </div>
-            <a href="/races/${result.slug_ag}" class="link-block w-inline-block">
-                <div class="map-popup-header-div">
-                    <div class="map-popup-header">${result.name_ag}</div>
-                </div>
-                <div class="map-popup-country-and-date-div">
-                    <div class="map-popup-header-country-div">
-                        <div class="map-popup-city-text">${result.city_ag}</div>
-                        <div class="map-popup-comma">, </div>
-                        <div class="map-popup-country-text">${result.country_ag}</div>
-                    </div>
-                    <div class="map-popup-date-div">
-                        <div class="map-popup-date-text">${formattedDate}</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    `);
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
 
     const marker = new mapboxgl.Marker(customMarker)
-        .setLngLat([result._geoloc.lng, result._geoloc.lat])
-        .setPopup(popup)
-        .addTo(map);
+      .setLngLat([result._geoloc.lng, result._geoloc.lat])
+      .setPopup(popup)
+      .addTo(map);
 
     currentMarkers.push(marker); // Add the marker to the currentMarkers array
-}
+  }
 
+  // New function to clone and populate the div
+  function cloneAndPopulateDiv(result) {
+    // Clone the original div by its ID "map-pop-up"
+    const clonedDiv = document.getElementById('map-pop-up').cloneNode(true);
+
+    // Populate elements within the cloned div
+    clonedDiv.querySelector('.map-popup-sport').innerText = result.sports_ag.join(', ');
+    clonedDiv.querySelector('.map-popup-image').src = result.photo_main_ag;
+    clonedDiv.querySelector('.map-popup-link-block').href = `/races/${result.slug_ag}`;
+    clonedDiv.querySelector('.map-popup-header').innerText = result.name_ag;
+    clonedDiv.querySelector('.map-popup-city-text').innerText = result.city_ag;
+    clonedDiv.querySelector('.map-popup-country-text').innerText = result.country_ag;
+    clonedDiv.querySelector('.map-popup-date-text').innerText = formatDate(result.date_ag);
+  
+    return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
+  }
 async function displayMapWithResults(lat, lng) {
     console.log("Displaying Map with Results...");
 
