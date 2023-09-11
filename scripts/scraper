@@ -38,12 +38,12 @@
     // Create panel and set its properties
     const panel = document.createElement('div');
     panel.id = "panel";
-    panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 20px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+    panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 60px 10px 10px 10px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
 
     // Create the fields and buttons
     for (let i = 0; i < 7; i++) {
         const rowDiv = document.createElement('div');
-        rowDiv.style = "display: flex; justify-content: flex-end; align-items: flex-end; column-gap: 5px;";
+        rowDiv.style = "display: flex; justify-content: center; align-items: flex-end; column-gap: 5px;";
 
         const inputDiv = document.createElement('div');
         inputDiv.style = "display: flex; flex-direction: column; width: 60%;"; // Column layout for the label and input
@@ -62,7 +62,7 @@
         const button = document.createElement('button');
         button.innerText = `Set ${buttonLabels[i]}`;
         button.id = `btn${i}`;
-        button.style = "margin: 0; padding: 0 10px 0 10px; border: 1px solid black; border-radius: 5px; height: 30px; font-size: 10px;";
+        button.style = "margin: 0; padding: 0 10px 0 10px; border: 1px solid black; border-radius: 5px; height: 30px; font-size: 10px; width: 100%";
         buttonDiv.style = "width: 30%;";
         button.addEventListener('click', function() {
             const selectedText = window.getSelection().toString();
@@ -81,7 +81,7 @@
 
     // Create the padded div around the 'Create Record' button
     const paddedCreateRecordDiv = createPaddedDiv(createRecordBtn);
-    paddedCreateRecordDiv.style = "display: flex; justify-content: center;";
+    paddedCreateRecordDiv.style = "display: flex; justify-content: center; padding-left: 10px; padding-right: 10px";
 
     panel.appendChild(paddedCreateRecordDiv);
     document.body.appendChild(panel);
@@ -121,7 +121,7 @@
     // Create the toggle button and add it to the top-left corner
     const toggleButton = document.createElement('button');
     toggleButton.innerText = "Create Race";
-    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000;";
+    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000; background-color: #f3f3f3; padding: 10px; border-radius: 5px; border: 1px solid black;";
     toggleButton.addEventListener('click', togglePanel);
     document.body.appendChild(toggleButton);
 
