@@ -1,0 +1,114 @@
+// ==UserScript==
+// @name         Create Record In Airtable
+// @namespace    http://tampermonkey.net/
+// @version      4.19.0
+// @description  Enhanced UI for creating records in Airtable
+// @author       Maz
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Function to toggle panel visibility
+    const togglePanel = () => {
+        const panel = document.getElementById('panel');
+        if (panel.style.right === '0px') {
+            panel.style.right = '-20%';
+        } else {
+            panel.style.right = '0px';
+        }
+        console.log("Panel toggled");  // Logging the toggle action
+    };
+
+    // Define labels and keys for easy modification
+    const buttonLabels = ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6", "Label7", "Label8", "Label9", "Label10", "Label11", "Label12", "Label13", "Label14", "Label15", "Label16", "Label17", "Label18", "Label19", "Label20"];
+    const webhookKeys = ["Key1", "Key2", "Key3", "Key4", "Key5", "Key6", "Key7", "Key8", "Key9", "Key10", "Key11", "Key12", "Key13", "Key14", "Key15", "Key16", "Key17", "Key18", "Key19", "Key20"];
+
+    // Create panel and set its properties
+    const panel = document.createElement('div');
+    panel.id = "panel";
+    panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end;";
+
+    // Create the fields and buttons
+    for (let i = 0; i < 20; i++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.style = "display: flex; justify-content: flex-end; align-items: flex-end;";
+
+        const inputDiv = document.createElement('div');
+        inputDiv.style = "display: flex; flex-direction: column; width: 60%;"; // Column layout for the label and input
+        const label = document.createElement('label');
+        label.innerText = buttonLabels[i];
+        label.htmlFor = `input${i}`;
+        label.style = "font-size: 10px; line-height: 10px;";
+        const input = document.createElement('input');
+        input.id = `input${i}`;
+        input.style = "margin: 0; padding: 0; height: 30px;";
+        inputDiv.appendChild(label);
+        inputDiv.appendChild(input);
+        rowDiv.appendChild(inputDiv);
+
+        const buttonDiv = document.createElement('div');
+        const button = document.createElement('button');
+        button.innerText = `Set ${buttonLabels[i]}`;
+        button.id = `btn${i}`;
+        button.style = "margin: 0; padding: 0; border: 1px solid black; border-radius: 5px; height: 30px;";
+        buttonDiv.style = "width: 30%;";
+        button.addEventListener('click', function() {
+            const selectedText = window.getSelection().toString();
+            document.getElementById(`input${i}`).value = selectedText;
+        });
+        buttonDiv.appendChild(button);
+        rowDiv.appendChild(buttonDiv);
+
+        panel.appendChild(rowDiv);
+    }
+
+    const createRecordBtn = document.createElement('button');
+    createRecordBtn.innerText = "Create Record in Airtable";
+    createRecordBtn.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; margin-top: 20px; display: block;";
+    createRecordBtn.disabled = true;
+    panel.appendChild(createRecordBtn);
+    document.body.appendChild(panel);
+
+    // Function to enable or disable the 'Create Record' button
+    const checkInputFields = function() {
+        const conditions = ['input1', 'input7', 'input8', 'input17'].every(id => document.getElementById(id).value);
+        createRecordBtn.style.backgroundColor = conditions ? "black" : "grey";
+        createRecordBtn.disabled = !conditions;
+    };
+
+    document.addEventListener('input', checkInputFields);
+
+    // Add click event to create record button
+    createRecordBtn.addEventListener('click', async function() {
+        let data = {
+            "url": window.location.href,
+            "source": "MazScraper"
+        };
+
+        for (let i = 0; i < 20; i++) {
+            data[webhookKeys[i]] = document.getElementById(`input${i}`).value;
+        }
+
+        const response = await fetch('https://hook.us1.make.com/tygbvj6syy8boyww8wqy1fwmhimju9gq', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+        console.log(`race_record_id: ${responseData}`);
+    });
+
+    // Create the toggle button and add it to the top-left corner
+    const toggleButton = document.createElement('button');
+    toggleButton.innerText = "Toggle Panel";
+    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000;";
+    toggleButton.addEventListener('click', togglePanel);
+    document.body.appendChild(toggleButton);
+
+})();
