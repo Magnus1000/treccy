@@ -11,6 +11,56 @@
 (function() {
     'use strict';
 
+    // Function to check if the script is running in the main frame
+    const isMainFrame = () => {
+        return window.self === window.top;
+    };
+
+    // If not in main frame, exit the function
+    if (!isMainFrame()) {
+        return;
+    }
+
+    console.log("Running script in main frame only");
+
+    // Create "Lookup" button and set its properties
+    const lookupBtn = document.createElement('button');
+    lookupBtn.innerText = "Lookup";
+    lookupBtn.style = "color: black; border: 1px solid black; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%;";
+
+    // Function to append the 'Lookup' button to the Panel
+    const appendLookupButtonToPanel = (panelElement) => {
+        panelElement.appendChild(lookupBtn);
+        console.log("Lookup button appended to panel");  // Logging to confirm
+    };
+
+    // Lookup event listener
+    lookupBtn.addEventListener('click', async function() {
+        const currentURL = window.location.href;
+        const airtableApiKey = 'keyEiGPuqmRTtXcZ0'; // Replace with your Airtable API key
+        const airtableBase = 'app1buEm2yEqxilPh';
+        const airtableTable = 'tblS5SD7MxfZUl3wf';
+        const airtableUrl = `https://api.airtable.com/v0/${airtableBase}/${airtableTable}?filterByFormula={race_website_at}='${currentURL}'`;
+
+        const response = await fetch(airtableUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${airtableApiKey}`
+            }
+        });
+
+        const responseData = await response.json();
+
+        // Log and update the webhookResponseDiv with the new data
+        console.log(`Airtable response: ${JSON.stringify(responseData)}`);
+        const webhookResponseDiv = document.getElementById('webhook-response-div');
+        if (responseData.records.length > 0) {
+            webhookResponseDiv.innerHTML += `<br>Record exists: ${JSON.stringify(responseData.records)}`;
+        } else {
+            webhookResponseDiv.innerHTML += '<br>No matching record found.';
+        }
+    });
+
     // Function to toggle panel visibility
     const togglePanel = () => {
         const panel = document.getElementById('panel');
@@ -31,6 +81,15 @@
         return paddedDiv;
     };
 
+    // Function to create a div for webhook responses
+    const createWebhookResponseDiv = () => {
+    const webhookResponseDiv = document.createElement('div');
+    webhookResponseDiv.id = 'webhook-response-div';
+    webhookResponseDiv.style = "background-color: lightgrey; padding: 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; font-size: 11px;";
+    webhookResponseDiv.innerHTML = "<strong>Webhook Responses:</strong><br>";
+    return webhookResponseDiv;
+    };
+
     // Define labels and keys for easy modification
     const buttonLabels = ["Race Name", "Country", "Region", "City", "Sports", "Description", "Date", "Admin Emails"];
     const webhookKeys = ["name_at", "country_at", "region_at", "city_at", "sports_at", "description_at", "start_date_at", "admin_emails_at"];
@@ -39,6 +98,13 @@
     const panel = document.createElement('div');
     panel.id = "panel";
     panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 60px 10px 10px 10px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+
+    // Append the 'Lookup' button to the panel
+    appendLookupButtonToPanel(panel);
+
+    // Create and append the webhookResponseDiv
+    const webhookResponseDiv = createWebhookResponseDiv();
+    panel.appendChild(webhookResponseDiv);
 
     // Create the fields and buttons
     for (let i = 0; i < 7; i++) {
@@ -86,9 +152,10 @@
     panel.appendChild(paddedCreateRecordDiv);
     document.body.appendChild(panel);
 
+
     // Function to enable or disable the 'Create Record' button
     const checkInputFields = function() {
-        const conditions = ['input1', 'input7', 'input8', 'input17'].every(id => document.getElementById(id).value);
+        const conditions = ['input0', 'input1', 'input2', 'input3'].every(id => document.getElementById(id).value);
         createRecordBtn.style.backgroundColor = conditions ? "black" : "grey";
         createRecordBtn.disabled = !conditions;
     };
@@ -116,6 +183,11 @@
 
         const responseData = await response.json();
         console.log(`race_record_id: ${responseData}`);
+
+        // Update the webhookResponseDiv with the new data
+        const webhookResponseDiv = document.getElementById('webhook-response-div');
+        webhookResponseDiv.innerHTML += `<br>Response Data: ${JSON.stringify(responseData)}`;
+
     });
 
     // Create the toggle button and add it to the top-left corner
