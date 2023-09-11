@@ -66,6 +66,7 @@
         lookupBtn.disabled = false;  // Re-enable the button
     });
 
+
     // Function to toggle panel visibility
     const togglePanel = () => {
         const panel = document.getElementById('panel');
@@ -103,6 +104,69 @@
     const panel = document.createElement('div');
     panel.id = "panel";
     panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 60px 10px 10px 10px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+
+ const displayImagesInPanel = () => {
+    const imageContainer = document.createElement('div');
+    imageContainer.style = "display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;";
+    const images = document.getElementsByTagName('img');
+
+    for (let img of images) {
+        if (!img.src || img.src.endsWith('.svg')) {
+            continue;
+        }
+
+        // Create a container for each image and its checkboxes
+        const imgCheckboxContainer = document.createElement('div');
+
+        const imgElement = document.createElement('img');
+        imgElement.src = img.src;
+        imgElement.style = "width: 100%; height: auto; border: 1px solid black;";
+        imgCheckboxContainer.appendChild(imgElement);
+
+        // Create checkboxes
+        const mainCheckbox = document.createElement('input');
+        mainCheckbox.type = 'checkbox';
+        mainCheckbox.className = 'main-photo-checkbox';
+        const mainLabel = document.createElement('label');
+        mainLabel.innerHTML = 'Main photo';
+        imgCheckboxContainer.appendChild(mainCheckbox);
+        imgCheckboxContainer.appendChild(mainLabel);
+
+        const mapCheckbox = document.createElement('input');
+        mapCheckbox.type = 'checkbox';
+        const mapLabel = document.createElement('label');
+        mapLabel.innerHTML = 'Map';
+        imgCheckboxContainer.appendChild(mapCheckbox);
+        imgCheckboxContainer.appendChild(mapLabel);
+
+        const galleryCheckbox = document.createElement('input');
+        galleryCheckbox.type = 'checkbox';
+        const galleryLabel = document.createElement('label');
+        galleryLabel.innerHTML = 'Gallery';
+        imgCheckboxContainer.appendChild(galleryCheckbox);
+        imgCheckboxContainer.appendChild(galleryLabel);
+
+        imageContainer.appendChild(imgCheckboxContainer);
+    }
+
+    panel.appendChild(imageContainer);
+
+        // Make sure only one 'Main photo' checkbox can be selected
+        const mainPhotoCheckboxes = document.querySelectorAll('.main-photo-checkbox');
+        mainPhotoCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    mainPhotoCheckboxes.forEach(box => {
+                        if (box !== this) {
+                            box.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
+        console.log("Non-SVG images and checkboxes added to panel");
+    };
 
     // Append the 'Lookup' button to the panel
     appendLookupButtonToPanel(panel);
@@ -144,6 +208,9 @@
 
         panel.appendChild(rowDiv);
     }
+
+    // Call the function to display images in the panel
+    displayImagesInPanel();
 
     const createRecordBtn = document.createElement('button');
     createRecordBtn.innerText = "Create Record in Airtable";
