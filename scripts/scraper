@@ -32,8 +32,8 @@
     };
 
     // Define labels and keys for easy modification
-    const buttonLabels = ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6", "Label7", "Label8", "Label9", "Label10", "Label11", "Label12", "Label13", "Label14", "Label15", "Label16", "Label17", "Label18", "Label19", "Label20"];
-    const webhookKeys = ["Key1", "Key2", "Key3", "Key4", "Key5", "Key6", "Key7", "Key8", "Key9", "Key10", "Key11", "Key12", "Key13", "Key14", "Key15", "Key16", "Key17", "Key18", "Key19", "Key20"];
+    const buttonLabels = ["Race Name", "Country", "Region", "City", "Sports", "Description", "Date", "Admin Emails"];
+    const webhookKeys = ["name_at", "country_at", "region_at", "city_at", "sports_at", "description_at", "start_date_at", "admin_emails_at"];
 
     // Create panel and set its properties
     const panel = document.createElement('div');
@@ -41,7 +41,7 @@
     panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 20px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
 
     // Create the fields and buttons
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 7; i++) {
         const rowDiv = document.createElement('div');
         rowDiv.style = "display: flex; justify-content: flex-end; align-items: flex-end; column-gap: 5px;";
 
@@ -102,7 +102,7 @@
             "source": "MazScraper"
         };
 
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 7; i++) {
             data[webhookKeys[i]] = document.getElementById(`input${i}`).value;
         }
 
