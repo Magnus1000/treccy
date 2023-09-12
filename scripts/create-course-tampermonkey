@@ -25,7 +25,7 @@
 
     // Create "Lookup" button and set its properties
     const lookupBtnCourse = document.createElement('button');
-    lookupBtnCourse.innerText = "Lookup Course";
+    lookupBtnCourse.innerText = "Course Lookup";
     lookupBtnCourse.style = "color: #1B2B1C; border: 1px solid #1B2B1C; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%; background-color: transparent;";
 
     // Function to append the 'Lookup' button to the Panel
@@ -435,9 +435,9 @@
 
     // Function to enable or disable the 'Create Record' button
     const checkInputFieldsCourse = function() {
-        const conditionsCourse = ['inputCourse0', 'inputCourse1', 'inputCourse2', 'inputCourse3'].every(id => document.getElementById(id).value);
-        createRecordBtnCourse.style.backgroundColor = conditions ? "#1B2B1C" : "#E6E4D5";
-        createRecordBtnCourse.disabled = !conditions;
+        const conditionsCourse = ['inputCourse2'].every(id => document.getElementById(id).value);
+        createRecordBtnCourse.style.backgroundColor = conditionsCourse ? "#1B2B1C" : "#E6E4D5";
+        createRecordBtnCourse.disabled = !conditionsCourse;
     };
 
     document.addEventListener('inputCourse', checkInputFieldsCourse);
