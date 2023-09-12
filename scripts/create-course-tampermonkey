@@ -21,15 +21,15 @@
         return;
     }
 
-    console.log("Coursescript running script in main frame only");
+    console.log("Course script running script in main frame only");
 
     // Create "Lookup" button and set its properties
     const lookupBtnCourse = document.createElement('button');
     lookupBtnCourse.innerText = "Lookup Course";
-    lookupBtnCourse.style = "color: black; border: 1px solid black; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%;";
+    lookupBtnCourse.style = "color: #1B2B1C; border: 1px solid #1B2B1C; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%; background-color: transparent;";
 
     // Function to append the 'Lookup' button to the Panel
-    const appendLookupButtonToPanel = (panelElement) => {
+    const appendLookupButtonToPanelCourse = (panelElement) => {
         panelElement.appendChild(lookupBtnCourse);
         console.log("Lookup button appended to panel");  // Logging to confirm
     };
@@ -41,23 +41,23 @@
     lookupBtnCourse.addEventListener('click', async function() {
         lookupBtnCourse.innerText = "Wait..."; // Change text to "Wait..."
         lookupBtnCourse.disabled = true;  // Disable the button
-        const currentURL = window.location.href;
-        const airtableTable = 'tblS5SD7MxfZUl3wf';
-        const airtableUrl = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={course_website_at}='${currentURL}'`;
+        const currentURLCourse = window.location.href;
+        const airtableTableCourse = 'tblS5SD7MxfZUl3wf';
+        const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={course_website_at}='${currentURLCourse}'`;
 
-        const response = await fetch(airtableUrl, {
+        const response = await fetch(airtableUrlCourse, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${airtableApiKeyCourse}`
             }
         });
 
-        const responseData = await response.json();
+        const responseDataCourse = await response.json();
 
         // Log and update the webhookResponseDiv with the new data
         console.log(`Airtable response: ${JSON.stringify(responseDataCourse)}`);
         const webhookResponseDivCourse = document.getElementById('webhook-response-div-course');
-        if (responseData.records.length > 0) {
+        if (responseDataCourse.records.length > 0) {
             webhookResponseDivCourse.innerHTML += `<br>Record exists: ${JSON.stringify(responseDataCourse.records)}`;
         } else {
             webhookResponseDivCourse.innerHTML += '<br>No matching record found.';
@@ -70,28 +70,28 @@
     // Function to fetch records from Airtable and populate options
     async function fetchAndPopulateOptionsCourse() {
         const tableNameCourse = 'tblKbHneWHFgaFUsZ';
-        const airtableEndpointCourse = `https://api.airtable.com/v0/${airtableBase}/${tableName}`;
+        const airtableEndpointCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${tableNameCourse}`;
 
-        const requestOptions = {
+        const requestOptionsCourse = {
             headers: {
                 Authorization: `Bearer ${airtableApiKeyCourse}`
             }
         };
 
         try {
-            const response = await fetch(airtableEndpoint, requestOptions);
+            const response = await fetch(airtableEndpointCourse, requestOptionsCourse);
             const data = await response.json();
             const records = data.records;
 
             // Get the select element
-            const selectElement = document.getElementById('inputCourse5');
+            const selectElementCourse = document.getElementById('inputCourse5');
 
             // Populate the select element with options
             records.forEach(record => {
-                const optionElement = document.createElement('option');
-                optionElement.value = record.fields.name_at;
-                optionElement.innerText = record.fields.name_at;
-                selectElement.appendChild(optionElement);
+                const optionElementCourse = document.createElement('option');
+                optionElementCourse.value = record.fields.name_at;
+                optionElementCourse.innerText = record.fields.name_at;
+                selectElementCourse.appendChild(optionElementCourse);
             });
 
             console.log("Options populated.");
@@ -110,15 +110,15 @@
         const start_dateCourse = new Date();
 
         // Get the individual components of the date and time
-        const year = start_dateCourse.getFullYear();
-        const month = start_dateCourse.getMonth() + 1; // Months start from 0
-        const day = start_dateCourse.getDate();
-        const hours = start_dateCourse.getHours();
-        const minutes = start_dateCourse.getMinutes();
-        const seconds = start_dateCourse.getSeconds();
+        const yearCourse = start_dateCourse.getFullYear();
+        const monthCourse = start_dateCourse.getMonth() + 1; // Months start from 0
+        const dayCourse = start_dateCourse.getDate();
+        const hoursCourse = start_dateCourse.getHours();
+        const minutesCourse = start_dateCourse.getMinutes();
+        const secondsCourse = start_dateCourse.getSeconds();
 
         // Create a formatted string of the current date and time
-        dateStartTimeStringCourse = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        dateStartTimeStringCourse = `${yearCourse}-${monthCourse}-${dayCourse} ${hoursCourse}:${minutesCourse}:${secondsCourse}`;
 
         // Log the current date and time to the console
         console.log("Current Date and Time:", dateStartTimeStringCourse);
@@ -129,22 +129,22 @@
         const end_dateCourse = new Date();
 
         // Get the individual components of the date and time
-        const year = end_dateCourse.getFullYear();
-        const month = end_dateCourse.getMonth() + 1; // Months start from 0
-        const day = end_dateCourse.getDate();
-        const hours = end_dateCourse.getHours();
-        const minutes = end_dateCourse.getMinutes();
-        const seconds = end_dateCourse.getSeconds();
+        const yearCourse = end_dateCourse.getFullYear();
+        const monthCourse = end_dateCourse.getMonth() + 1; // Months start from 0
+        const dayCourse = end_dateCourse.getDate();
+        const hoursCourse = end_dateCourse.getHours();
+        const minutesCourse = end_dateCourse.getMinutes();
+        const secondsCourse = end_dateCourse.getSeconds();
 
         // Create a formatted string of the current date and time
-        dateEndTimeStringCourse = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        dateEndTimeStringCourse = `${yearCourse}-${monthCourse}-${dayCourse} ${hoursCourse}:${minutesCourse}:${secondsCourse}`;
 
         // Log the current date and time to the console
         console.log("End Date and Time:", dateEndTimeStringCourse);
     }
 
     // Function to set input type to "date"
-    function setInputTypeToDate() {
+    function setInputTypeToDateCourse() {
       // Get the input field by its id
       var inputField = document.getElementById('inputCourse6');
 
@@ -155,40 +155,40 @@
     }
 
     // Function to change input element to select element
-    function changeInputToSelect() {
+    function changeInputToSelectCourse() {
         // Get the input field by its id
         var inputField = document.getElementById('inputCourse5');
 
         // Create a new select element
-        var selectElement = document.createElement('select');
-        selectElement.id = 'inputCourse5';
-        selectElement.style.margin = '0px';
-        selectElement.style.padding = '0px';
-        selectElement.style.height = '30px';
+        var selectElementCourse = document.createElement('select');
+        selectElementCourse.id = 'inputCourse5';
+        selectElementCourse.style.margin = '0px';
+        selectElementCourse.style.padding = '0px';
+        selectElementCourse.style.height = '30px';
 
         // Replace the input element with the select element
-        inputField.parentNode.replaceChild(selectElement, inputField);
+        inputField.parentNode.replaceChild(selectElementCourse, inputField);
 
         console.log("Input field changed to select field.");
     }
 
   // Function to change multiple input elements to textarea elements and apply styling
-  function changeMultipleInputsToTextAreasWithStyle(inputCourseIds) {
-    inputIds.forEach(id => {
+  function changeMultipleInputsToTextAreasWithStyleCourse(inputCourseIds) {
+    inputCourseIds.forEach(id => {
       // Get the input field by its id
       var inputField = document.getElementById(id);
 
       if (inputField) {
         // Create a new textarea element
-        var textareaElement = document.createElement('textarea');
-        textareaElement.id = id;
-        textareaElement.style.margin = '0px';
-        textareaElement.style.padding = '0px';
-        textareaElement.style.height = '30px';
-        textareaElement.style.resize = 'vertical';  // Added this line for vertical resize
+        var textareaElementCourse = document.createElement('textarea');
+        textareaElementCourse.id = id;
+        textareaElementCourse.style.margin = '0px';
+        textareaElementCourse.style.padding = '0px';
+        textareaElementCourse.style.height = '30px';
+        textareaElementCourse.style.resize = 'vertical';  // Added this line for vertical resize
 
         // Replace the input element with the textarea element
-        inputField.parentNode.replaceChild(textareaElement, inputField);
+        inputField.parentNode.replaceChild(textareaElementCourse, inputField);
         console.log(`Input field ${id} changed to textarea with vertical resize enabled.`);
       } else {
         console.log(`Element with ID ${id} not found.`);
@@ -199,10 +199,10 @@
     // Function to toggle panel visibility
     const togglePanelCourse = () => {
         const panelCourse = document.getElementById('panelCourse');
-        if (panel.style.right === '0px') {
-            panel.style.right = '-20%';
+        if (panelCourse.style.right === '0px') {
+            panelCourse.style.right = '-20%';
         } else {
-            panel.style.right = '0px';
+            panelCourse.style.right = '0px';
         }
         console.log("Course panel toggled");  // Logging the toggle action
     };
@@ -227,17 +227,17 @@
 
     let secondsCourse = 0;
 
-    function startTimer() {
+    function startTimerCourse() {
         const timerElementCourse = document.getElementById('timerCourse'); // We will create this HTML element soon
 
         setInterval(function() {
             secondsCourse++; // Increment the seconds count by 1
-            const minutes = Math.floor(secondsCourse / 60); // Calculate the number of minutes
-            const remainingSeconds = secondsCourse % 60; // Calculate the remaining seconds
+            const minutesCourse = Math.floor(secondsCourse / 60); // Calculate the number of minutes
+            const remainingSecondsCourse = secondsCourse % 60; // Calculate the remaining seconds
 
             // Display minutes and seconds with leading zeros where needed
-            const displayMinutesCourse = String(minutes).padStart(2, '0');
-            const displaySecondsCourse = String(remainingSeconds).padStart(2, '0');
+            const displayMinutesCourse = String(minutesCourse).padStart(2, '0');
+            const displaySecondsCourse = String(remainingSecondsCourse).padStart(2, '0');
 
             timerElementCourse.innerHTML = `${displayMinutesCourse}:${displaySecondsCourse}`; // Update the timer display
         }, 1000); // 1000 milliseconds (1 second)
@@ -245,7 +245,7 @@
 
     function addTimerToPanelCourse(panelElementCourse) {
         // Create a div to hold the timer and set its ID
-        const timerDiv = document.createElement('div');
+        const timerDivCourse = document.createElement('div');
         timerDivCourse.id = "timerCourse";
         timerDivCourse.style = "font-size: 16px; margin: 10px;";  // You can adjust the styling as needed
 
@@ -254,18 +254,18 @@
         console.log("Course timer added to panel");  // Logging to confirm
 
         // Initialize the timer
-        startTimer();
+        startTimerCourse();
     }
 
 
     // Define labels and keys for easy modification
-    const buttonLabels = ["Course Name", "Description", "Country", "Region", "City", "Sports", "Date", "Admin Emails", "Website"];
-    const webhookKeys = ["name_at", "description_at", "country_at", "region_at", "city_at", "sports_at", "start_date_at", "admin_emails_at", "race_website_at"];
+    const buttonLabelsCourse = ["Course Name", "Description", "Country", "Region", "City", "Sports", "Date", "Admin Emails", "Website"];
+    const webhookKeysCourse = ["name_at", "description_at", "country_at", "region_at", "city_at", "sports_at", "start_date_at", "admin_emails_at", "race_website_at"];
 
     // Create panel and set its properties
     const panelCourse = document.createElement('div');
-    panel.id = "panelCourse";
-    panelCourse.style = "position: fixed; right: -20%; top: 0; bottom: 0; width: 20%; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding-top: 60px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+    panelCourse.id = "panelCourse";
+    panelCourse.style = "position: fixed; right: -20%; top: 0; bottom: 0; width: 20%; max-height: 100vh; overflow-y: auto; background-color: #fbf8ef; z-index: 9999; padding-top: 60px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px; border-left: 3px solid #BFF103;";
 
  const displayImagesInPanelCourse = () => {
     const imageContainerCourse = document.createElement('div');
@@ -282,8 +282,8 @@
 
         const imgElementCourse = document.createElement('img');
         imgElementCourse.src = img.src;
-        imgElementCourse.style = "width: 100%; height: auto; border: 1px solid black;";
-        imgCheckboxContainer.appendChild(imgElementCourse);
+        imgElementCourse.style = "width: 100%; height: auto; border-radius: 5px;";
+        imgCheckboxContainerCourse.appendChild(imgElementCourse);
 
         // Create checkboxes
         const mainCheckboxCourse = document.createElement('input');
@@ -305,7 +305,7 @@
         galleryCheckboxCourse.type = 'checkbox';
         const galleryLabelCourse = document.createElement('label');
         galleryLabelCourse.innerHTML = 'Gallery';
-        imgCheckboxContainerCourse.appendChild(galleryCheckbox)Course;
+        imgCheckboxContainerCourse.appendChild(galleryCheckboxCourse);
         imgCheckboxContainerCourse.appendChild(galleryLabelCourse);
 
         imageContainerCourse.appendChild(imgCheckboxContainerCourse);
@@ -351,15 +351,15 @@
         const inputCourse = document.createElement('input');
         inputCourse.id = `inputCourse${i}`;
         inputCourse.style = "margin: 0; padding: 0; height: 30px;";
-        inputDivCourse.appendChild(label);
+        inputDivCourse.appendChild(labelCourse);
         inputDivCourse.appendChild(inputCourse);
-        rowDiv.appendChild(inputDivCourse;
+        rowDivCourse.appendChild(inputDivCourse);
 
         const buttonDivCourse = document.createElement('div');
         const buttonCourse = document.createElement('button');
-        buttonCourse.innerText = `Set ${buttonLabels[i]}`;
+        buttonCourse.innerText = `Set ${buttonLabelsCourse[i]}`;
         buttonCourse.id = `btn${i}`;
-        buttonCourse.style = "margin: 0; padding: 0 10px 0 10px; border: 1px solid black; border-radius: 5px; height: 30px; font-size: 10px; width: 100%";
+        buttonCourse.style = "margin: 0; padding: 0 10px 0 10px; border: 1px solid #1B2B1C; border-radius: 5px; height: 30px; font-size: 10px; width: 100%";
         buttonDivCourse.style = "width: 30%;";
         buttonCourse.addEventListener('click', function() {
             const selectedTextCourse = window.getSelection().toString();
@@ -385,7 +385,7 @@
     // Regular expression to match email addresses
     const emailRegexCourse = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
 
-    allElements.forEach(element => {
+    allElementsCourse.forEach(element => {
       const elementTextCourse = element.textContent || element.innerText;
 
       // Check if elementText is defined before running match
@@ -404,7 +404,7 @@
     console.log("Found email addresses:", emailAddressesCourse);
 
     // Set the input field value
-    setInputValue(emailAddressesCourse);
+    setInputValueCourse(emailAddressesCourse);
 
     return emailAddressesCourse;
   }
@@ -422,7 +422,7 @@
 
     const createRecordBtnCourse = document.createElement('button');
     createRecordBtnCourse.innerText = "Create Course in Airtable";
-    createRecordBtnCourse.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
+    createRecordBtnCourse.style = "background-color: #E6E4D5; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
     createRecordBtnCourse.disabled = true;
 
     // Create the padded div around the 'Create Record' button
@@ -436,14 +436,14 @@
     // Function to enable or disable the 'Create Record' button
     const checkInputFieldsCourse = function() {
         const conditionsCourse = ['inputCourse0', 'inputCourse1', 'inputCourse2', 'inputCourse3'].every(id => document.getElementById(id).value);
-        createRecordBtn.style.backgroundColor = conditions ? "black" : "grey";
-        createRecordBtn.disabled = !conditions;
+        createRecordBtnCourse.style.backgroundColor = conditions ? "#1B2B1C" : "#E6E4D5";
+        createRecordBtnCourse.disabled = !conditions;
     };
 
     document.addEventListener('inputCourse', checkInputFieldsCourse);
 
     // Function to prepopulate the 'race_website_at' field with the current URL
-const prepopulateWebsiteUrl = () => {
+const prepopulateWebsiteUrlCourse = () => {
     const websiteInputCourse = document.getElementById("inputCourse8"); // "inputCourse8" corresponds to "race_website_at"
     if (websiteInputCourse) {
         websiteInputCourse.value = window.location.href;
@@ -548,7 +548,7 @@ const collectImageURLsCourse = () => {
     // Create the toggle button and add it to the top-left corner
     const toggleButtonCourse = document.createElement('button');
     toggleButtonCourse.innerText = "Create Course";
-    toggleButtonCourse.style = "position: fixed; right: 20px; top: 80px; z-index: 10000; background-color: #f3f3f3; padding: 5px; border-radius: 5px; border: 1px solid black;";
+    toggleButtonCourse.style = "color: #BFF103; position: fixed; right: 20px; top: 80px; z-index: 10000; background-color: #1B2B1C; padding: 5px; border-radius: 5px; border: 1px solid #1B2B1C;";
     toggleButtonCourse.addEventListener('click', togglePanelCourse);
     document.body.appendChild(toggleButtonCourse);
 
@@ -568,7 +568,7 @@ const collectImageURLsCourse = () => {
     changeMultipleInputsToTextAreasWithStyleCourse(['inputCourse1', 'inputCourse7']);
 
     // Call the function to find email addresses and set the value of inputCourse7 field
-    findEmailAddresseCourses();
+    findEmailAddressesCourse();
 
     // Call the function to retrives sports options
     fetchAndPopulateOptionsCourse();
