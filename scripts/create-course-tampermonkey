@@ -547,8 +547,8 @@ const collectImageURLs = () => {
 
     // Create the toggle button and add it to the top-left corner
     const toggleButton = document.createElement('button');
-    toggleButton.innerText = "Create Race";
-    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000; background-color: #f3f3f3; padding: 10px; border-radius: 5px; border: 1px solid black;";
+    toggleButton.innerText = "Create Course";
+    toggleButton.style = "position: fixed; right: 20px; top: 80px; z-index: 10000; background-color: #f3f3f3; padding: 5px; border-radius: 5px; border: 1px solid black;";
     toggleButton.addEventListener('click', togglePanel);
     document.body.appendChild(toggleButton);
 
