@@ -34,13 +34,14 @@
         console.log("Lookup button appended to panel");  // Logging to confirm
     };
 
+    const airtableApiKey = 'keyEiGPuqmRTtXcZ0'; // Replace with your Airtable API key
+    const airtableBase = 'app1buEm2yEqxilPh';
+
     // Lookup event listener
     lookupBtn.addEventListener('click', async function() {
         lookupBtn.innerText = "Wait..."; // Change text to "Wait..."
         lookupBtn.disabled = true;  // Disable the button
         const currentURL = window.location.href;
-        const airtableApiKey = 'keyEiGPuqmRTtXcZ0'; // Replace with your Airtable API key
-        const airtableBase = 'app1buEm2yEqxilPh';
         const airtableTable = 'tblS5SD7MxfZUl3wf';
         const airtableUrl = `https://api.airtable.com/v0/${airtableBase}/${airtableTable}?filterByFormula={race_website_at}='${currentURL}'`;
 
@@ -65,6 +66,41 @@
         lookupBtn.innerText = "Lookup"; // Change text back to "Lookup"
         lookupBtn.disabled = false;  // Re-enable the button
     });
+
+    // Function to fetch records from Airtable and populate options
+    async function fetchAndPopulateOptions() {
+        const tableName = 'tblKbHneWHFgaFUsZ';
+        const airtableEndpoint = `https://api.airtable.com/v0/${airtableBase}/${tableName}`;
+
+        const requestOptions = {
+            headers: {
+                Authorization: `Bearer ${airtableApiKey}`
+            }
+        };
+
+        try {
+            const response = await fetch(airtableEndpoint, requestOptions);
+            const data = await response.json();
+            const records = data.records;
+
+            // Get the select element
+            const selectElement = document.getElementById('input5');
+
+            // Populate the select element with options
+            records.forEach(record => {
+                const optionElement = document.createElement('option');
+                optionElement.value = record.fields.name_at;
+                optionElement.innerText = record.fields.name_at;
+                selectElement.appendChild(optionElement);
+            });
+
+            console.log("Options populated.");
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
 
     let dateStartTimeString = "";
     let dateEndTimeString = "";
@@ -117,6 +153,48 @@
 
       console.log("Input type set to date.");
     }
+
+    // Function to change input element to select element
+    function changeInputToSelect() {
+        // Get the input field by its id
+        var inputField = document.getElementById('input5');
+
+        // Create a new select element
+        var selectElement = document.createElement('select');
+        selectElement.id = 'input5';
+        selectElement.style.margin = '0px';
+        selectElement.style.padding = '0px';
+        selectElement.style.height = '30px';
+
+        // Replace the input element with the select element
+        inputField.parentNode.replaceChild(selectElement, inputField);
+
+        console.log("Input field changed to select field.");
+    }
+
+  // Function to change multiple input elements to textarea elements and apply styling
+  function changeMultipleInputsToTextAreasWithStyle(inputIds) {
+    inputIds.forEach(id => {
+      // Get the input field by its id
+      var inputField = document.getElementById(id);
+
+      if (inputField) {
+        // Create a new textarea element
+        var textareaElement = document.createElement('textarea');
+        textareaElement.id = id;
+        textareaElement.style.margin = '0px';
+        textareaElement.style.padding = '0px';
+        textareaElement.style.height = '30px';
+        textareaElement.style.resize = 'vertical';  // Added this line for vertical resize
+
+        // Replace the input element with the textarea element
+        inputField.parentNode.replaceChild(textareaElement, inputField);
+        console.log(`Input field ${id} changed to textarea with vertical resize enabled.`);
+      } else {
+        console.log(`Element with ID ${id} not found.`);
+      }
+    });
+  }
 
     // Function to toggle panel visibility
     const togglePanel = () => {
@@ -296,6 +374,52 @@
     // Call the function to display images in the panel
     displayImagesInPanel();
 
+
+  // Function to find all email addresses on page load
+  function findEmailAddresses() {
+    // Get all elements on the page
+    const allElements = document.querySelectorAll('*');
+
+    const emailAddresses = [];
+
+    // Regular expression to match email addresses
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+
+    allElements.forEach(element => {
+      const elementText = element.textContent || element.innerText;
+
+      // Check if elementText is defined before running match
+      if (elementText) {
+        const matches = elementText.match(emailRegex);
+        if (matches) {
+          matches.forEach(email => {
+            if (!emailAddresses.includes(email)) {
+              emailAddresses.push(email);
+            }
+          });
+        }
+      }
+    });
+
+    console.log("Found email addresses:", emailAddresses);
+
+    // Set the input field value
+    setInputValue(emailAddresses);
+
+    return emailAddresses;
+  }
+
+  // Function to set the input field value
+  function setInputValue(emailArray) {
+    const inputField = document.getElementById("input7");
+    if (inputField) {
+      inputField.value = emailArray.join(", ");
+      console.log("Input field value set to:", inputField.value);
+    } else {
+      console.log("Input field with ID 'input7' not found");
+    }
+  }
+
     const createRecordBtn = document.createElement('button');
     createRecordBtn.innerText = "Create Record in Airtable";
     createRecordBtn.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
@@ -436,6 +560,18 @@ const collectImageURLs = () => {
 
     // Call the function to set input6 field to type date
     setInputTypeToDate();
+
+    // Call the function to set input5 field to type select
+    changeInputToSelect();
+
+    // You can call the function like this to change multiple inputs:
+    changeMultipleInputsToTextAreasWithStyle(['input1', 'input7']);
+
+    // Call the function to find email addresses and set the value of input7 field
+    findEmailAddresses();
+
+    // Call the function to retrives sports options
+    fetchAndPopulateOptions();
 
     // Call the function to see it in action
     getStartDateTime();
