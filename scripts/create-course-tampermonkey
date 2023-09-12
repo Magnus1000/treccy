@@ -32,78 +32,91 @@
     return Math.floor(diffInMilliseconds / (1000 * 60));
   }
 
-  // Function to calculate and format the time difference
-  function formatTimeDifference(date1, date2) {
-    const diffInMilliseconds = date1 - date2;
-    const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
-    const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+  // Function to format the time difference between two Date objects
+  function formatTimeDifference(currentTime, pastTime) {
+    // Calculate the difference in milliseconds
+    const differenceInMs = currentTime - pastTime;
+    const differenceInSeconds = Math.floor(differenceInMs / 1000);
+    const differenceInMinutes = Math.floor(differenceInSeconds / 60);
+    const differenceInHours = Math.floor(differenceInMinutes / 60);
+    const differenceInDays = Math.floor(differenceInHours / 24);
 
-    if (diffInDays > 0) {
-      return `${diffInDays} days`;
-    } else if (diffInHours > 0) {
-      return `${diffInHours} hours`;
+    if (differenceInDays > 0) {
+      return `${differenceInDays} days ago`;
+    } else if (differenceInHours > 0) {
+      return `${differenceInHours} hours ago`;
     } else {
-      return `${diffInMinutes} mins`;
+      return `${differenceInMinutes} mins ago`;
     }
   }
 
   // Function to execute lookup on page load
   async function lookupRaceOnLoad() {
-    // Get the current URL
     const currentURLCourse = window.location.href;
-    // Specify the Airtable table
     const airtableTableCourse = 'tblS5SD7MxfZUl3wf';
-    // Construct the Airtable API URL
     const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={race_website_at}='${currentURLCourse}'`;
 
-    // Fetch data from Airtable
-    const response = await fetch(airtableUrlCourse, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${airtableApiKeyCourse}`
+    try {
+      const response = await fetch(airtableUrlCourse, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${airtableApiKeyCourse}`
+        }
+      });
+
+      // Check if the fetch response is okay
+      if (response.ok) {
+        const responseDataCourse = await response.json();
+
+        const selectElementCourse = document.getElementById('inputCourse0');
+        const inputElementCourse1 = document.getElementById('inputCourse1');
+
+        if (responseDataCourse.records.length > 0 && selectElementCourse) {
+          // Get current time
+          const currentTime = new Date();
+
+          // Sort the records by 'created_on_at' field, newest first
+          const sortedRecords = responseDataCourse.records.sort((a, b) => {
+            return new Date(b.fields.created_on_at) - new Date(a.fields.created_on_at);
+          });
+
+          // Set inputCourse1 to the ID of the first (newest) record
+          if (inputElementCourse1) {
+            inputElementCourse1.value = sortedRecords[0].id;
+            inputElementCourse1.readOnly = true; // Make the input read-only
+            inputElementCourse1.style = "background-color: #f3f3f3; border-style: none;";  // Grey out the background
+          }
+
+          // Populate the select element with options
+          sortedRecords.forEach(record => {
+            const createdOnDate = new Date(record.fields.created_on_at);
+            const timeDifference = formatTimeDifference(currentTime, createdOnDate);
+
+            const optionElement = document.createElement('option');
+            optionElement.value = record.fields.name_at;
+            optionElement.setAttribute('data-race-id', record.id);
+            optionElement.innerText = `${record.fields.name_at} (${timeDifference})`;
+            selectElementCourse.appendChild(optionElement);
+          });
+
+          console.log('Options added to select element and inputCourse1 set.');
+        } else if (!selectElementCourse) {
+          console.log('Select element with ID "inputCourse0" not found.');
+        } else {
+          console.log('No matching record found.');
+        }
+      } else {
+        throw new Error(`Failed to fetch: ${response.status}`);
       }
-    });
-
-    // Parse the JSON response
-    const responseDataCourse = await response.json();
-
-    // Log the Airtable response
-    console.log(`Airtable response: ${JSON.stringify(responseDataCourse)}`);
-
-    // Find the select element with ID "inputCourse0"
-    const selectElementCourse = document.getElementById('inputCourse0');
-
-    // If records were returned and the select element exists
-    if (responseDataCourse.records.length > 0 && selectElementCourse) {
-      // Get current time
-      const currentTime = new Date();
-
-      // Sort records by 'created_on_at', newest first
-      const sortedRecords = responseDataCourse.records.sort((a, b) => {
-        return new Date(b.fields.created_on_at) - new Date(a.fields.created_on_at);
-      });
-
-      // Loop through each record and add an option for each "name_at" field
-      sortedRecords.forEach(record => {
-        const createdOnDate = new Date(record.fields.created_on_at);
-        const timeDifference = formatTimeDifference(currentTime, createdOnDate);
-
-        const optionElement = document.createElement('option');
-        optionElement.value = record.fields.name_at;
-        optionElement.setAttribute('data-race-id', record.id); // set the race ID as a data attribute
-        optionElement.innerText = `${record.fields.name_at} (${timeDifference})`;
-        selectElementCourse.appendChild(optionElement);
-      });
-
-      console.log('Options added to select element.');
-    } else if (!selectElementCourse) {
-      console.log('Select element with ID "inputCourse0" not found.');
-    } else {
-      console.log('No matching record found.');
+    } catch (error) {
+      console.log(`Error fetching Airtable: ${error}`);
+      const webhookResponseDivCourse = document.getElementById('webhook-response-div-course');
+      if (webhookResponseDivCourse) {
+        webhookResponseDivCourse.innerHTML = "<strong>ERROR:</strong> Can't fetch Airtable";
+        webhookResponseDivCourse.style = "background-color: #ff00002e; padding: 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; font-size: 11px; color: red;";
+      }
     }
   }
-
 
   // Function to fetch records from Airtable and populate options for multiple IDs
   async function fetchAndPopulateOptionsCourse(ids) {
@@ -646,13 +659,13 @@ const collectImageURLsCourse = () => {
     // Call the function to populate the sports fields with options
     fetchAndPopulateOptionsCourse(['inputCourse5', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17']);
 
-        // Add event listener for inputCourse0 select element
+    // Add event listener for inputCourse0 select element
     const selectElementCourse0 = document.getElementById('inputCourse0');
     if (selectElementCourse0) {
       selectElementCourse0.addEventListener('change', updateInputCourse1);
     }
 
-    // Call the function to see it in action
+    // Call the function to get start time
     getStartDateTimeCourse();
 
 })();
