@@ -23,83 +23,147 @@
 
     console.log("Course script running script in main frame only");
 
-    // Create "Lookup" button and set its properties
-    const lookupBtnCourse = document.createElement('button');
-    lookupBtnCourse.innerText = "Course Lookup";
-    lookupBtnCourse.style = "color: #1B2B1C; border: 1px solid #1B2B1C; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%; background-color: transparent;";
-
-    // Function to append the 'Lookup' button to the Panel
-    const appendLookupButtonToPanelCourse = (panelElement) => {
-        panelElement.appendChild(lookupBtnCourse);
-        console.log("Lookup button appended to panel");  // Logging to confirm
-    };
-
     const airtableApiKeyCourse = 'keyEiGPuqmRTtXcZ0'; // Replace with your Airtable API key
     const airtableBaseCourse = 'app1buEm2yEqxilPh';
 
-    // Lookup event listener
-    lookupBtnCourse.addEventListener('click', async function() {
-        lookupBtnCourse.innerText = "Wait..."; // Change text to "Wait..."
-        lookupBtnCourse.disabled = true;  // Disable the button
-        const currentURLCourse = window.location.href;
-        const airtableTableCourse = 'tblS5SD7MxfZUl3wf';
-        const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={course_website_at}='${currentURLCourse}'`;
+  // Function to calculate minutes difference between two Date objects
+  function minutesDifference(date1, date2) {
+    const diffInMilliseconds = date1 - date2;
+    return Math.floor(diffInMilliseconds / (1000 * 60));
+  }
 
-        const response = await fetch(airtableUrlCourse, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${airtableApiKeyCourse}`
-            }
-        });
+  // Function to calculate and format the time difference
+  function formatTimeDifference(date1, date2) {
+    const diffInMilliseconds = date1 - date2;
+    const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+    const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
-        const responseDataCourse = await response.json();
+    if (diffInDays > 0) {
+      return `${diffInDays} days`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours} hours`;
+    } else {
+      return `${diffInMinutes} mins`;
+    }
+  }
 
-        // Log and update the webhookResponseDiv with the new data
-        console.log(`Airtable response: ${JSON.stringify(responseDataCourse)}`);
-        const webhookResponseDivCourse = document.getElementById('webhook-response-div-course');
-        if (responseDataCourse.records.length > 0) {
-            webhookResponseDivCourse.innerHTML += `<br>Record exists: ${JSON.stringify(responseDataCourse.records)}`;
-        } else {
-            webhookResponseDivCourse.innerHTML += '<br>No matching record found.';
-        }
+  // Function to execute lookup on page load
+  async function lookupRaceOnLoad() {
+    // Get the current URL
+    const currentURLCourse = window.location.href;
+    // Specify the Airtable table
+    const airtableTableCourse = 'tblS5SD7MxfZUl3wf';
+    // Construct the Airtable API URL
+    const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={race_website_at}='${currentURLCourse}'`;
 
-        lookupBtnCourse.innerText = "Lookup Course"; // Change text back to "Lookup"
-        lookupBtnCourse.disabled = false;  // Re-enable the button
+    // Fetch data from Airtable
+    const response = await fetch(airtableUrlCourse, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${airtableApiKeyCourse}`
+      }
     });
 
-    // Function to fetch records from Airtable and populate options
-    async function fetchAndPopulateOptionsCourse() {
-        const tableNameCourse = 'tblKbHneWHFgaFUsZ';
-        const airtableEndpointCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${tableNameCourse}`;
+    // Parse the JSON response
+    const responseDataCourse = await response.json();
 
-        const requestOptionsCourse = {
-            headers: {
-                Authorization: `Bearer ${airtableApiKeyCourse}`
-            }
-        };
+    // Log the Airtable response
+    console.log(`Airtable response: ${JSON.stringify(responseDataCourse)}`);
 
-        try {
-            const response = await fetch(airtableEndpointCourse, requestOptionsCourse);
-            const data = await response.json();
-            const records = data.records;
+    // Find the select element with ID "inputCourse0"
+    const selectElementCourse = document.getElementById('inputCourse0');
 
-            // Get the select element
-            const selectElementCourse = document.getElementById('inputCourse5');
+    // If records were returned and the select element exists
+    if (responseDataCourse.records.length > 0 && selectElementCourse) {
+      // Get current time
+      const currentTime = new Date();
 
-            // Populate the select element with options
-            records.forEach(record => {
-                const optionElementCourse = document.createElement('option');
-                optionElementCourse.value = record.fields.name_at;
-                optionElementCourse.innerText = record.fields.name_at;
-                selectElementCourse.appendChild(optionElementCourse);
-            });
+      // Sort records by 'created_on_at', newest first
+      const sortedRecords = responseDataCourse.records.sort((a, b) => {
+        return new Date(b.fields.created_on_at) - new Date(a.fields.created_on_at);
+      });
 
-            console.log("Options populated.");
+      // Loop through each record and add an option for each "name_at" field
+      sortedRecords.forEach(record => {
+        const createdOnDate = new Date(record.fields.created_on_at);
+        const timeDifference = formatTimeDifference(currentTime, createdOnDate);
 
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+        const optionElement = document.createElement('option');
+        optionElement.value = record.fields.name_at;
+        optionElement.setAttribute('data-race-id', record.id); // set the race ID as a data attribute
+        optionElement.innerText = `${record.fields.name_at} (${timeDifference})`;
+        selectElementCourse.appendChild(optionElement);
+      });
+
+      console.log('Options added to select element.');
+    } else if (!selectElementCourse) {
+      console.log('Select element with ID "inputCourse0" not found.');
+    } else {
+      console.log('No matching record found.');
     }
+  }
+
+
+  // Function to fetch records from Airtable and populate options for multiple IDs
+  async function fetchAndPopulateOptionsCourse(ids) {
+    const tableNameCourse = 'tblKbHneWHFgaFUsZ';
+    const airtableEndpointCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${tableNameCourse}`;
+
+    const requestOptionsCourse = {
+      headers: {
+          Authorization: `Bearer ${airtableApiKeyCourse}`
+      }
+    };
+
+    try {
+      const response = await fetch(airtableEndpointCourse, requestOptionsCourse);
+      const data = await response.json();
+      const records = data.records;
+
+      // Loop through each id in the array
+      for (var i = 0; i < ids.length; i++) {
+        // Get the select element by its dynamic id
+        const selectElementCourse = document.getElementById(ids[i]);
+
+        if (selectElementCourse === null) {
+          console.log("Select element with ID: " + ids[i] + " not found.");
+          continue;
+        }
+
+        // Create and append an empty option
+        const emptyOption = document.createElement('option');
+        emptyOption.value = "";
+        emptyOption.innerText = "Please select";
+        selectElementCourse.appendChild(emptyOption);
+
+        // Populate the select element with options
+        records.forEach(record => {
+          const optionElementCourse = document.createElement('option');
+          optionElementCourse.value = record.fields.name_at;
+          optionElementCourse.innerText = record.fields.name_at;
+          selectElementCourse.appendChild(optionElementCourse);
+        });
+
+        console.log("Options populated for ID: " + ids[i]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+      function updateInputCourse1() {
+    const selectElementCourse0 = document.getElementById('inputCourse0');
+    const inputElementCourse1 = document.getElementById('inputCourse1');
+
+    // Get the selected index and option element
+    const selectedIndex = selectElementCourse0.selectedIndex;
+    const selectedOption = selectElementCourse0.options[selectedIndex];
+
+    // Update inputCourse1 with the value from the selected option
+    inputElementCourse1.value = selectedOption.getAttribute('data-race-id');
+  }
+
 
 
     let dateStartTimeStringCourse = "";
@@ -154,23 +218,32 @@
       console.log("Input type set to date.");
     }
 
-    // Function to change input element to select element
-    function changeInputToSelectCourse() {
-        // Get the input field by its id
-        var inputField = document.getElementById('inputCourse5');
+  // Function to change multiple input elements to select elements
+  function changeMultipleInputsToSelectCourse(ids) {
+    // Loop through each id in the array
+    for (var i = 0; i < ids.length; i++) {
+      // Get the input field by its dynamic id
+      var inputField = document.getElementById(ids[i]);
 
-        // Create a new select element
-        var selectElementCourse = document.createElement('select');
-        selectElementCourse.id = 'inputCourse5';
-        selectElementCourse.style.margin = '0px';
-        selectElementCourse.style.padding = '0px';
-        selectElementCourse.style.height = '30px';
+      // Check if input field exists
+      if (inputField === null) {
+        console.log("Input field with ID: " + ids[i] + " not found.");
+        continue; // Skip this iteration and continue with the next ID
+      }
 
-        // Replace the input element with the select element
-        inputField.parentNode.replaceChild(selectElementCourse, inputField);
+      // Create a new select element
+      var selectElementCourse = document.createElement('select');
+      selectElementCourse.id = ids[i];
+      selectElementCourse.style.margin = '0px';
+      selectElementCourse.style.padding = '0px';
+      selectElementCourse.style.height = '30px';
 
-        console.log("Input field changed to select field.");
+      // Replace the input element with the select element
+      inputField.parentNode.replaceChild(selectElementCourse, inputField);
+
+      console.log("Input field with ID: " + ids[i] + " changed to select field.");
     }
+  }
 
   // Function to change multiple input elements to textarea elements and apply styling
   function changeMultipleInputsToTextAreasWithStyleCourse(inputCourseIds) {
@@ -259,8 +332,8 @@
 
 
     // Define labels and keys for easy modification
-    const buttonLabelsCourse = ["Course Name", "Description", "Country", "Region", "City", "Sports", "Date", "Admin Emails", "Website"];
-    const webhookKeysCourse = ["name_at", "description_at", "country_at", "region_at", "city_at", "sports_at", "start_date_at", "admin_emails_at", "race_website_at"];
+    const buttonLabelsCourse = ["Race Name", "Race Airtable ID", "Course Name", "Description", "Start Time", "Sport 1", "Distance 1", "Description 1", "Sport 2", "Distance 2", "Description 2", "Sport 3", "Distance 3", "Description 3", "Sport 4", "Distance 4", "Description 4", "Sport 5", "Distance 5", "Description 5"];
+    const webhookKeysCourse = ["race_name_at", "race_airtable_id", "name_at", "description_at", "start_time_at", "sport_1_at", "distance_1_at", "description_1_at", "sport_2_at", "distance_2_at", "description_2_at", "sport_3_at", "distance_3_at", "description_3_at", "sport_4_at", "distance_4_at", "description_4_at", "sport_5_at", "distance_5_at", "description_5_at"];
 
     // Create panel and set its properties
     const panelCourse = document.createElement('div');
@@ -330,15 +403,12 @@
         console.log("Non-SVG images and checkboxes added to panel");
     };
 
-    // Append the 'Lookup' button to the panel
-    appendLookupButtonToPanelCourse(panelCourse);
-
     // Create and append the webhookResponseDiv
     const webhookResponseDivCourse = createWebhookResponseDivCourse();
     panelCourse.appendChild(webhookResponseDivCourse);
 
     // Create the fields and buttons
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 20; i++) {
         const rowDivCourse = document.createElement('div');
         rowDivCourse.style = "display: flex; justify-content: center; align-items: flex-end; column-gap: 5px;";
 
@@ -512,7 +582,7 @@ const collectImageURLsCourse = () => {
             "end_time": `${dateEndTimeStringCourse}`
         };
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 20; i++) {
             dataCourse[webhookKeys[i]] = document.getElementById(`inputCourse${i}`).value;
         }
 
@@ -561,17 +631,26 @@ const collectImageURLsCourse = () => {
     // Call the function to set inputCourse6 field to type date
     setInputTypeToDateCourse();
 
-    // Call the function to set inputCourse5 field to type select
-    changeInputToSelectCourse();
+    // Function to lookup race on load
+    lookupRaceOnLoad();
+
+    // Call the function to set inputCourse fields to type select
+     changeMultipleInputsToSelectCourse(['inputCourse0', 'inputCourse5', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17']);
 
     // You can call the function like this to change multiple inputs:
-    changeMultipleInputsToTextAreasWithStyleCourse(['inputCourse1', 'inputCourse7']);
+    changeMultipleInputsToTextAreasWithStyleCourse(['inputCourse3', 'inputCourse7', 'inputCourse10', 'inputCourse13', 'inputCourse16', 'inputCourse19']);
 
     // Call the function to find email addresses and set the value of inputCourse7 field
     findEmailAddressesCourse();
 
-    // Call the function to retrives sports options
-    fetchAndPopulateOptionsCourse();
+    // Call the function to populate the sports fields with options
+    fetchAndPopulateOptionsCourse(['inputCourse5', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17']);
+
+        // Add event listener for inputCourse0 select element
+    const selectElementCourse0 = document.getElementById('inputCourse0');
+    if (selectElementCourse0) {
+      selectElementCourse0.addEventListener('change', updateInputCourse1);
+    }
 
     // Call the function to see it in action
     getStartDateTimeCourse();
