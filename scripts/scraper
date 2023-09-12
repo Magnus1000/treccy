@@ -103,11 +103,11 @@
     // Create panel and set its properties
     const panel = document.createElement('div');
     panel.id = "panel";
-    panel.style = "position: fixed; right: -20%; top: 0; width: 20%; min-height: 100vh; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding: 60px 10px 10px 10px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+    panel.style = "position: fixed; right: -20%; top: 0; bottom: 0; width: 20%; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding-top: 60px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
 
  const displayImagesInPanel = () => {
     const imageContainer = document.createElement('div');
-    imageContainer.style = "display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;";
+    imageContainer.style = "display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; margin-left: 10px; margin-right: 10px;";
     const images = document.getElementsByTagName('img');
 
     for (let img of images) {
@@ -214,12 +214,12 @@
 
     const createRecordBtn = document.createElement('button');
     createRecordBtn.innerText = "Create Record in Airtable";
-    createRecordBtn.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; margin-top: 20px; width: 100%;";
+    createRecordBtn.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
     createRecordBtn.disabled = true;
 
     // Create the padded div around the 'Create Record' button
     const paddedCreateRecordDiv = createPaddedDiv(createRecordBtn);
-    paddedCreateRecordDiv.style = "display: flex; justify-content: center; padding-left: 10px; padding-right: 10px";
+    paddedCreateRecordDiv.style = "display: flex; justify-content: center;";
 
     panel.appendChild(paddedCreateRecordDiv);
     document.body.appendChild(panel);
@@ -234,10 +234,55 @@
 
     document.addEventListener('input', checkInputFields);
 
+// Function to safely read the 'checked' property of a checkbox
+const safeCheckboxRead = (checkboxElement) => {
+    if (checkboxElement !== null) {
+        return checkboxElement.checked;
+    } else {
+        console.log("Warning: Checkbox element is null");
+        return false;
+    }
+};
+
+// Collect URLs based on checkbox selection
+const collectImageURLs = () => {
+    const galleryImages = [];
+    const mapImages = [];
+    let mainPhoto = "";
+
+    const imgCheckboxContainers = document.querySelectorAll('div');
+
+    imgCheckboxContainers.forEach(container => {
+        const imgElement = container.querySelector('img');
+
+        // Ensure checkboxes exist before reading their 'checked' property
+        const mainCheckbox = container.querySelector('.main-photo-checkbox');
+        const mapCheckbox = container.querySelector('input[type=checkbox]:nth-child(4)');
+        const galleryCheckbox = container.querySelector('input[type=checkbox]:nth-child(6)');
+
+        if (mainCheckbox && mainCheckbox.checked) {
+            mainPhoto = imgElement.src;
+        }
+
+        if (mapCheckbox && mapCheckbox.checked) {
+            mapImages.push(imgElement.src);
+        }
+
+        if (galleryCheckbox && galleryCheckbox.checked) {
+            galleryImages.push(imgElement.src);
+        }
+    });
+
+    return { galleryImages, mapImages, mainPhoto };
+};
+
+
     // Add click event to create record button
     createRecordBtn.addEventListener('click', async function() {
         createRecordBtn.innerText = "Wait..."; // Change text to "Wait..."
         createRecordBtn.disabled = true;  // Disable the button
+
+        // Gather existing data
         let data = {
             "url": window.location.href,
             "source": "MazScraper"
@@ -247,6 +292,15 @@
             data[webhookKeys[i]] = document.getElementById(`input${i}`).value;
         }
 
+        // Collect image URLs based on checkbox selections
+        const { galleryImages, mapImages, mainPhoto } = collectImageURLs();
+
+        // Include new fields in the data object
+        data["gallery_images_at"] = galleryImages;
+        data["map_images_at"] = mapImages;
+        data["photo_main_at"] = mainPhoto;
+
+        // Make the API request to the webhook
         const response = await fetch('https://hook.us1.make.com/tygbvj6syy8boyww8wqy1fwmhimju9gq', {
             method: 'POST',
             headers: {
@@ -255,8 +309,9 @@
             body: JSON.stringify(data),
         });
 
+        // Get and log the response data
         const responseData = await response.json();
-        console.log(`race_record_id: ${responseData}`);
+        console.log(`race_record_id: ${JSON.stringify(responseData)}`);
 
         // Update the webhookResponseDiv with the new data
         const webhookResponseDiv = document.getElementById('webhook-response-div');
