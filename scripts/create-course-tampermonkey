@@ -440,7 +440,7 @@
         createRecordBtnCourse.disabled = !conditionsCourse;
     };
 
-    document.addEventListener('inputCourse', checkInputFieldsCourse);
+    document.addEventListener('input', checkInputFieldsCourse);
 
     // Function to prepopulate the 'race_website_at' field with the current URL
 const prepopulateWebsiteUrlCourse = () => {
