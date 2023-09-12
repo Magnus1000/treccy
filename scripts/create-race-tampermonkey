@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Create Record In Airtable
+// @name         Create Race In Airtable
 // @namespace    http://tampermonkey.net/
 // @version      4.19.0
 // @description  Enhanced UI for creating records in Airtable
@@ -25,8 +25,8 @@
 
     // Create "Lookup" button and set its properties
     const lookupBtn = document.createElement('button');
-    lookupBtn.innerText = "Lookup";
-    lookupBtn.style = "color: black; border: 1px solid black; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%;";
+    lookupBtn.innerText = "Race Lookup";
+    lookupBtn.style = "color: #1B2B1C; border: 1px solid #1B2B1C; border-radius: 5px; padding: 5px; margin-left: 10px; margin-right: 10px; width: 30%; background-color: transparent;";
 
     // Function to append the 'Lookup' button to the Panel
     const appendLookupButtonToPanel = (panelElement) => {
@@ -240,7 +240,7 @@
     // Create panel and set its properties
     const panel = document.createElement('div');
     panel.id = "panel";
-    panel.style = "position: fixed; right: -20%; top: 0; bottom: 0; width: 20%; max-height: 100vh; overflow-y: auto; background-color: #f1f1f1; z-index: 9999; padding-top: 60px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px;";
+    panel.style = "position: fixed; right: -20%; top: 0; bottom: 0; width: 20%; max-height: 100vh; overflow-y: auto; background-color: #fbf8ef; z-index: 9999; padding-top: 60px; display: flex; flex-direction: column; justify-content: flex-start; row-gap: 10px; border-left: 3px solid #1B2B1C";
 
  const displayImagesInPanel = () => {
     const imageContainer = document.createElement('div');
@@ -397,7 +397,7 @@
 
     const createRecordBtn = document.createElement('button');
     createRecordBtn.innerText = "Create Record in Airtable";
-    createRecordBtn.style = "background-color: grey; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
+    createRecordBtn.style = "background-color: #E6E4D5; color: white; border-radius: 5px; padding: 10px; width: 100%; margin: 10px;";
     createRecordBtn.disabled = true;
 
     // Create the padded div around the 'Create Record' button
@@ -411,7 +411,7 @@
     // Function to enable or disable the 'Create Record' button
     const checkInputFields = function() {
         const conditions = ['input0', 'input1', 'input2', 'input3', 'input4', 'input5', 'input6', 'input8'].every(id => document.getElementById(id).value);
-        createRecordBtn.style.backgroundColor = conditions ? "black" : "grey";
+        createRecordBtn.style.backgroundColor = conditions ? "#1B2B1C" : "#E6E4D5";
         createRecordBtn.disabled = !conditions;
     };
 
@@ -523,7 +523,7 @@ const collectImageURLs = () => {
     // Create the toggle button and add it to the top-left corner
     const toggleButton = document.createElement('button');
     toggleButton.innerText = "Create Race";
-    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000; background-color: #f3f3f3; padding: 10px; border-radius: 5px; border: 1px solid black;";
+    toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000; background-color: #BFF103; padding: 10px; border-radius: 5px; border: 1px solid #BFF103; color: #1B2B1C;";
     toggleButton.addEventListener('click', togglePanel);
     document.body.appendChild(toggleButton);
 
