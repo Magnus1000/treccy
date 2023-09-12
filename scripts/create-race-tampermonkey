@@ -119,6 +119,34 @@
       console.log("Input type set to date.");
     }
 
+    // Function to set unique placeholder text for multiple input fields
+    function setUniquePlaceholders() {
+        // Create an object mapping each input ID to its unique placeholder text
+        const placeholders = {
+            input0: "E.g. Ashburton Triathlon",
+            input1: "E.g. Nestled at the foothills of the Southern Alps, the Ashburton Triathlon...",
+            input2: "E.g. Ashburton Domain, 100 Walnut Avenue, Ashburton 7700, New Zealand",
+            input3: "E.g. New Zealand",
+            input4: "E.g. Canterbury",
+            input5: "E.g. Ashburton",
+            input7: "E.g. d.mably@hotmail.com",
+            input8: "E.g. https://www.ashburtongemofthesouth.com"
+  };
+
+        // Loop through the object to set each placeholder
+        Object.keys(placeholders).forEach(inputId => {
+            const inputField = document.getElementById(inputId);
+
+            if (inputField) {
+                inputField.placeholder = placeholders[inputId];
+                console.log(`Placeholder set for ${inputId}.`);
+            } else {
+                console.log(`Input field with ID ${inputId} not found.`);
+            }
+        });
+    }
+
+
   // Function to change multiple input elements to textarea elements and apply styling
   function changeMultipleInputsToTextAreasWithStyle(inputIds) {
     inputIds.forEach(id => {
@@ -513,6 +541,9 @@ const collectImageURLs = () => {
 
     // Call the function to find email addresses and set the value of input8 field
     findEmailAddresses();
+
+    // Call the function to set placeholders when the document is loaded
+    setUniquePlaceholders();
 
     // Call the function to see it in action
     getStartDateTime();
