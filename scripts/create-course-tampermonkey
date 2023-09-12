@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Create Record In Airtable
+// @name         Create Course In Airtable
 // @namespace    http://tampermonkey.net/
 // @version      4.19.0
 // @description  Enhanced UI for creating records in Airtable
