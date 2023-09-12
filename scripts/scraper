@@ -66,6 +66,57 @@
         lookupBtn.disabled = false;  // Re-enable the button
     });
 
+    let dateStartTimeString = "";
+    let dateEndTimeString = "";
+
+    function getStartDateTime() {
+        // Create a new Date object and name it start_date
+        const start_date = new Date();
+
+        // Get the individual components of the date and time
+        const year = start_date.getFullYear();
+        const month = start_date.getMonth() + 1; // Months start from 0
+        const day = start_date.getDate();
+        const hours = start_date.getHours();
+        const minutes = start_date.getMinutes();
+        const seconds = start_date.getSeconds();
+
+        // Create a formatted string of the current date and time
+        dateStartTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+        // Log the current date and time to the console
+        console.log("Current Date and Time:", dateStartTimeString);
+    }
+
+    function getEndDateTime() {
+        // Create a new Date object and name it start_date
+        const end_date = new Date();
+
+        // Get the individual components of the date and time
+        const year = end_date.getFullYear();
+        const month = end_date.getMonth() + 1; // Months start from 0
+        const day = end_date.getDate();
+        const hours = end_date.getHours();
+        const minutes = end_date.getMinutes();
+        const seconds = end_date.getSeconds();
+
+        // Create a formatted string of the current date and time
+        dateEndTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+        // Log the current date and time to the console
+        console.log("End Date and Time:", dateEndTimeString);
+    }
+
+    // Function to set input type to "date"
+    function setInputTypeToDate() {
+      // Get the input field by its id
+      var inputField = document.getElementById('input6');
+
+      // Change the type attribute to "date"
+      inputField.type = 'date';
+
+      console.log("Input type set to date.");
+    }
 
     // Function to toggle panel visibility
     const togglePanel = () => {
@@ -96,9 +147,42 @@
     return webhookResponseDiv;
     };
 
+    let seconds = 0;
+
+    function startTimer() {
+        const timerElement = document.getElementById('timer'); // We will create this HTML element soon
+
+        setInterval(function() {
+            seconds++; // Increment the seconds count by 1
+            const minutes = Math.floor(seconds / 60); // Calculate the number of minutes
+            const remainingSeconds = seconds % 60; // Calculate the remaining seconds
+
+            // Display minutes and seconds with leading zeros where needed
+            const displayMinutes = String(minutes).padStart(2, '0');
+            const displaySeconds = String(remainingSeconds).padStart(2, '0');
+
+            timerElement.innerHTML = `${displayMinutes}:${displaySeconds}`; // Update the timer display
+        }, 1000); // 1000 milliseconds (1 second)
+    }
+
+    function addTimerToPanel(panelElement) {
+        // Create a div to hold the timer and set its ID
+        const timerDiv = document.createElement('div');
+        timerDiv.id = "timer";
+        timerDiv.style = "font-size: 16px; margin: 10px;";  // You can adjust the styling as needed
+
+        // Append the timer div to the panel div
+        panelElement.insertBefore(timerDiv, panelElement.firstChild);  // Adds the timer as the first child of the panel
+        console.log("Timer added to panel");  // Logging to confirm
+
+        // Initialize the timer
+        startTimer();
+    }
+
+
     // Define labels and keys for easy modification
-    const buttonLabels = ["Race Name", "Country", "Region", "City", "Sports", "Description", "Date", "Admin Emails"];
-    const webhookKeys = ["name_at", "country_at", "region_at", "city_at", "sports_at", "description_at", "start_date_at", "admin_emails_at"];
+    const buttonLabels = ["Race Name", "Description", "Country", "Region", "City", "Sports", "Date", "Admin Emails", "Website"];
+    const webhookKeys = ["name_at", "description_at", "country_at", "region_at", "city_at", "sports_at", "start_date_at", "admin_emails_at", "race_website_at"];
 
     // Create panel and set its properties
     const panel = document.createElement('div');
@@ -176,7 +260,7 @@
     panel.appendChild(webhookResponseDiv);
 
     // Create the fields and buttons
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 9; i++) {
         const rowDiv = document.createElement('div');
         rowDiv.style = "display: flex; justify-content: center; align-items: flex-end; column-gap: 5px;";
 
@@ -234,6 +318,17 @@
 
     document.addEventListener('input', checkInputFields);
 
+    // Function to prepopulate the 'race_website_at' field with the current URL
+const prepopulateWebsiteUrl = () => {
+    const websiteInput = document.getElementById("input8"); // "input8" corresponds to "race_website_at"
+    if (websiteInput) {
+        websiteInput.value = window.location.href;
+        console.log("Prepopulated 'race_website_at' with the current URL");
+    } else {
+        console.log("The input field for 'race_website_at' could not be found.");
+    }
+};
+
 // Function to safely read the 'checked' property of a checkbox
 const safeCheckboxRead = (checkboxElement) => {
     if (checkboxElement !== null) {
@@ -282,13 +377,18 @@ const collectImageURLs = () => {
         createRecordBtn.innerText = "Wait..."; // Change text to "Wait..."
         createRecordBtn.disabled = true;  // Disable the button
 
+        // Call the function to see it in action
+        getEndDateTime();
+
         // Gather existing data
         let data = {
-            "url": window.location.href,
-            "source": "MazScraper"
+            "source": "MazScraper",
+            "time": `${seconds}`,
+            "start_time": `${dateStartTimeString}`,
+            "end_time": `${dateEndTimeString}`
         };
 
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 9; i++) {
             data[webhookKeys[i]] = document.getElementById(`input${i}`).value;
         }
 
@@ -327,5 +427,17 @@ const collectImageURLs = () => {
     toggleButton.style = "position: fixed; right: 20px; top: 20px; z-index: 10000; background-color: #f3f3f3; padding: 10px; border-radius: 5px; border: 1px solid black;";
     toggleButton.addEventListener('click', togglePanel);
     document.body.appendChild(toggleButton);
+
+    // Call the function to prepopulate 'race_website_at' field
+    prepopulateWebsiteUrl();
+
+    // Add timer to the panel div
+    addTimerToPanel(panel);
+
+    // Call the function to set input6 field to type date
+    setInputTypeToDate();
+
+    // Call the function to see it in action
+    getStartDateTime();
 
 })();
