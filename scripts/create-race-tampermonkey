@@ -67,41 +67,6 @@
         lookupBtn.disabled = false;  // Re-enable the button
     });
 
-    // Function to fetch records from Airtable and populate options
-    async function fetchAndPopulateOptions() {
-        const tableName = 'tblKbHneWHFgaFUsZ';
-        const airtableEndpoint = `https://api.airtable.com/v0/${airtableBase}/${tableName}`;
-
-        const requestOptions = {
-            headers: {
-                Authorization: `Bearer ${airtableApiKey}`
-            }
-        };
-
-        try {
-            const response = await fetch(airtableEndpoint, requestOptions);
-            const data = await response.json();
-            const records = data.records;
-
-            // Get the select element
-            const selectElement = document.getElementById('input5');
-
-            // Populate the select element with options
-            records.forEach(record => {
-                const optionElement = document.createElement('option');
-                optionElement.value = record.fields.name_at;
-                optionElement.innerText = record.fields.name_at;
-                selectElement.appendChild(optionElement);
-            });
-
-            console.log("Options populated.");
-
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
-
     let dateStartTimeString = "";
     let dateEndTimeString = "";
 
@@ -152,24 +117,6 @@
       inputField.type = 'date';
 
       console.log("Input type set to date.");
-    }
-
-    // Function to change input element to select element
-    function changeInputToSelect() {
-        // Get the input field by its id
-        var inputField = document.getElementById('input5');
-
-        // Create a new select element
-        var selectElement = document.createElement('select');
-        selectElement.id = 'input5';
-        selectElement.style.margin = '0px';
-        selectElement.style.padding = '0px';
-        selectElement.style.height = '30px';
-
-        // Replace the input element with the select element
-        inputField.parentNode.replaceChild(selectElement, inputField);
-
-        console.log("Input field changed to select field.");
     }
 
   // Function to change multiple input elements to textarea elements and apply styling
@@ -259,8 +206,8 @@
 
 
     // Define labels and keys for easy modification
-    const buttonLabels = ["Race Name", "Description", "Country", "Region", "City", "Sports", "Date", "Admin Emails", "Website"];
-    const webhookKeys = ["name_at", "description_at", "country_at", "region_at", "city_at", "sports_at", "start_date_at", "admin_emails_at", "race_website_at"];
+    const buttonLabels = ["Race Name", "Description", "Address", "Country", "Region", "City", "Date", "Admin Emails", "Website"];
+    const webhookKeys = ["name_at", "description_at", "location_at", "country_at", "region_at", "city_at", "start_date_at", "admin_emails_at", "race_website_at"];
 
     // Create panel and set its properties
     const panel = document.createElement('div');
@@ -435,7 +382,7 @@
 
     // Function to enable or disable the 'Create Record' button
     const checkInputFields = function() {
-        const conditions = ['input0', 'input1', 'input2', 'input3'].every(id => document.getElementById(id).value);
+        const conditions = ['input0', 'input1', 'input2', 'input3', 'input4', 'input5', 'input6', 'input8'].every(id => document.getElementById(id).value);
         createRecordBtn.style.backgroundColor = conditions ? "black" : "grey";
         createRecordBtn.disabled = !conditions;
     };
@@ -561,17 +508,11 @@ const collectImageURLs = () => {
     // Call the function to set input6 field to type date
     setInputTypeToDate();
 
-    // Call the function to set input5 field to type select
-    changeInputToSelect();
-
     // You can call the function like this to change multiple inputs:
     changeMultipleInputsToTextAreasWithStyle(['input1', 'input7']);
 
-    // Call the function to find email addresses and set the value of input7 field
+    // Call the function to find email addresses and set the value of input8 field
     findEmailAddresses();
-
-    // Call the function to retrives sports options
-    fetchAndPopulateOptions();
 
     // Call the function to see it in action
     getStartDateTime();
