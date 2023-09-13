@@ -119,6 +119,17 @@
       console.log("Input type set to date.");
     }
 
+        // Function to set input type to "date"
+    function setInputTypeToTime() {
+      // Get the input field by its id
+      var inputField = document.getElementById('input7');
+
+      // Change the type attribute to "time"
+      inputField.type = 'time';
+
+      console.log("Input type set to time.");
+    }
+
     // Function to set unique placeholder text for multiple input fields
     function setUniquePlaceholders() {
         // Create an object mapping each input ID to its unique placeholder text
@@ -129,8 +140,8 @@
             input3: "E.g. New Zealand",
             input4: "E.g. Canterbury",
             input5: "E.g. Ashburton",
-            input7: "E.g. d.mably@hotmail.com",
-            input8: "E.g. https://www.ashburtongemofthesouth.com"
+            input8: "E.g. d.mably@hotmail.com",
+            input9: "E.g. https://www.ashburtongemofthesouth.com"
   };
 
         // Loop through the object to set each placeholder
@@ -234,8 +245,8 @@
 
 
     // Define labels and keys for easy modification
-    const buttonLabels = ["Race Name", "Description", "Address", "Country", "Region", "City", "Date", "Admin Emails", "Website"];
-    const webhookKeys = ["name_at", "description_at", "location_at", "country_at", "region_at", "city_at", "start_date_at", "admin_emails_at", "race_website_at"];
+    const buttonLabels = ["Race Name", "Description", "Address", "Country", "Region", "City", "Date", "Time", "Admin Emails", "Website"];
+    const webhookKeys = ["name_at", "description_at", "location_at", "country_at", "region_at", "city_at", "start_time_at", "admin_emails_at", "race_website_at"];
 
     // Create panel and set its properties
     const panel = document.createElement('div');
@@ -313,7 +324,7 @@
     panel.appendChild(webhookResponseDiv);
 
     // Create the fields and buttons
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 10; i++) {
         const rowDiv = document.createElement('div');
         rowDiv.style = "display: flex; justify-content: center; align-items: flex-end; column-gap: 5px;";
 
@@ -386,12 +397,12 @@
 
   // Function to set the input field value
   function setInputValue(emailArray) {
-    const inputField = document.getElementById("input7");
+    const inputField = document.getElementById("input8");
     if (inputField) {
       inputField.value = emailArray.join(", ");
       console.log("Input field value set to:", inputField.value);
     } else {
-      console.log("Input field with ID 'input7' not found");
+      console.log("Input field with ID 'input8' not found");
     }
   }
 
@@ -419,7 +430,7 @@
 
     // Function to prepopulate the 'race_website_at' field with the current URL
 const prepopulateWebsiteUrl = () => {
-    const websiteInput = document.getElementById("input8"); // "input8" corresponds to "race_website_at"
+    const websiteInput = document.getElementById("input9"); // "input8" corresponds to "race_website_at"
     if (websiteInput) {
         websiteInput.value = window.location.href;
         console.log("Prepopulated 'race_website_at' with the current URL");
@@ -487,7 +498,7 @@ const collectImageURLs = () => {
             "end_time": `${dateEndTimeString}`
         };
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             data[webhookKeys[i]] = document.getElementById(`input${i}`).value;
         }
 
@@ -536,8 +547,11 @@ const collectImageURLs = () => {
     // Call the function to set input6 field to type date
     setInputTypeToDate();
 
+    // Call the function to set input7 field to type date
+    setInputTypeToTime();
+
     // You can call the function like this to change multiple inputs:
-    changeMultipleInputsToTextAreasWithStyle(['input1', 'input7']);
+    changeMultipleInputsToTextAreasWithStyle(['input1', 'input8']);
 
     // Call the function to find email addresses and set the value of input8 field
     findEmailAddresses();
