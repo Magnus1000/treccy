@@ -50,11 +50,18 @@
     }
   }
 
+      // Function to get the base domain from a URL
+  function getBaseDomain(url) {
+    const urlObject = new URL(url);
+    return urlObject.hostname;
+  }
+
   // Function to execute lookup on page load
   async function lookupRaceOnLoad() {
     const currentURLCourse = window.location.href;
+    const baseDomain = getBaseDomain(currentURLCourse);
     const airtableTableCourse = 'tblS5SD7MxfZUl3wf';
-    const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={race_website_at}='${currentURLCourse}'`;
+    const airtableUrlCourse = `https://api.airtable.com/v0/${airtableBaseCourse}/${airtableTableCourse}?filterByFormula={race_domain_at}='${baseDomain}'`;
 
     try {
       const response = await fetch(airtableUrlCourse, {
@@ -562,33 +569,34 @@ const collectImageURLsCourse = () => {
         };
 
         for (let i = 0; i < 21; i++) {
-            dataCourse[webhookKeys[i]] = document.getElementById(`inputCourse${i}`).value;
+            dataCourse[webhookKeysCourse[i]] = document.getElementById(`inputCourse${i}`).value;
         }
 
         // Collect image URLs based on checkbox selections
-        const { galleryImagesCourse, mapImagesCourse, mainPhotoCourse } = collectImageURLs();
+        const { galleryImagesCourse, mapImagesCourse, mainPhotoCourse } = collectImageURLsCourse();
 
         // Include new fields in the data object
-        data["gallery_images_at_course"] = galleryImagesCourse;
-        data["map_images_at_course"] = mapImagesCourse;
-        data["photo_main_at_course"] = mainPhotoCourse;
+        dataCourse["gallery_images_at_course"] = galleryImagesCourse;
+        dataCourse["map_images_at_course"] = mapImagesCourse;
+        dataCourse["photo_main_at_course"] = mainPhotoCourse;
 
         // Make the API request to the webhook
         const response = await fetch('https://hook.us1.make.com/heo546npjlw6polbu22s9zn4ut8c4u6f', {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(dataCourse),
         });
 
         // Get and log the response data
-        const responseDataCourse = await response.json();
-        console.log(`race_record_id: ${JSON.stringify(responseDataCourse)}`);
+        // const responseDataCourse = await response.json();
+        // console.log(`race_record_id: ${JSON.stringify(responseDataCourse)}`);
 
         // Update the webhookResponseDiv with the new data
-        const webhookResponseDivCourse = document.getElementById('webhook-response-div-course');
-        webhookResponseDivCourse.innerHTML += `<br>Response Data: ${JSON.stringify(responseDataCourse)}`;
+        // const webhookResponseDivCourse = document.getElementById('webhook-response-div-course');
+        //webhookResponseDivCourse.innerHTML += `<br>Response Data: ${JSON.stringify(responseDataCourse)}`;
 
         createRecordBtnCourse.innerText = "Create Record in Airtable";
         createRecordBtnCourse.disabled = false;  // Re-enable the button
