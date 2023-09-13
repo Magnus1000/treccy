@@ -223,13 +223,25 @@
     // Function to set input type to "date"
     function setInputTypeToDateCourse() {
       // Get the input field by its id
-      var inputField = document.getElementById('inputCourse6');
+      var inputField = document.getElementById('inputCourse4');
 
       // Change the type attribute to "date"
       inputField.type = 'date';
 
       console.log("Input type set to date.");
     }
+
+    // Function to set input type to "time"
+    function setInputTypeToTimeCourse() {
+        // Get the input field by its id
+        var inputField = document.getElementById('inputCourse5');
+
+        // Change the type attribute to "time"
+        inputField.type = 'time';
+
+        console.log("Input type set to time.");
+    }
+
 
   // Function to change multiple input elements to select elements
   function changeMultipleInputsToSelectCourse(ids) {
@@ -345,8 +357,8 @@
 
 
     // Define labels and keys for easy modification
-    const buttonLabelsCourse = ["Race Name", "Race Airtable ID", "Course Name", "Description", "Start Time", "Sport 1", "Distance 1", "Description 1", "Sport 2", "Distance 2", "Description 2", "Sport 3", "Distance 3", "Description 3", "Sport 4", "Distance 4", "Description 4", "Sport 5", "Distance 5", "Description 5"];
-    const webhookKeysCourse = ["race_name_at", "race_airtable_id", "name_at", "description_at", "start_time_at", "sport_1_at", "distance_1_at", "description_1_at", "sport_2_at", "distance_2_at", "description_2_at", "sport_3_at", "distance_3_at", "description_3_at", "sport_4_at", "distance_4_at", "description_4_at", "sport_5_at", "distance_5_at", "description_5_at"];
+    const buttonLabelsCourse = ["Race Name", "Race Airtable ID", "Course Name", "Description", "Start Date", "Start Time", "Sport 1", "Distance 1", "Description 1", "Sport 2", "Distance 2", "Description 2", "Sport 3", "Distance 3", "Description 3", "Sport 4", "Distance 4", "Description 4", "Sport 5", "Distance 5", "Description 5"];
+    const webhookKeysCourse = ["race_name_at", "race_airtable_id", "name_at", "description_at", "start_date_at", "start_time_at", "sport_1_at", "distance_1_at", "description_1_at", "sport_2_at", "distance_2_at", "description_2_at", "sport_3_at", "distance_3_at", "description_3_at", "sport_4_at", "distance_4_at", "description_4_at", "sport_5_at", "distance_5_at", "description_5_at"];
 
     // Create panel and set its properties
     const panelCourse = document.createElement('div');
@@ -421,7 +433,7 @@
     panelCourse.appendChild(webhookResponseDivCourse);
 
     // Create the fields and buttons
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 21; i++) {
         const rowDivCourse = document.createElement('div');
         rowDivCourse.style = "display: flex; justify-content: center; align-items: flex-end; column-gap: 5px;";
 
@@ -456,52 +468,6 @@
 
     // Call the function to display images in the panel
     displayImagesInPanelCourse();
-
-
-  // Function to find all email addresses on page load
-  function findEmailAddressesCourse() {
-    // Get all elements on the page
-    const allElementsCourse = document.querySelectorAll('*');
-
-    const emailAddressesCourse = [];
-
-    // Regular expression to match email addresses
-    const emailRegexCourse = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-
-    allElementsCourse.forEach(element => {
-      const elementTextCourse = element.textContent || element.innerText;
-
-      // Check if elementText is defined before running match
-      if (elementTextCourse) {
-        const matches = elementTextCourse.match(emailRegexCourse);
-        if (matches) {
-          matches.forEach(email => {
-            if (!emailAddressesCourse.includes(email)) {
-              emailAddressesCourse.push(email);
-            }
-          });
-        }
-      }
-    });
-
-    console.log("Found email addresses:", emailAddressesCourse);
-
-    // Set the input field value
-    setInputValueCourse(emailAddressesCourse);
-
-    return emailAddressesCourse;
-  }
-
-  // Function to set the input field value
-  function setInputValueCourse(emailArrayCourse) {
-    const inputFieldCourse = document.getElementById("inputCourse7");
-    if (inputFieldCourse) {
-      inputFieldCourse.value = emailArrayCourse.join(", ");
-      console.log("Input field value set to:", inputFieldCourse.value);
-    } else {
-      console.log("Input field with ID 'inputCourse7' not found");
-    }
-  }
 
     const createRecordBtnCourse = document.createElement('button');
     createRecordBtnCourse.innerText = "Create Course in Airtable";
@@ -595,7 +561,7 @@ const collectImageURLsCourse = () => {
             "end_time": `${dateEndTimeStringCourse}`
         };
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 21; i++) {
             dataCourse[webhookKeys[i]] = document.getElementById(`inputCourse${i}`).value;
         }
 
@@ -608,7 +574,7 @@ const collectImageURLsCourse = () => {
         data["photo_main_at_course"] = mainPhotoCourse;
 
         // Make the API request to the webhook
-        const response = await fetch('https://hook.us1.make.com/tygbvj6syy8boyww8wqy1fwmhimju9gq', {
+        const response = await fetch('https://hook.us1.make.com/heo546npjlw6polbu22s9zn4ut8c4u6f', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -641,23 +607,23 @@ const collectImageURLsCourse = () => {
     // Add timer to the panel div
     addTimerToPanelCourse(panelCourse);
 
-    // Call the function to set inputCourse6 field to type date
+    // Call the function to set inputCourse4 field to type date
     setInputTypeToDateCourse();
+
+    // Call the function to set inputCourse5 field to type time
+    setInputTypeToTimeCourse()
 
     // Function to lookup race on load
     lookupRaceOnLoad();
 
     // Call the function to set inputCourse fields to type select
-     changeMultipleInputsToSelectCourse(['inputCourse0', 'inputCourse5', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17']);
+    changeMultipleInputsToSelectCourse(['inputCourse0', 'inputCourse6', 'inputCourse9', 'inputCourse12', 'inputCourse15', 'inputCourse18']);
 
     // You can call the function like this to change multiple inputs:
-    changeMultipleInputsToTextAreasWithStyleCourse(['inputCourse3', 'inputCourse7', 'inputCourse10', 'inputCourse13', 'inputCourse16', 'inputCourse19']);
-
-    // Call the function to find email addresses and set the value of inputCourse7 field
-    findEmailAddressesCourse();
+    changeMultipleInputsToTextAreasWithStyleCourse(['inputCourse3', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17', 'inputCourse20']);
 
     // Call the function to populate the sports fields with options
-    fetchAndPopulateOptionsCourse(['inputCourse5', 'inputCourse8', 'inputCourse11', 'inputCourse14', 'inputCourse17']);
+    fetchAndPopulateOptionsCourse(['inputCourse6', 'inputCourse9', 'inputCourse12', 'inputCourse15', 'inputCourse18']);
 
     // Add event listener for inputCourse0 select element
     const selectElementCourse0 = document.getElementById('inputCourse0');
