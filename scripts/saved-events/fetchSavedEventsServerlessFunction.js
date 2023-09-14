@@ -88,11 +88,16 @@ function createRaceCard() {
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   
-  results.forEach((result, index) => {
-    const existingRaceCards = document.querySelectorAll('.race-card'); 
+  const existingRaceCards = document.querySelectorAll('.race-card'); 
+  
+  // Loop only for the number of results returned
+  for (let index = 0; index < results.length; index++) {
+    const result = results[index];
+    
     if (existingRaceCards && existingRaceCards[index]) {
       const raceCardToPopulate = existingRaceCards[index];
-
+      
+      // Remove greyed-out only from the race cards that have data
       removeGreyedOutFromElementAndChildren(raceCardToPopulate);
 
       const formattedDate = formatDate(result.date_ag);
