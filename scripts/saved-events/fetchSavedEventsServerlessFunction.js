@@ -96,9 +96,10 @@ function hideUnusedRaceCards() {
       raceCardToPopulate.querySelector('.race-card-image').alt = result.name_ag;
       raceCardToPopulate.querySelector('.card-text-link-block').href = `/races/${result.slug_ag}`;
       raceCardToPopulate.querySelector('.race-card-heading').textContent = result.name_ag;
-      raceCardToPopulate.querySelector('.race-card-heading-right').textContent = result.distance_ag;
+      raceCardToPopulate.querySelector('.race-card-minimum-distance').textContent = result.distances_ag;
       raceCardToPopulate.querySelector('.race-city-text').textContent = result.city_ag;
       raceCardToPopulate.querySelector('.race-country-text').textContent = result.country_ag;
+      raceCardToPopulate.querySelector('.race-sport-text').textContent = result.sports_ag;
       raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
       raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
     }
