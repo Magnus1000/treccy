@@ -70,7 +70,7 @@ function createRaceCard() {
     console.log("Populating Race Cards...");
     const algoliaRacesDiv = document.getElementById('algoliaRaces'); // Assuming all your race cards are inside this div
 
-    const existingRaceCards = Array.from(algoliaRacesDiv.querySelectorAll('.race-card-class')); // Assuming all your race cards have a common class named 'race-card-class'
+    const existingRaceCards = Array.from(algoliaRacesDiv.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
     results.forEach((result, index) => {
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
