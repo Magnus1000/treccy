@@ -1,7 +1,5 @@
-<script>
 // Function to initialize like buttons
 function initLikeButtons() {
-    const memberstack = window.$memberstackDom;
     let likeButtons = document.querySelectorAll('.like-button');
 
     // Log the count of "like-button" elements found
@@ -80,11 +78,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded. Initializing like-buttons.');
     initLikeButtons();
 });
-
-// Call this function whenever you load new content
-// For example, after fetching new results from Algolia
-function onNewContentAdded() {
-    console.log('New content added. Reinitializing like-buttons.');
-    initLikeButtons();
-}
-</script>
