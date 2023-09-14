@@ -1,6 +1,5 @@
 // Fetching the member data and liked race IDs
 async function fetchLikes() {
-  showGreyedOutState(); // Show greyed-out state
   let memberJson = await memberstack.getMemberJSON();
   while (memberJson.data) {
     memberJson = memberJson.data;
