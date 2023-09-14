@@ -78,7 +78,7 @@ function populateRaceCards(results) {
     if (existingRaceCards && existingRaceCards[index]) {
       const raceCardToPopulate = existingRaceCards[index];
 
-      removeGreyedOutFromElementAndChildren();
+      removeGreyedOutFromElementAndChildren(raceCardToPopulate);
 
       const formattedDate = formatDate(result.date_ag);
       raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
