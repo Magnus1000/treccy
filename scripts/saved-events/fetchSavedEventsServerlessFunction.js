@@ -90,7 +90,7 @@ function createRaceCard() {
       raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
       raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
     }
-  };
+  });
   
   // Call initLikeButtons here, after new content has been added
   console.log("New cards populated. Re-initializing like-buttons.");
