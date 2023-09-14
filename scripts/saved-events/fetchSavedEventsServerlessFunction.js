@@ -11,6 +11,13 @@ async function fetchLikes() {
     likesArray = memberJson.likes.map(like => like.id);
   }
 
+  // Cloning race card while the data is being fetched
+  const algoliaRacesDiv = document.getElementById('algoliaRaces');
+  for(let i = 0; i < 20; i++) {
+    const newRaceCard = createRaceCard();
+    algoliaRacesDiv.appendChild(newRaceCard);
+  }
+
   fetchSavedRacesFromVercel(likesArray);
 }
 
@@ -38,36 +45,28 @@ async function fetchSavedRacesFromVercel(objectIDs) {
   }
 }
 
-// Function to show greyed-out state
-function showGreyedOutState() {
-  console.log("Showing greyed-out state...");
-  const algoliaRacesDiv = document.getElementById('algoliaRaces');
+// Function to remove greyed-out state from the parent and its children
+function removeGreyedOutFromElementAndChildren(element) {
+  console.log("Removing greyed-out state from element and child elements...");
   
-  for(let i = 0; i < 20; i++) {
-    const newRaceCard = createRaceCard(true);
-    algoliaRacesDiv.appendChild(newRaceCard);
-  }
-}
-
-// Function to remove greyed-out state
-function removeGreyedOutState() {
-  console.log("Removing greyed-out state...");
-  const greyedOutElements = document.querySelectorAll('.greyed-out');
+  // Remove the 'greyed-out' class from the parent element
+  element.classList.remove('greyed-out');
   
-  greyedOutElements.forEach(element => {
-    element.remove();
+  // Get all child elements with the 'greyed-out' class
+  const greyedOutChildren = element.querySelectorAll('.greyed-out');
+  
+  greyedOutChildren.forEach(child => {
+    // Remove the 'greyed-out' class from each child element
+    child.classList.remove('greyed-out');
   });
 }
 
 // Function to create a race card
-function createRaceCard(isGreyedOut = false) {
+function createRaceCard() {
   const raceCardTemplate = document.getElementById("race-card");
   const newRaceCard = raceCardTemplate.cloneNode(true);
   newRaceCard.removeAttribute('id');
   newRaceCard.style.display = 'flex';
-  if (isGreyedOut) {
-    newRaceCard.className += ' greyed-out';
-  }
   return newRaceCard;
 }
 
