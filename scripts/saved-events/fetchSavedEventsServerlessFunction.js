@@ -70,4 +70,3 @@ function populateRaceCards(results) {
 
 // Trigger the entire process
 fetchLikes();
-</script>
