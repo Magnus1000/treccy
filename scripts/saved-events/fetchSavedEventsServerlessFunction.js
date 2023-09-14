@@ -87,17 +87,18 @@ function createRaceCard() {
 // Function to populate race cards
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
-  
+
   const existingRaceCards = document.querySelectorAll('.race-card'); 
-  
-  // Loop only for the number of results returned
-  for (let index = 0; index < results.length; index++) {
-    const result = results[index];
-    
-    if (existingRaceCards && existingRaceCards[index]) {
+
+  // Loop only for the number of existing cards, up to the number of results
+  for (let index = 0; index < existingRaceCards.length; index++) {
+
+    // Only populate and remove 'greyed-out' if there is a result for this index
+    if (results[index]) {
+      const result = results[index];
       const raceCardToPopulate = existingRaceCards[index];
       
-      // Remove greyed-out only from the race cards that have data
+      // Remove 'greyed-out' only from the race cards that will be populated
       removeGreyedOutFromElementAndChildren(raceCardToPopulate);
 
       const formattedDate = formatDate(result.date_ag);
@@ -112,7 +113,7 @@ function populateRaceCards(results) {
       raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
       raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
     }
-  });
+  };
   
   // Call initLikeButtons here, after new content has been added
   console.log("New cards populated. Re-initializing like-buttons.");
