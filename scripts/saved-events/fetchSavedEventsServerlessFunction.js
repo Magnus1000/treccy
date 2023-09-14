@@ -33,16 +33,19 @@ async function fetchSavedRacesFromVercel(objectIDs) {
     });
 
     if (response.ok) {
-      const results = await response.json();
-      console.log('Results fetched from Vercel function:', results);
-      populateRaceCards(results);
-    } else {
-      console.log('No saved races found via Vercel function.');
+        const results = await response.json();
+        console.log('Results fetched from Vercel function:', results);
+        populateRaceCards(results);
+        hideUnusedRaceCards(); // Hide unused race cards after populating
+      } else {
+        console.log('No saved races found via Vercel function.');
+        hideUnusedRaceCards(); // Hide all race cards if no results found
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching races from Vercel function:', error);
+      hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
-  } catch (error) {
-    console.error('An error occurred while fetching races from Vercel function:', error);
   }
-}
 
 // Function to remove greyed-out state from the parent and its children
 function removeGreyedOutFromElementAndChildren(element) {
@@ -57,6 +60,18 @@ function removeGreyedOutFromElementAndChildren(element) {
   greyedOutChildren.forEach(child => {
     // Remove the 'greyed-out' class from each child element
     child.classList.remove('greyed-out');
+  });
+}
+
+// Function to hide unused race cards
+function hideUnusedRaceCards() {
+  console.log("Hiding unused race cards...");
+  
+  const existingRaceCards = document.querySelectorAll('.race-card');
+  existingRaceCards.forEach(raceCard => {
+    if (raceCard.classList.contains('greyed-out')) {
+      raceCard.classList.add('hidden');
+    }
   });
 }
 
