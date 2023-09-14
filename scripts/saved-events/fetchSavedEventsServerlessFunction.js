@@ -65,23 +65,16 @@ function createRaceCard() {
   return newRaceCard;
 }
 
-// Function to populate race cards
-function populateRaceCards(results) {
-  console.log("Populating Race Cards...");
+  // Function to populate race cards
+  function populateRaceCards(results) {
+    console.log("Populating Race Cards...");
+    const algoliaRacesDiv = document.getElementById('algoliaRaces'); // Assuming all your race cards are inside this div
 
-  const existingRaceCards = document.querySelectorAll('.race-card'); 
+    const existingRaceCards = Array.from(algoliaRacesDiv.querySelectorAll('.race-card-class')); // Assuming all your race cards have a common class named 'race-card-class'
 
-  // Loop only for the number of existing cards, up to the number of results
-  for (let index = 0; index < existingRaceCards.length; index++) {
-
-    const raceCardToPopulate = existingRaceCards[index];
-    
-    // Only populate and remove 'greyed-out' if there is a result for this index
-    if (results[index]) {
-      const result = results[index];
-
-      // Remove 'greyed-out' only from the race cards that will be populated
-      removeGreyedOutFromElementAndChildren(raceCardToPopulate);
+    results.forEach((result, index) => {
+      if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
+        const raceCardToPopulate = existingRaceCards[index];
 
       const formattedDate = formatDate(result.date_ag);
       raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
