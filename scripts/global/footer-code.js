@@ -1,5 +1,8 @@
 console.log("Formatted date function loaded...");
 
+// Define memberstack here so you can use it in both scripts
+const memberstack = window.$memberstackDom;
+
 // Function to format date
 function formatDate(dateString) {
   const date = new Date(dateString);
