@@ -72,16 +72,15 @@ function createRaceCard() {
 
 // Function to populate race cards
 function populateRaceCards(results) {
-  removeGreyedOutState(); // Remove greyed-out state
   console.log("Populating Race Cards...");
   
   results.forEach((result, index) => {
     const existingRaceCards = document.querySelectorAll('.race-card-template-class'); // Replace with your actual class name
     if (existingRaceCards && existingRaceCards[index]) {
       const raceCardToPopulate = existingRaceCards[index];
-      
-      // Your logic to populate each existing card goes here
-      // For example:
+
+      removeGreyedOutFromElementAndChildren();
+
       const formattedDate = formatDate(result.date_ag);
       raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
       raceCardToPopulate.querySelector('.race-card-image').src = result.photo_main_ag;
