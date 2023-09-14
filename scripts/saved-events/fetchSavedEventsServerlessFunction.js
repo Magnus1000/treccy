@@ -93,11 +93,12 @@ function populateRaceCards(results) {
   // Loop only for the number of existing cards, up to the number of results
   for (let index = 0; index < existingRaceCards.length; index++) {
 
+    const raceCardToPopulate = existingRaceCards[index];
+    
     // Only populate and remove 'greyed-out' if there is a result for this index
     if (results[index]) {
       const result = results[index];
-      const raceCardToPopulate = existingRaceCards[index];
-      
+
       // Remove 'greyed-out' only from the race cards that will be populated
       removeGreyedOutFromElementAndChildren(raceCardToPopulate);
 
