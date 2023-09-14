@@ -29,14 +29,14 @@ async function fetchSavedRacesFromVercel(objectIDs) {
         const results = await response.json();
         console.log('Results fetched from Vercel function:', results);
         populateRaceCards(results);
-        // hideUnusedRaceCards(); // Hide unused race cards after populating
+        hideUnusedRaceCards(); // Hide unused race cards after populating
       } else {
         console.log('No saved races found via Vercel function.');
-        // hideUnusedRaceCards(); // Hide all race cards if no results found
+        hideUnusedRaceCards(); // Hide all race cards if no results found
       }
     } catch (error) {
       console.error('An error occurred while fetching races from Vercel function:', error);
-      // hideUnusedRaceCards(); // Hide all race cards if an error occurs
+      hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
   }
 
@@ -63,6 +63,18 @@ function createRaceCard() {
   newRaceCard.removeAttribute('id');
   newRaceCard.style.display = 'flex';
   return newRaceCard;
+}
+
+// Function to hide unused race cards
+function hideUnusedRaceCards() {
+  console.log("Hiding unused race cards...");
+  
+  const existingRaceCards = document.querySelectorAll('.race-card-component');
+  existingRaceCards.forEach(raceCard => {
+    if (raceCard.classList.contains('greyed-out')) {
+      raceCard.classList.add('hidden');
+    }
+  });
 }
 
   // Function to populate race cards
