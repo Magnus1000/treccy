@@ -60,3 +60,15 @@ function formatDistances(distancesArray) {
   
   return formattedDistances;
 }
+
+// Function to format sports array
+// Function to format the sports array
+function formatSports(sportsArray) {
+  // Convert each sport to title case
+  const formattedSports = sportsArray.map(sport => {
+    return sport.charAt(0).toUpperCase() + sport.slice(1);
+  });
+  
+  // Join the array elements with a comma and a space
+  return formattedSports.join(', ');
+}
