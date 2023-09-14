@@ -76,6 +76,8 @@ function createRaceCard() {
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
         const raceCardToPopulate = existingRaceCards[index];
 
+        removeGreyedOutFromElementAndChildren(raceCardToPopulate);
+
       const formattedDate = formatDate(result.date_ag);
       raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
       raceCardToPopulate.querySelector('.race-card-image').src = result.photo_main_ag;
