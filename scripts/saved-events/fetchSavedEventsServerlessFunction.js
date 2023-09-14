@@ -74,7 +74,7 @@ function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   
   results.forEach((result, index) => {
-    const existingRaceCards = document.querySelectorAll('.race-card'); // Replace with your actual class name
+    const existingRaceCards = document.querySelectorAll('.race-card'); 
     if (existingRaceCards && existingRaceCards[index]) {
       const raceCardToPopulate = existingRaceCards[index];
 
