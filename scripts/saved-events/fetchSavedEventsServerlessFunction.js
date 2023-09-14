@@ -10,13 +10,6 @@ async function fetchLikes() {
     likesArray = memberJson.likes.map(like => like.id);
   }
 
-  // Cloning race card while the data is being fetched
-  const algoliaRacesDiv = document.getElementById('algoliaRaces');
-  for(let i = 0; i < 20; i++) {
-    const newRaceCard = createRaceCard();
-    algoliaRacesDiv.appendChild(newRaceCard);
-  }
-
   fetchSavedRacesFromVercel(likesArray);
 }
 
