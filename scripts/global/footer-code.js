@@ -39,3 +39,24 @@ function onNewContentAdded() {
   console.log('New content added. Reinitializing like-buttons.');
   initLikeButtons();
 }
+
+// Function to format the distances array
+function formatDistances(distancesArray) {
+  // Sort the array in ascending order and divide each value by 1000 to convert to km
+  const sortedDistances = distancesArray.sort((a, b) => a - b).map(distance => distance / 1000);
+  
+  let formattedDistances = ""; // Initialize an empty string to store the formatted distances
+  
+  // Check the length of the array to format accordingly
+  if (sortedDistances.length === 0) {
+    formattedDistances = "N/A"; // If no distances are available, set to "N/A"
+  } else if (sortedDistances.length === 1) {
+    formattedDistances = `${sortedDistances[0]}km`; // If only one distance is available
+  } else if (sortedDistances.length === 2) {
+    formattedDistances = `${sortedDistances[0]}km • ${sortedDistances[1]}km`; // If two distances are available
+  } else {
+    formattedDistances = `${sortedDistances[0]}km - ${sortedDistances[sortedDistances.length - 1]}km`; // If more than two, show the smallest and largest
+  }
+  
+  return formattedDistances;
+}
