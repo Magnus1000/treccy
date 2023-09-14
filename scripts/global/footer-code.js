@@ -1,3 +1,5 @@
+console.log("Formatted date function loaded...");
+
 // Function to format date
 function formatDate(dateString) {
   const date = new Date(dateString);
