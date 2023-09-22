@@ -101,8 +101,6 @@ async function fetchRacesFromVercel(filters) {
 
 // Function to remove greyed-out state from the parent and its children
 async function removeGreyedOutFromElementAndChildren(element) {
-  console.log("Removing greyed-out state from element and child elements...");
-  
   // Remove the 'greyed-out' class from the parent element
   element.classList.remove('greyed-out');
   
@@ -112,6 +110,7 @@ async function removeGreyedOutFromElementAndChildren(element) {
   greyedOutChildren.forEach(child => {
     // Remove the 'greyed-out' class from each child element
     child.classList.remove('greyed-out');
+    console.log("Removing greyed-out state from element and child elements...");
   });
 }
 
@@ -147,7 +146,6 @@ function populateRaceCards(results) {
     if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
       const raceCardToPopulate = existingRaceCards[index];
       removeGreyedOutFromElementAndChildren(raceCardToPopulate);
-
       const formattedDate = formatDate(result.date_ag);
       const formattedDistance = formatDistances(result.distances_ag);
       const formattedSports = formatSports(result.sports_ag);

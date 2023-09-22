@@ -10,7 +10,6 @@ function formatDate(dateString) {
   const month = date.toLocaleString('en-US', { month: 'short' });
   const year = date.getFullYear().toString().substr(-2);
   const formattedDate = `${day} ${month} ${year}`;
-  console.log("Formatted date:", formattedDate);
   return formattedDate;
 }
 
@@ -35,7 +34,6 @@ function formatDistances(distancesArray) {
   return formattedDistances;
 }
 
-// Function to format sports array
 // Function to format the sports array
 function formatSports(sportsArray) {
   // Convert each sport to title case
