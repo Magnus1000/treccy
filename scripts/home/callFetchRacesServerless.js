@@ -65,17 +65,16 @@ async function checkURLParams() {
 
   lat = parseFloat(lat);
   lng = parseFloat(lng);
-  
+
   console.log("Filters:", filters);
   console.log(`Setting global lat and lng variables... (${lat},${lng})`);
   return filters;
 }
 
 // Function to fetch races races from Vercel function
-async function fetchRacesFromVercel() {
+async function fetchRacesFromVercel(filters) {
   const apiUrl = 'https://treccy-serverside-magnus1000.vercel.app/api/fetchRaces';
   try {
-    const filters = checkURLParams(); // Call checkURLParams function to get filters array
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -101,7 +100,7 @@ async function fetchRacesFromVercel() {
   }
 
 // Function to remove greyed-out state from the parent and its children
-function removeGreyedOutFromElementAndChildren(element) {
+async function removeGreyedOutFromElementAndChildren(element) {
   console.log("Removing greyed-out state from element and child elements...");
   
   // Remove the 'greyed-out' class from the parent element
@@ -167,7 +166,7 @@ function populateRaceCards(results) {
   }); 
 }
 
-// Initialize when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-  fetchRacesFromVercel();
+document.addEventListener("DOMContentLoaded", async function() {
+  const filters = await checkURLParams();
+  fetchRacesFromVercel(filters);
 });
