@@ -12,24 +12,20 @@ async function getUserLocation() {
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
 
-// Function to check URL parameters for filters
 async function checkURLParams() {
   const urlSearchParams = new URLSearchParams(window.location.search);
-  lat = parseFloat(urlSearchParams.get('lat'));
-  lng = parseFloat(urlSearchParams.get('lng'));
-  const radius = parseFloat(urlSearchParams.get('radius'));
-  const filters = [];
-  const sports = urlSearchParams.getAll('sport');
-  if (sports.length > 0) {
-    filters.push(`sport:(${sports.join(' OR ')})`);
-  }
-  if (!isNaN(lat) && !isNaN(lng)) {
-    console.log(`Using lat:${lat} and lng:${lng} from URL params`);
-    filters.push(`lat:${lat}`, `lng:${lng}`);
-    if (!isNaN(radius)) {
-      filters.push(`radius:${radius}`);
-    }
-  } else {
+  const sports = Array.from(urlSearchParams.keys())
+    .filter(key => /^sport\d+$/.test(key))
+    .map(key => urlSearchParams.get(key).replace(/-/g, ' '));
+  const minDist = parseInt(urlSearchParams.get('minDist'));
+  const maxDist = parseInt(urlSearchParams.get('maxDist'));
+  const dateFrom = parseInt(urlSearchParams.get('dateFrom'));
+  const dateTo = parseInt(urlSearchParams.get('dateTo'));
+  const radius = parseInt(urlSearchParams.get('radius'));
+  let lat = parseFloat(urlSearchParams.get('lat'));
+  let lng = parseFloat(urlSearchParams.get('lng'));
+
+  if (isNaN(lat) || isNaN(lng)) {
     const localStorageUserLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
     if (localStorageUserLocation && localStorageUserLocation.length === 2) {
       console.log(`Using lat:${localStorageUserLocation[0]} and lng:${localStorageUserLocation[1]} from localStorage`);
@@ -41,32 +37,33 @@ async function checkURLParams() {
       lat = parseFloat(userLocation.lat);
       lng = parseFloat(userLocation.lng);
     }
-    filters.push(`lat:${lat}`, `lng:${lng}`);
+  }
+
+  const filters = {};
+  if (sports.length > 0) {
+    filters.sports = sports;
+  }
+  if (!isNaN(minDist)) {
+    filters.minDist = minDist;
+  }
+  if (!isNaN(maxDist)) {
+    filters.maxDist = maxDist;
+  }
+  if (!isNaN(dateFrom)) {
+    filters.dateFrom = dateFrom;
+  }
+  if (!isNaN(dateTo)) {
+    filters.dateTo = dateTo;
+  }
+  if (!isNaN(lat) && !isNaN(lng)) {
+    filters.lat = lat;
+    filters.lng = lng;
     if (!isNaN(radius)) {
-      filters.push(`radius:${radius}`);
+      filters.radius = radius;
     }
   }
-  const minDist = parseInt(urlSearchParams.get('minDist'));
-  if (minDist !== null) {
-    filters.push(`distance >= ${minDist}`);
-  }
-  const maxDist = parseInt(urlSearchParams.get('maxDist'));
-  if (maxDist !== null) {
-    filters.push(`distance <= ${maxDist}`);
-  }
-  const fromDate = urlSearchParams.get('fromDate');
-  if (fromDate !== null) {
-    filters.push(`date >= ${fromDate}`);
-  }
-  const toDate = urlSearchParams.get('toDate');
-  if (toDate !== null) {
-    filters.push(`date <= ${toDate}`);
-  }
 
-  lat = parseFloat(lat);
-  lng = parseFloat(lng);
-
-  console.log("Filters:", filters);
+  console.log("Filters:", filters); //JSON object
   console.log(`Setting global lat and lng variables... (${lat},${lng})`);
   fetchRacesFromVercel(filters);
 }
@@ -80,11 +77,13 @@ async function fetchRacesFromVercel(filters) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ filters }), // Pass filters array as JSON
+      //body: filters,
+      body: JSON.stringify(filters), // Pass filters array as JSON
     });
 
     if (response.ok) {
         const results = await response.json();
+        console.log(JSON.stringify(filters));
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
         populateRaceCards(results);
