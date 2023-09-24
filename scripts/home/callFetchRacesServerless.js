@@ -147,7 +147,7 @@ function populateRaceCards(results) {
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
   // Clear the contents of the race cards container
-  //raceGrid.innerHTML = '';
+  addGreyedOutClass();
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
@@ -175,3 +175,18 @@ function populateRaceCards(results) {
 document.addEventListener("DOMContentLoaded", async function() {
   const filters = await checkURLParams();
 });
+
+// The function to add "greyed-out" class to divs with class "race-card-component"
+function addGreyedOutClass() {
+  // Find all the div elements with the class "race-card-component"
+  const raceCardComponents = document.querySelectorAll('.race-card-component');
+  
+  // Loop through each div element found
+  raceCardComponents.forEach(function(element) {
+    // Add the class "greyed-out" to the div
+    element.classList.add('greyed-out');
+    
+    // Log to the console to show the class has been added
+    console.log(`Added 'greyed-out' class to element: ${element}`);
+  });
+}
