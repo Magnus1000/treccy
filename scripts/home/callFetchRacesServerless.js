@@ -146,6 +146,10 @@ function populateRaceCards(results) {
 
   const existingRaceCards = Array.from(algoliaRacesDiv.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
+  // Clear the contents of the race cards container
+  raceCardsContainer.innerHTML = '';
+
+  // Loop through each result and create a new race card
   results.forEach((result, index) => {
     if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
       const raceCardToPopulate = existingRaceCards[index];
