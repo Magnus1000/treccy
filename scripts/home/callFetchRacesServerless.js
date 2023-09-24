@@ -33,17 +33,17 @@ async function checkURLParams() {
     const localStorageUserLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
     if (localStorageUserLocation && localStorageUserLocation.length === 2) {
       console.log(`Using lat:${localStorageUserLocation[0]} and lng:${localStorageUserLocation[1]} from localStorage`);
-      filters.push(`lat:${localStorageUserLocation[0]}`, `lng:${localStorageUserLocation[1]}`);
-      if (!isNaN(radius)) {
-        filters.push(`radius:${radius}`);
-      }
+      lat = parseFloat(localStorageUserLocation[0]);
+      lng = parseFloat(localStorageUserLocation[1]);
     } else {
       const userLocation = await getUserLocation();
       console.log(`Using lat:${userLocation.lat} and lng:${userLocation.lng} from IP address`);
-      filters.push(`lat:${userLocation.lat}`, `lng:${userLocation.lng}`);
-      if (!isNaN(radius)) {
-        filters.push(`radius:${radius}`);
-      }
+      lat = parseFloat(userLocation.lat);
+      lng = parseFloat(userLocation.lng);
+    }
+    filters.push(`lat:${lat}`, `lng:${lng}`);
+    if (!isNaN(radius)) {
+      filters.push(`radius:${radius}`);
     }
   }
   const minDist = parseInt(urlSearchParams.get('minDist'));
@@ -68,7 +68,7 @@ async function checkURLParams() {
 
   console.log("Filters:", filters);
   console.log(`Setting global lat and lng variables... (${lat},${lng})`);
-  return filters;
+  fetchRacesFromVercel(filters);
 }
 
 // Function to fetch races races from Vercel function
@@ -166,5 +166,4 @@ function populateRaceCards(results) {
 
 document.addEventListener("DOMContentLoaded", async function() {
   const filters = await checkURLParams();
-  fetchRacesFromVercel(filters);
 });
