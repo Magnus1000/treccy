@@ -143,17 +143,30 @@ document.getElementById('filter-open-mobile').addEventListener('click', showFilt
 document.getElementById('location-div-left').addEventListener('click', showFilterForm);
 document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
+// Declare a variable to store the URL before form submission
+let previousURL = window.location.href;
+
 // Add an event listener to the form with id="filter-form"
 document.getElementById('filter-form').addEventListener('submit', event => {
   // Prevent the default form submission behavior
   event.preventDefault();
 
+  // Call the function to update URL with filters
+  updateURLWithFilters();
+
   // Call the function to hide the filter form div
   hideFilterForm();
 
-  // Call the function to update URL with filters
-  updateURLWithFilters();
-  
+  // Check if the URL has changed
+  const currentURL = window.location.href;
+  if (currentURL !== previousURL) {
+    // Fetch new race results from the serverless function
+    checkURLParams();
+  }
+
+  // Update the previousURL variable with the current URL
+  previousURL = currentURL;
+
   // Call the function to push form values to divs
   pushValuesToDivs();
 });
