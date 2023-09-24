@@ -147,7 +147,7 @@ function populateRaceCards(results) {
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
   // Clear the contents of the race cards container
-  raceGrid.innerHTML = '';
+  //raceGrid.innerHTML = '';
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
