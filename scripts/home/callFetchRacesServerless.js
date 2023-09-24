@@ -142,12 +142,12 @@ function hideUnusedRaceCards() {
 // Function to populate race cards
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
-  const algoliaRacesDiv = document.getElementById('algoliaRaces'); // Assuming all your race cards are inside this div
+  const raceGrid = document.getElementById('race-grid-container'); 
 
-  const existingRaceCards = Array.from(algoliaRacesDiv.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
+  const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
   // Clear the contents of the race cards container
-  raceCardsContainer.innerHTML = '';
+  raceGrid.innerHTML = '';
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
