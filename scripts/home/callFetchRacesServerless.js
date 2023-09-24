@@ -21,7 +21,7 @@ async function checkURLParams() {
   const maxDist = parseInt(urlSearchParams.get('maxDist'));
   const dateFrom = parseInt(urlSearchParams.get('dateFrom'));
   const dateTo = parseInt(urlSearchParams.get('dateTo'));
-  const radius = parseInt(urlSearchParams.get('radius'));
+  const radius = parseInt(urlSearchParams.get('radius')) || 100000; // Set fallback radius to 100km
   let lat = parseFloat(urlSearchParams.get('lat'));
   let lng = parseFloat(urlSearchParams.get('lng'));
 
@@ -36,6 +36,11 @@ async function checkURLParams() {
       console.log(`Using lat:${userLocation.lat} and lng:${userLocation.lng} from IP address`);
       lat = parseFloat(userLocation.lat);
       lng = parseFloat(userLocation.lng);
+      if (isNaN(lat) || isNaN(lng)) {
+        console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
+        lat = 40.014;
+        lng = 105.270;
+      }
     }
   }
 
@@ -96,7 +101,7 @@ async function fetchRacesFromVercel(filters) {
       console.error('An error occurred while fetching races from Vercel function:', error);
       hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
-  }
+}
 
 // Function to remove greyed-out state from the parent and its children
 async function removeGreyedOutFromElementAndChildren(element) {
