@@ -80,3 +80,7 @@ async function setupSearchSuggestions() {
       }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupSearchSuggestions();
+});
