@@ -1,7 +1,7 @@
 // Function to setup search suggestions
 async function setupSearchSuggestions() {
-    const searchInput = document.getElementById(location-search-bar);
-    const suggestionsBox = document.getElementById(location-suggestions);
+    const searchInput = document.getElementById('location-search-bar');
+    const suggestionsBox = document.getElementById('location-suggestions');
   
     // Log to confirm elements have been found
     if (searchInput) {
