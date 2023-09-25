@@ -5,8 +5,10 @@ console.log("Fetch and Load Results Script");
 async function getUserLocation() {
   const response = await fetch('https://ipapi.co/json/');
   const data = await response.json();
-  const { latitude, longitude } = data;
-  return { lat: latitude, lng: longitude };
+  const { latitude, longitude, city, region } = data;
+  const location = `${city}, ${region}`;
+  setElementValue('location-search-bar', location);
+  return { lat: latitude, lng: longitude, city, region };
 }
 
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
