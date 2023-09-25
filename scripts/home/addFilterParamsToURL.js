@@ -49,6 +49,9 @@ const updateURLWithFilters = () => {
   // Get the fromDate and toDate from the date picker
   const { fromDate, toDate } = getDateRange();
 
+  // Get the location value from the search bar
+  const location = getElementValue('location-search-bar'); //Needed to load the URL param value into the search bar
+
   // Filters collection
   const filters = {
     minDist: getElementValue('minimum-distance'),
@@ -56,6 +59,7 @@ const updateURLWithFilters = () => {
     radius: getElementValue('location-radius'),
     fromDate,
     toDate,
+    location,
     lat: document.getElementById('location-search-bar')?.getAttribute('data-lat') ?? '',
     lng: document.getElementById('location-search-bar')?.getAttribute('data-lon') ?? '',
   };
