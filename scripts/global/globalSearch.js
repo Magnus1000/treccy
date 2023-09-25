@@ -125,14 +125,18 @@ const autocompleteInstance = autocomplete({
                 }
                 const footerDiv = html`<div><a href="${categoryLink}">See all ${sports} races in ${city || region || countryAgLower}</a></div>`;
                 const sourceFooter = document.querySelector('.aa-SourceFooter');
-                sourceFooter.appendChild(footerDiv);
-                console.log(`Category link added: ${categoryLink}`);
-                return;
+                if (sourceFooter) {
+                  sourceFooter.appendChild(footerDiv);
+                  console.log(`Category link added: ${categoryLink}`);
+                  return;
+                }
               }
             }
             const footerDiv = html`<div></div>`;
             const sourceFooter = document.querySelector('.aa-SourceFooter');
-            sourceFooter.appendChild(footerDiv);
+            if (sourceFooter) {
+              sourceFooter.appendChild(footerDiv);
+            }
             console.log("No category link added.");
           },
           noResults() {
