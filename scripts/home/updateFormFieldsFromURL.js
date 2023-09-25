@@ -26,6 +26,11 @@ const updateFormFieldsFromURL = () => {
         }
     }
 
+    // Log the source and value of the location search bar
+    if (location) {
+        console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${location}`); // Log to specify whether location was set from URL or localStorage
+    }
+
     // Update sport checkboxes based on 'sport' URL params
     urlParams.forEach((value, key) => {
         if (key.startsWith('sport')) {
@@ -66,6 +71,4 @@ const updateFormFieldsFromURL = () => {
             updateField(value);
         }
     }
-
-    console.log("Form fields updated based on URL parameters or localStorage.");
 };
