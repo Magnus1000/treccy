@@ -82,7 +82,7 @@ const autocompleteInstance = autocomplete({
               const sports = toTitleCase(item.sports_ag.join(', '));
 
               return html`
-                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                <a class="aa-ItemLink" href="/race/${item.slug_ag}">
                   <div class="aa-ItemContent">
                     <div class="aa-ItemContentBody">
                       <div class="aa-ItemContentTitle">
@@ -98,7 +98,7 @@ const autocompleteInstance = autocomplete({
                   </div>
                 </a>`;
             },
-            footer({ state, html }) {
+            footer({ state, html }, resultsDiv) {
               // Check if results are available
               if (state.results && state.results[0]) {
                 // Iterate over the hits to find the first one with the necessary attributes
@@ -109,11 +109,16 @@ const autocompleteInstance = autocomplete({
                     const region = hit.region_ag;
                     const countryAgLower = hit.country_ag.toLowerCase();
                     const categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${region}%2C+${countryAgLower}`;
-                    return html`<div><a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a></div>`;
+                    const footerDiv = document.createElement('div');
+                    footerDiv.innerHTML = `<a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a>`;
+                    resultsDiv.appendChild(footerDiv);
+                    return;
                   }
                 }
               }
-              return '';
+              const footerDiv = document.createElement('div');
+              footerDiv.innerHTML = '';
+              resultsDiv.appendChild(footerDiv);
             },
             noResults() {
               return "No races for this query.";
