@@ -82,3 +82,9 @@ async function getLocationAndPopulateField() {
         console.log("Geolocation is not supported by this browser.");
     }
 }
+
+// Listen for the DOM content to be loaded
+document.addEventListener("DOMContentLoaded", function () {
+    const locationButton = document.getElementById("location-button");
+    locationButton.addEventListener("click", getLocationAndPopulateField);
+});
