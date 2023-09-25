@@ -99,26 +99,41 @@ const autocompleteInstance = autocomplete({
               </a>`;
           },
           footer({ state, html }) {
+            console.log("State:", state);
             // Check if results are available
             if (state.results && state.results[0]) {
-              // Iterate over the hits to find the first one with the necessary attributes
-              for (const hit of state.results[0].hits) {
-                if (hit.sports_ag && hit.city_ag && hit.region_ag && hit.country_ag) {
-                  const sports = toTitleCase(hit.sports_ag.join(', '));
-                  const city = hit.city_ag;
-                  const region = hit.region_ag;
-                  const countryAgLower = hit.country_ag.toLowerCase();
-                  const categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${region}%2C+${countryAgLower}`;
-                  const footerDiv = html`<div><a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a></div>`;
-                  const sourceFooter = document.querySelector('.aa-SourceFooter');
-                  sourceFooter.appendChild(footerDiv);
-                  return;
+              // Iterate over the hits to find one with the necessary attributes
+              const hit = state.results[0].hits.find(hit => {
+                const hasSport = hit.sports_ag && hit.sports_ag.length > 0;
+                const hasRegion = hit.region_ag && hit.region_ag.length > 0;
+                const hasCity = hit.city_ag && hit.city_ag.length > 0;
+                const hasCountry = hit.country_ag && hit.country_ag.length > 0;
+                return hasSport && (hasRegion || hasCity || hasCountry);
+              });
+              if (hit) {
+                const sports = toTitleCase(hit.sports_ag.join(', '));
+                const city = hit.city_ag;
+                const region = hit.region_ag;
+                const countryAgLower = hit.country_ag.toLowerCase();
+                let categoryLink = '';
+                if (region) {
+                  categoryLink = `/regions/${region.toLowerCase()}?sport0=${state.query.toLowerCase()}&location=${region}%2C+${countryAgLower}`;
+                } else if (city) {
+                  categoryLink = `/cities/${city.toLowerCase()}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${countryAgLower}`;
+                } else if (countryAgLower) {
+                  categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${countryAgLower}`;
                 }
+                const footerDiv = html`<div><a href="${categoryLink}">See all ${sports} races in ${city || region || countryAgLower}</a></div>`;
+                const sourceFooter = document.querySelector('.aa-SourceFooter');
+                sourceFooter.appendChild(footerDiv);
+                console.log(`Category link added: ${categoryLink}`);
+                return;
               }
             }
             const footerDiv = html`<div></div>`;
             const sourceFooter = document.querySelector('.aa-SourceFooter');
             sourceFooter.appendChild(footerDiv);
+            console.log("No category link added.");
           },
           noResults() {
             return "No races for this query.";
