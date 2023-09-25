@@ -29,7 +29,7 @@ async function checkURLParams() {
 
   if (isNaN(lat) || isNaN(lng)) {
     const localStorageUserLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
-    if (localStorageUserLocation && localStorageUserLocation.length === 2) {
+    if (localStorageUserLocation && localStorageUserLocation.length >= 2) {
       console.log(`Using lat:${localStorageUserLocation[0]} and lng:${localStorageUserLocation[1]} from localStorage`);
       lat = parseFloat(localStorageUserLocation[0]);
       lng = parseFloat(localStorageUserLocation[1]);
