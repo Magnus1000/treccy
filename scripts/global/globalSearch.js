@@ -1,4 +1,3 @@
-<script>
 // Placeholder texts for search bar
 const placeholderTexts = [
   "Search for Kayak races",
@@ -16,17 +15,6 @@ function updatePlaceholder(autocompleteInstance) {
   });
   placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
 }
-
-// Popular races to display when no query is entered
-const popularRaces = [
-  // You'll populate this array with popular race details
-];
-
-// Set interval for placeholder rotation
-let interval;
-const startPlaceholderRotation = (autocompleteInstance) => {
-  interval = setInterval(() => updatePlaceholder(autocompleteInstance), 2000);
-};
 
 // Convert text to Title Case
 function toTitleCase(str) {
@@ -52,32 +40,8 @@ const autocompleteInstance = autocomplete({
     console.log("Query received:", query);
 
     if (!query) {
-      console.log("No query. Displaying popular races.");
-      return [
-        {
-          sourceId: "popularRaces",
-          getItems() {
-            return popularRaces;
-          },
-          templates: {
-            header() {
-              return 'Popular races';
-            },
-            item({ item, components, html }) {
-              return html`
-                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
-                  <div class="aa-ItemContent">
-                    <div class="aa-ItemContentBody">
-                      <div class="aa-ItemContentTitle">
-                        ${item.name_ag}
-                      </div>
-                    </div>
-                  </div>
-                </a>`;
-            }
-          }
-        }
-      ];
+      console.log("No query.");
+      return [];
     }
 
     // Rest of the code for Algolia search results
@@ -97,7 +61,7 @@ const autocompleteInstance = autocomplete({
                     attributesToSnippet: ['name_ag:10', 'description_ag:35'],
                     snippetEllipsisText: '…',
                     hitsPerPage: 5,
-                    facets: ['disciplines_ag', 'city_ag', 'state_province_ag', 'country_ag']
+                    facets: ['sports_ag', 'city_ag', 'region_ag', 'country_ag']
                   }
                 }
               ]
@@ -115,7 +79,7 @@ const autocompleteInstance = autocomplete({
               const date = new Date(item.date_ag);
               const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
               // Convert disciplines to proper case
-              const disciplines = toTitleCase(item.disciplines_ag.join(', '));
+              const sports = toTitleCase(item.sports_ag.join(', '));
 
               return html`
                 <a class="aa-ItemLink" href="/races/${item.slug_ag}">
@@ -125,10 +89,10 @@ const autocompleteInstance = autocomplete({
                         ${item.name_ag} 
                       </div>
                       <div class="aa-ItemContentSubtitle">
-                        ${item.city_ag}, ${item.state_province_ag}, ${item.country_ag} - ${formattedDate} 
+                        ${item.city_ag}, ${item.region_ag}, ${item.country_ag} - ${formattedDate} 
                       </div>
                       <div class="aa-ItemContentDescription">
-                        ${disciplines} 
+                        ${sports} 
                       </div>
                     </div>
                   </div>
@@ -139,13 +103,13 @@ const autocompleteInstance = autocomplete({
               if (state.results && state.results[0]) {
                 // Iterate over the hits to find the first one with the necessary attributes
                 for (const hit of state.results[0].hits) {
-                  if (hit.disciplines_ag && hit.city_ag && hit.state_province_ag && hit.country_ag) {
-                    const disciplines = toTitleCase(hit.disciplines_ag.join(', '));
+                  if (hit.sports_ag && hit.city_ag && hit.region_ag && hit.country_ag) {
+                    const sports = toTitleCase(hit.sports_ag.join(', '));
                     const city = hit.city_ag;
-                    const stateProvince = hit.state_province_ag;
+                    const region = hit.region_ag;
                     const countryAgLower = hit.country_ag.toLowerCase();
-                    const categoryLink = `/countries/${countryAgLower}?discipline0=${state.query.toLowerCase()}&location=${city}%2C+${stateProvince}%2C+${countryAgLower}`;
-                    return html`<div><a href="${categoryLink}">See all ${disciplines} races in ${city}, ${stateProvince}</a></div>`;
+                    const categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${region}%2C+${countryAgLower}`;
+                    return html`<div><a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a></div>`;
                   }
                 }
               }
@@ -156,7 +120,7 @@ const autocompleteInstance = autocomplete({
             }
           },
           getItemUrl({ item }) {
-            return "/races/" + item.slug_ag;
+            return "/race/" + item.slug_ag;
           },
         }
       ];
@@ -166,11 +130,10 @@ const autocompleteInstance = autocomplete({
 // Start rotating placeholder texts
 startPlaceholderRotation(autocompleteInstance);
 
-console.log("Algolia autocomplete initialized.");
+console.log("Algolia Global Search initialized.");
 
 document.addEventListener('keydown', (event) => {
   if (event.metaKey && event.key.toLowerCase() === 'k') {
     autocompleteInstance.setIsOpen(true); // Use the instance's method
   }
 });
-</script>
