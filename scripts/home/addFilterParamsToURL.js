@@ -54,8 +54,8 @@ const updateURLWithFilters = () => {
 
   // Filters collection
   const filters = {
-    minDist: getElementValue('minimum-distance'),
-    maxDist: getElementValue('maximum-distance'),
+    minDist: getElementValue('minimum-distance') * 1000,
+    maxDist: getElementValue('maximum-distance') * 1000,
     radius: getElementValue('location-radius'),
     fromDate,
     toDate,
@@ -111,7 +111,7 @@ const hideFilterForm = () => {
   }
 };
 
-// Function to push form values to divs
+// Function to update left side location text with form values
 const pushValuesToDivs = () => {
   // Get the element and value of the search input field with ID 'location-search-bar'
   const locationElement = document.getElementById('location-search-bar');
