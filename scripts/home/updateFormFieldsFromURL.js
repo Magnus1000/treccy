@@ -5,9 +5,12 @@ const updateFormFieldsFromURL = () => {
   
     // Update sport checkboxes based on 'sport' URL params
     urlParams.forEach((value, key) => {
-      if (key.startsWith('sport')) {
-        document.querySelector(`.sport-checkbox[filter-value="${value}"]`).checked = true;
-      }
+        if (key.startsWith('sport')) {
+            const checkbox = document.querySelector(`.sport-checkbox[filter-value="${value}"]`);
+            checkbox.checked = true;
+            const parentWrapper = checkbox.closest('.sport-checkbox-button');
+            parentWrapper.classList.add('selected');
+        }
     });
   
     // Helper function to set an element's value by its ID
