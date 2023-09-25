@@ -188,7 +188,7 @@ function toggleSelectedClass() {
       console.log(`Checkbox with filter-value '${this.getAttribute('filter-value')}' is ${this.checked ? 'checked' : 'unchecked'}`);
 
       // Get the parent element wrapper
-      const parentWrapper = this.closest('.sport-checkbox-wrapper');
+      const parentWrapper = this.closest('.sport-checkbox-button');
       
       if (this.checked) {
         // If the checkbox is checked, add the 'selected' class to its parent wrapper
