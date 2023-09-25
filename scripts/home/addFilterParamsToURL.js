@@ -174,3 +174,31 @@ document.getElementById('filter-form').addEventListener('submit', event => {
   // Call the function to push form values to divs
   pushValuesToDivs();
 });
+
+// Function to listen to sports checkboxes and toggle the 'selected' class
+function toggleSelectedClass() {
+  // Find all checkboxes with the class 'sport-checkbox'
+  const checkboxes = document.querySelectorAll('.sport-checkbox');
+
+  // Loop through each checkbox to attach an event listener
+  checkboxes.forEach((checkbox) => {
+    // Attach 'change' event listener to each checkbox
+    checkbox.addEventListener('change', function() {
+      // Log the current state to console for debugging
+      console.log(`Checkbox with filter-value '${this.getAttribute('filter-value')}' is ${this.checked ? 'checked' : 'unchecked'}`);
+
+      // Get the parent element wrapper
+      const parentWrapper = this.closest('.sport-checkbox-wrapper');
+      
+      if (this.checked) {
+        // If the checkbox is checked, add the 'selected' class to its parent wrapper
+        parentWrapper.classList.add('selected');
+      } else {
+        // If the checkbox is unchecked, remove the 'selected' class from its parent wrapper
+        parentWrapper.classList.remove('selected');
+      }
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', toggleSelectedClass); // Add event listener to toggle the 'selected' class on sports checkboxes
