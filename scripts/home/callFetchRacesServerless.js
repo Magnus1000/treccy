@@ -68,9 +68,15 @@ async function checkURLParams() {
     }
   }
 
-  console.log("Filters:", filters); //JSON object
-  console.log(`Setting global lat and lng variables... (${lat},${lng})`);
-  fetchRacesFromVercel(filters);
+  try {
+    console.log("Filters:", filters); //JSON object
+    console.log(`Setting global lat and lng variables... (${lat},${lng})`);
+    await fetchRacesFromVercel(filters);
+  } catch (error) {
+    console.error(`Error fetching races: ${error}`);
+  }
+
+  updateFormFieldsFromURL();
 }
 
 // Function to fetch races races from Vercel function
