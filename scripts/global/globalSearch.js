@@ -74,63 +74,63 @@ const autocompleteInstance = autocomplete({
           }
         },
         templates: {
-            item({ item, components, html }) {
-              // Extract the date from item.date_ag and format it
-              const date = new Date(item.date_ag);
-              const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
-              // Convert disciplines to proper case
-              const sports = toTitleCase(item.sports_ag.join(', '));
+          item({ item, components, html }) {
+            // Extract the date from item.date_ag and format it
+            const date = new Date(item.date_ag);
+            const formattedDate = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
+            // Convert disciplines to proper case
+            const sports = toTitleCase(item.sports_ag.join(', '));
 
-              return html`
-                <a class="aa-ItemLink" href="/race/${item.slug_ag}">
-                  <div class="aa-ItemContent">
-                    <div class="aa-ItemContentBody">
-                      <div class="aa-ItemContentTitle">
-                        ${item.name_ag} 
-                      </div>
-                      <div class="aa-ItemContentSubtitle">
-                        ${item.city_ag}, ${item.region_ag}, ${item.country_ag} - ${formattedDate} 
-                      </div>
-                      <div class="aa-ItemContentDescription">
-                        ${sports} 
-                      </div>
+            return html`
+              <a class="aa-ItemLink" href="/race/${item.slug_ag}">
+                <div class="aa-ItemContent">
+                  <div class="aa-ItemContentBody">
+                    <div class="aa-ItemContentTitle">
+                      ${item.name_ag} 
+                    </div>
+                    <div class="aa-ItemContentSubtitle">
+                      ${item.city_ag}, ${item.region_ag}, ${item.country_ag} - ${formattedDate} 
+                    </div>
+                    <div class="aa-ItemContentDescription">
+                      ${sports} 
                     </div>
                   </div>
-                </a>`;
-            },
-            footer({ state, html }, resultsDiv) {
-              // Check if results are available
-              if (state.results && state.results[0]) {
-                // Iterate over the hits to find the first one with the necessary attributes
-                for (const hit of state.results[0].hits) {
-                  if (hit.sports_ag && hit.city_ag && hit.region_ag && hit.country_ag) {
-                    const sports = toTitleCase(hit.sports_ag.join(', '));
-                    const city = hit.city_ag;
-                    const region = hit.region_ag;
-                    const countryAgLower = hit.country_ag.toLowerCase();
-                    const categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${region}%2C+${countryAgLower}`;
-                    const footerDiv = document.createElement('div');
-                    footerDiv.innerHTML = `<a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a>`;
-                    resultsDiv.appendChild(footerDiv);
-                    return;
-                  }
+                </div>
+              </a>`;
+          },
+          footer({ state, html }) {
+            // Check if results are available
+            if (state.results && state.results[0]) {
+              // Iterate over the hits to find the first one with the necessary attributes
+              for (const hit of state.results[0].hits) {
+                if (hit.sports_ag && hit.city_ag && hit.region_ag && hit.country_ag) {
+                  const sports = toTitleCase(hit.sports_ag.join(', '));
+                  const city = hit.city_ag;
+                  const region = hit.region_ag;
+                  const countryAgLower = hit.country_ag.toLowerCase();
+                  const categoryLink = `/countries/${countryAgLower}?sport0=${state.query.toLowerCase()}&location=${city}%2C+${region}%2C+${countryAgLower}`;
+                  const footerDiv = html`<div><a href="${categoryLink}">See all ${sports} races in ${city}, ${region}</a></div>`;
+                  const sourceFooter = document.querySelector('.aa-SourceFooter');
+                  sourceFooter.appendChild(footerDiv);
+                  return;
                 }
               }
-              const footerDiv = document.createElement('div');
-              footerDiv.innerHTML = '';
-              resultsDiv.appendChild(footerDiv);
-            },
-            noResults() {
-              return "No races for this query.";
             }
+            const footerDiv = html`<div></div>`;
+            const sourceFooter = document.querySelector('.aa-SourceFooter');
+            sourceFooter.appendChild(footerDiv);
           },
-          getItemUrl({ item }) {
-            return "/race/" + item.slug_ag;
-          },
-        }
-      ];
-    }
-  });
+          noResults() {
+            return "No races for this query.";
+          }
+        },
+        getItemUrl({ item }) {
+          return "/race/" + item.slug_ag;
+        },
+      },
+    ];
+  }
+});
 
 // Start rotating placeholder texts
 startPlaceholderRotation(autocompleteInstance);
