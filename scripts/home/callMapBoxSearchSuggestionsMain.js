@@ -58,14 +58,6 @@ async function setupSearchSuggestions() {
             const city = suggestion.city || '';
             const region = suggestion.region || '';
 
-            // Concatenate city and region
-            const location = `${city}, ${region}`;
-            console.log("Location:", location);
-
-            // Store location data in local storage
-            const localStorageUserLocation = [latitude, longitude, location];
-            localStorage.setItem('localStorageUserLocation', JSON.stringify(localStorageUserLocation));
-
             searchInput.value = placeName;
             searchInput.setAttribute('data-lat', latitude);
             searchInput.setAttribute('data-lon', longitude);

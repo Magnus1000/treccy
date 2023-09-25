@@ -51,6 +51,8 @@ const updateURLWithFilters = () => {
 
   // Get the location value from the search bar
   const location = getElementValue('location-search-bar'); //Needed to load the URL param value into the search bar
+  const lat = document.getElementById('location-search-bar')?.getAttribute('data-lat') ?? '';
+  const lng = document.getElementById('location-search-bar')?.getAttribute('data-lon') ?? '';
 
   // Filters collection
   const filters = {
@@ -60,8 +62,8 @@ const updateURLWithFilters = () => {
     fromDate,
     toDate,
     location,
-    lat: document.getElementById('location-search-bar')?.getAttribute('data-lat') ?? '',
-    lng: document.getElementById('location-search-bar')?.getAttribute('data-lon') ?? '',
+    lat,
+    lng,
   };
 
   const params = new URLSearchParams();
@@ -81,6 +83,13 @@ const updateURLWithFilters = () => {
 
   // Update the URL without causing a page reload
   history.pushState({}, '', '?' + params.toString());
+
+  if (lat && lng && location) {
+    // Store location data in local storage
+    const localStorageUserLocation = [lat, lng, location];
+    localStorage.setItem('localStorageUserLocation', JSON.stringify(localStorageUserLocation));
+    console.log(`Location data stored in local storage as ${localStorageUserLocation}`);
+  }
 };
 
 // Function to show the filter form
