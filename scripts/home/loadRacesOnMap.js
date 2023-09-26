@@ -98,7 +98,7 @@ async function toggleView(showMap) {
     document.getElementById('map-div-wrapper').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showListrow').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showMaprow').style.display = showMap ? 'none' : 'flex';
-    document.getElementById('algoliaRaces').style.display = showMap ? 'none' : 'grid';
+    document.getElementById('race-grid-container').style.display = showMap ? 'none' : 'grid';
 
     if (showMap) {
         displayMapWithResults(lat, lng); // Passing in global variables for lat and lng
