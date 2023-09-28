@@ -41,29 +41,42 @@ async function cloneAndPopulateDiv(result) {
   return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
 }
 
-async function displayMapWithResults(lat, lng) {
+let map; // Define a global variable to store the map instance
+
+async function displayMapWithResults() {
   try {
     console.log("Displaying Map with Results...");
 
-    // Check if lat and lng are NaN, set to Vancouver if they are
-    if (isNaN(lat)) {
-      lat = 49.2827;
+    // Get lat and lng from URL params or local storage
+    const urlParams = new URLSearchParams(window.location.search);
+    let lat = parseFloat(urlParams.get('lat'));
+    let lng = parseFloat(urlParams.get('lng'));
+    if (isNaN(lat) || isNaN(lng)) {
+      const userLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
+      if (userLocation && userLocation.length >= 2) {
+        lat = parseFloat(userLocation[0]);
+        lng = parseFloat(userLocation[1]);
+      }
     }
-    if (isNaN(lng)) {
-      lng = -123.1207;
+    if (isNaN(lat) || isNaN(lng)) {
+      lat = 40.01499;
+      lng = -105.27055;
     }
 
-    // Define the map using the mapboxgl.Map constructor
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
-      center: [lng, lat],
-      zoom: 10,
-      accessToken: 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ'
-    });
+    // Check if map instance already exists
+    if (!map) {
+      // Define the map using the mapboxgl.Map constructor
+      map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+        center: [lng, lat],
+        zoom: 10,
+        accessToken: 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ'
+      });
 
-    // Add controls to the map
-    map.addControl(new mapboxgl.NavigationControl());
+      // Add controls to the map
+      map.addControl(new mapboxgl.NavigationControl());
+    }
 
     // Use global race results variable
     const results = raceResultsJSON; 
