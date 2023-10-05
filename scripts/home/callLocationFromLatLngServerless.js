@@ -18,7 +18,7 @@ async function getLocationAndPopulateField() {
             console.log("Longitude:", longitude);
 
             // Define the URL for the Vercel serverless function
-            const vercelFunctionURL = "https://treccy-serverside-magnus1000.vercel.app/api/fetchLocationFromLatLng.js";
+            const vercelFunctionURL = "https://treccy-serverside-magnus1000team.vercel.app/api/fetchLocationFromLatLng.js";
 
             // Set request options for the serverless function
             const requestOptions = {

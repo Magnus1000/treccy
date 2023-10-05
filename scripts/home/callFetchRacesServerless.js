@@ -83,7 +83,7 @@ async function checkURLParams() {
 
 // Function to fetch races races from Vercel function
 async function fetchRacesFromVercel(filters) {
-  const apiUrl = 'https://treccy-serverside-magnus1000.vercel.app/api/fetchRaces';
+  const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaces';
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

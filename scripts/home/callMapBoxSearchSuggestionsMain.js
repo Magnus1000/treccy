@@ -27,7 +27,7 @@ async function setupSearchSuggestions() {
     }
 
     try {
-      const response = await fetch(`https://treccy-serverside-magnus1000.vercel.app/api/mapBoxSearchSuggestionsMain?q=${query}`);
+      const response = await fetch(`https://treccy-serverside-magnus1000team.vercel.app/api/mapBoxSearchSuggestionsMain?q=${query}`);
       const data = await response.json();
 
       console.log("Data received:", data);
