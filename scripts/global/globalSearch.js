@@ -1,4 +1,4 @@
-// Placeholder texts for search bar
+// Placeholder texts for search bar rotation
 const placeholderTexts = [
   "Search for Kayak races",
   "Search for Running races",
