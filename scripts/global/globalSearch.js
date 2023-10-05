@@ -82,7 +82,7 @@ const autocompleteInstance = autocomplete({
               const sports = toTitleCase(item.sports_ag.join(', '));
 
               return html`
-                <a class="aa-ItemLink" href="/races/${item.slug_ag}">
+                <a class="aa-ItemLink" href="/race/${item.slug_ag}">
                   <div class="aa-ItemContent">
                     <div class="aa-ItemContentBody">
                       <div class="aa-ItemContentTitle">
