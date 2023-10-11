@@ -174,7 +174,7 @@ document.getElementById('filter-form').addEventListener('submit', event => {
   const currentURL = window.location.href;
   if (currentURL !== previousURL) {
     // Fetch new race results from the serverless function
-    checkURLParams('filter'); //Updated to specify where the function is called from
+    checkURLParams();
   }
 
   // Update the previousURL variable with the current URL

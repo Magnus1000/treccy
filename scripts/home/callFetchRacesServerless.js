@@ -16,12 +16,7 @@ async function getUserLocation() {
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
 
-async function checkURLParams(calledBy = 'filter') {
-  console.log(`checkURLParams() called by ${calledBy}`);
-  if (calledBy === 'filter') {
-    currentPage = 0; // Reset currentPage to 0 when filters change
-  }
-
+async function checkURLParams() {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const sports = Array.from(urlSearchParams.keys())
     .filter(key => /^sport\d+$/.test(key))
@@ -80,7 +75,7 @@ async function checkURLParams(calledBy = 'filter') {
   try {
     console.log("Filters:", filters); //JSON object
     console.log(`Setting global lat and lng variables... (${lat},${lng})`);
-    await fetchRacesFromVercel({ ...filters, calledBy });
+    await fetchRacesFromVercel(filters);
   } catch (error) {
     console.error(`Error fetching races: ${error}`);
   }
@@ -89,7 +84,7 @@ async function checkURLParams(calledBy = 'filter') {
 }
 
 // Function to fetch races races from Vercel function
-async function fetchRacesFromVercel(filters) {
+async function fetchRacesFromVercel(filters, calledByScroll) {
   const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaces';
   try {
     const response = await fetch(apiUrl, {
@@ -103,32 +98,17 @@ async function fetchRacesFromVercel(filters) {
 
     if (response.ok) {
         const results = await response.json();
-
-        if (filters.calledBy === 'scroll') {
-          // Append new results to existing ones
-          raceResultsJSON = raceResultsJSON.concat(results);
-        } else {
-          // Refresh results with new data
-          raceResultsJSON = results;
-        }
-
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
-        populateRaceCards(results);
-        if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
-          hideUnusedRaceCards(); // Hide unused race cards after populating
-        }
+        populateRaceCards(data, calledByScroll); // Pass the calledByScroll parameter to the populateRaceCards function
+        hideUnusedRaceCards(calledByScroll); // Pass the calledByScroll parameter to the hideUnusedRaceCards function
       } else {
         console.log('No saved races found via Vercel function.');
-        if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
-          hideUnusedRaceCards(); // Hide all race cards if no results found
-        }
+        hideUnusedRaceCards(); // Hide all race cards if no results found
       }
     } catch (error) {
       console.error('An error occurred while fetching races from Vercel function:', error);
-      if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
-        hideUnusedRaceCards(); // Hide all race cards if an error occurs
-      }
+      hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
 }
 
@@ -140,15 +120,14 @@ function checkScroll(filters) {
   if (!isLoading && window.innerHeight + window.scrollY >= document.body.offsetHeight) { // Check if a page is not currently being loaded
     isLoading = true; // Set isLoading to true to indicate that a page is being loaded
     currentPage++; // Increment the current page number
-    fetchRacesFromVercel(filters).then(() => {
+    fetchRacesFromVercel(filters, "calledByScroll").then(() => {
       isLoading = false; // Set isLoading to false to indicate that the page has finished loading
     }); // Fetch the next set of races
   }
 }
 
-window.addEventListener('scroll', () => {
-  checkScroll('scroll');
-});
+// Listen for the scroll event
+window.addEventListener('scroll', checkScroll);
 
 // Function to remove greyed-out state from the parent and its children
 async function removeGreyedOutFromElementAndChildren(element) {
@@ -187,14 +166,16 @@ function hideUnusedRaceCards() {
 }
 
 // Function to populate race cards
-function populateRaceCards(results) {
+function populateRaceCards(results, calledByScroll) {
   console.log("Populating Race Cards...");
   const raceGrid = document.getElementById('race-grid-container'); 
 
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
   // Clear the contents of the race cards container
-  addGreyedOutClass(); // I might need to remove this after adding scroll functionality
+  if (!calledByScroll) { // Check if the function was called by the scroll event. If so, don't clear the container
+    addGreyedOutClass();
+  }
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
@@ -220,7 +201,7 @@ function populateRaceCards(results) {
 }
 
 document.addEventListener("DOMContentLoaded", async function() {
-  const filters = await checkURLParams('pageLoad');
+  const filters = await checkURLParams();
 });
 
 // The function to add "greyed-out" class to divs with class "race-card-component"
