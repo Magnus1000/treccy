@@ -17,6 +17,7 @@ let lat; // Declare global variable for latitude (to be set in CheckURLParams fu
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
 
 async function checkURLParams(calledBy = 'filter') {
+  console.log(`checkURLParams() called by ${calledBy}`);
   if (calledBy === 'filter') {
     currentPage = 0; // Reset currentPage to 0 when filters change
   }
@@ -114,14 +115,20 @@ async function fetchRacesFromVercel(filters) {
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
         populateRaceCards(results);
-        hideUnusedRaceCards(); // Hide unused race cards after populating
+        if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
+          hideUnusedRaceCards(); // Hide unused race cards after populating
+        }
       } else {
         console.log('No saved races found via Vercel function.');
-        hideUnusedRaceCards(); // Hide all race cards if no results found
+        if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
+          hideUnusedRaceCards(); // Hide all race cards if no results found
+        }
       }
     } catch (error) {
       console.error('An error occurred while fetching races from Vercel function:', error);
-      hideUnusedRaceCards(); // Hide all race cards if an error occurs
+      if (filters.calledBy === 'filter' || filters.calledBy === 'pageload') {
+        hideUnusedRaceCards(); // Hide all race cards if an error occurs
+      }
     }
 }
 
@@ -213,7 +220,7 @@ function populateRaceCards(results) {
 }
 
 document.addEventListener("DOMContentLoaded", async function() {
-  const filters = await checkURLParams();
+  const filters = await checkURLParams('pageLoad');
 });
 
 // The function to add "greyed-out" class to divs with class "race-card-component"
