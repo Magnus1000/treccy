@@ -151,7 +151,7 @@ async function removeGreyedOutFromElementAndChildren(element) {
 // Function to create 20 race cards
 function createRaceCards() {
   const raceCardTemplate = document.getElementById("race-card");
-  const raceCardsContainer = document.getElementById("race-cards-container");
+  const raceCardsContainer = document.getElementById("race-grid-container");
 
   for (let i = 0; i < 20; i++) {
     const newRaceCard = raceCardTemplate.cloneNode(true);
