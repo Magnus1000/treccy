@@ -113,6 +113,17 @@ async function fetchRacesFromVercel(filters) {
     }
 }
 
+// Function to check if the user has scrolled to the bottom
+function checkScroll() {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    currentPage++; // Increment the current page number
+    fetchRacesFromVercel(filters); // Fetch the next set of races
+  }
+}
+
+// Listen for the scroll event
+window.addEventListener('scroll', checkScroll);
+
 // Function to remove greyed-out state from the parent and its children
 async function removeGreyedOutFromElementAndChildren(element) {
   // Remove the 'greyed-out' class from the parent element
