@@ -196,6 +196,23 @@ function populateRaceCards(results, calledByScroll) {
       raceCardToPopulate.querySelector('.race-sport-text').textContent = formattedSports;
       raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
       raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
+    } else {
+      const newRaceCard = createRaceCard();
+      const formattedDate = formatDate(result.date_ag);
+      const formattedDistance = formatDistances(result.distances_ag);
+      const formattedSports = formatSports(result.sports_ag);
+      newRaceCard.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
+      newRaceCard.querySelector('.race-card-image').src = result.photo_main_ag;
+      newRaceCard.querySelector('.race-card-image').alt = result.name_ag;
+      newRaceCard.querySelector('.card-text-link-block').href = `/race/${result.slug_ag}`;
+      newRaceCard.querySelector('.race-card-heading').textContent = result.name_ag;
+      newRaceCard.querySelector('.race-card-minimum-distance').textContent = formattedDistance;
+      newRaceCard.querySelector('.race-city-text').textContent = result.city_ag;
+      newRaceCard.querySelector('.race-country-text').textContent = result.country_ag;
+      newRaceCard.querySelector('.race-sport-text').textContent = formattedSports;
+      newRaceCard.querySelector('.race-card-date-text').textContent = formattedDate;
+      newRaceCard.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
+      raceGrid.appendChild(newRaceCard);
     }
   }); 
 }
