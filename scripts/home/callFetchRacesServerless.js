@@ -181,9 +181,9 @@ function populateRaceCards(results, calledByScroll) {
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
   // Clear the contents of the race cards container
-  if (!calledByScroll) { // Check if the function was called by the scroll event. If so, don't clear the container
-    addGreyedOutClass();
-  }
+  //if (!calledByScroll) { // Check if the function was called by the scroll event. If so, don't clear the container
+  addGreyedOutClass();
+  //}
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
