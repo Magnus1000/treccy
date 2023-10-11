@@ -1,6 +1,8 @@
 // Log the initiation of the script
 console.log("Fetch and Load Results Script");
 
+let currentPage = 0; // Initialize current page to 0 for Algolia's zero-based pagination
+
 // Function to find approximate address based on IP address
 async function getUserLocation() {
   const response = await fetch('https://ipapi.co/json/');
@@ -91,7 +93,7 @@ async function fetchRacesFromVercel(filters) {
         'Content-Type': 'application/json',
       },
       //body: filters,
-      body: JSON.stringify(filters), // Pass filters array as JSON
+      body: JSON.stringify(filters, page: currentPage ), // Pass filters and page array as JSON
     });
 
     if (response.ok) {
