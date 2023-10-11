@@ -112,12 +112,26 @@ async function fetchRacesFromVercel(filters) {
       hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
 }
-
+/*
 // Function to check if the user has scrolled to the bottom
 function checkScroll(filters) {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
     currentPage++; // Increment the current page number
     fetchRacesFromVercel(filters); // Fetch the next set of races
+  }
+}
+*/
+
+let isLoading = false; // Add a global variable to track whether a page is currently being loaded
+
+// Function to check if the user has scrolled to the bottom
+function checkScroll(filters) {
+  if (!isLoading && window.innerHeight + window.scrollY >= document.body.offsetHeight) { // Check if a page is not currently being loaded
+    isLoading = true; // Set isLoading to true to indicate that a page is being loaded
+    currentPage++; // Increment the current page number
+    fetchRacesFromVercel(filters).then(() => {
+      isLoading = false; // Set isLoading to false to indicate that the page has finished loading
+    }); // Fetch the next set of races
   }
 }
 
