@@ -84,7 +84,7 @@ async function checkURLParams() {
 }
 
 // Function to fetch races races from Vercel function
-async function fetchRacesFromVercel(filters, calledByScroll) {
+async function fetchRacesFromVercel(filters) {
   const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaces';
   try {
     const response = await fetch(apiUrl, {
@@ -100,8 +100,8 @@ async function fetchRacesFromVercel(filters, calledByScroll) {
         const results = await response.json();
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
-        populateRaceCards(results, calledByScroll); // Pass the calledByScroll parameter to the populateRaceCards function
-        hideUnusedRaceCards(calledByScroll); // Pass the calledByScroll parameter to the hideUnusedRaceCards function
+        populateRaceCards(results); // Pass the calledByScroll parameter to the populateRaceCards function
+        hideUnusedRaceCards(); // Pass the calledByScroll parameter to the hideUnusedRaceCards function
       } else {
         console.log('No saved races found via Vercel function.');
         hideUnusedRaceCards(); // Hide all race cards if no results found
@@ -124,9 +124,9 @@ function checkScroll(filters) {
     createRaceCards();
 
     currentPage++; // Increment the current page number
-    fetchRacesFromVercel(filters, "calledByScroll").then(() => {
-      isLoading = false; // Set isLoading to false to indicate that the page has finished loading
-    }); // Fetch the next set of races
+    //fetchRacesFromVercel(filters).then(() => {
+    isLoading = false; // Set isLoading to false to indicate that the page has finished loading
+    //}); // Fetch the next set of races
   }
 }
 
@@ -175,16 +175,16 @@ function hideUnusedRaceCards() {
 }
 
 // Function to populate race cards
-function populateRaceCards(results, calledByScroll) {
+function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   const raceGrid = document.getElementById('race-grid-container'); 
 
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
-  // Clear the contents of the race cards container
+  /* Clear the contents of the race cards container
   if (!calledByScroll) { // Check if the function was called by the scroll event. If so, don't clear the container
   addGreyedOutClass();
-  }
+  }*/
 
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
