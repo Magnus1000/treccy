@@ -14,13 +14,12 @@ async function getUserLocation() {
         console.log(`Using lat:${lat} and lng:${lng} from localStorage`);
     }
 
-    const { city, region } = data;
-    const location = `${city}, ${region}`;
-    setElementValue('location-search-bar', location);
-    return { lat, lng, city, region };
+    return { lat, lng };
 }
 
-async function fetch5RacesFromVercel(lat, lng) {
+async function fetchEmailRacesFromVercel(lat, lng) {
+    // fetch lat lng 
+    getUserLocation();
     const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchEmailRaces.js';
     const filters = { lat, lng, results: 5 };
     try {
@@ -41,7 +40,6 @@ async function fetch5RacesFromVercel(lat, lng) {
         }
     } catch (error) {
         console.error('An error occurred while fetching races from Vercel function:', error);
-        hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
 }
 
@@ -56,3 +54,8 @@ function updateRaceNames(results) {
     race4.textContent = results[3].name_ag;
     race5.textContent = results[4].name_ag;
 }
+
+window.addEventListener('load', async () => {
+    const { lat, lng } = await getUserLocation();
+    await fetchEmailRacesFromVercel(lat, lng);
+});
