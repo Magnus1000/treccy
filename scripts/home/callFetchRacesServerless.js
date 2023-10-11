@@ -114,7 +114,7 @@ async function fetchRacesFromVercel(filters) {
 }
 
 // Function to check if the user has scrolled to the bottom
-function checkScroll() {
+function checkScroll(filters) {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
     currentPage++; // Increment the current page number
     fetchRacesFromVercel(filters); // Fetch the next set of races
