@@ -100,7 +100,7 @@ async function fetchRacesFromVercel(filters, calledByScroll) {
         const results = await response.json();
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
-        populateRaceCards(data, calledByScroll); // Pass the calledByScroll parameter to the populateRaceCards function
+        populateRaceCards(results, calledByScroll); // Pass the calledByScroll parameter to the populateRaceCards function
         hideUnusedRaceCards(calledByScroll); // Pass the calledByScroll parameter to the hideUnusedRaceCards function
       } else {
         console.log('No saved races found via Vercel function.');
