@@ -98,7 +98,7 @@ async function fetchRacesFromVercel(filters) {
 
     if (response.ok) {
         const results = await response.json();
-        console.log(JSON.stringify(filters));
+        //console.log(JSON.stringify(filters));
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
         populateRaceCards(results);
@@ -112,16 +112,8 @@ async function fetchRacesFromVercel(filters) {
       hideUnusedRaceCards(); // Hide all race cards if an error occurs
     }
 }
-/*
-// Function to check if the user has scrolled to the bottom
-function checkScroll(filters) {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    currentPage++; // Increment the current page number
-    fetchRacesFromVercel(filters); // Fetch the next set of races
-  }
-}
-*/
 
+// Wait for the previous results to load before fetching the next set of results
 let isLoading = false; // Add a global variable to track whether a page is currently being loaded
 
 // Function to check if the user has scrolled to the bottom
