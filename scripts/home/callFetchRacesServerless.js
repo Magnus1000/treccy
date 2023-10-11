@@ -16,7 +16,11 @@ async function getUserLocation() {
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
 
-async function checkURLParams() {
+async function checkURLParams(calledBy = 'filter') {
+  if (calledBy === 'filter') {
+    currentPage = 0; // Reset currentPage to 0 when filters change
+  }
+
   const urlSearchParams = new URLSearchParams(window.location.search);
   const sports = Array.from(urlSearchParams.keys())
     .filter(key => /^sport\d+$/.test(key))
@@ -75,7 +79,7 @@ async function checkURLParams() {
   try {
     console.log("Filters:", filters); //JSON object
     console.log(`Setting global lat and lng variables... (${lat},${lng})`);
-    await fetchRacesFromVercel(filters);
+    await fetchRacesFromVercel({ ...filters, calledBy });
   } catch (error) {
     console.error(`Error fetching races: ${error}`);
   }
@@ -98,7 +102,15 @@ async function fetchRacesFromVercel(filters) {
 
     if (response.ok) {
         const results = await response.json();
-        //console.log(JSON.stringify(filters));
+
+        if (filters.calledBy === 'scroll') {
+          // Append new results to existing ones
+          raceResultsJSON = raceResultsJSON.concat(results);
+        } else {
+          // Refresh results with new data
+          raceResultsJSON = results;
+        }
+
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
         populateRaceCards(results);
@@ -127,8 +139,9 @@ function checkScroll(filters) {
   }
 }
 
-// Listen for the scroll event
-window.addEventListener('scroll', checkScroll);
+window.addEventListener('scroll', () => {
+  checkScroll('scroll');
+});
 
 // Function to remove greyed-out state from the parent and its children
 async function removeGreyedOutFromElementAndChildren(element) {
