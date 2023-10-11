@@ -93,7 +93,7 @@ async function fetchRacesFromVercel(filters) {
         'Content-Type': 'application/json',
       },
       //body: filters,
-      body: JSON.stringify({filters, page: currentPage}), // Pass filters and page array as JSON
+      body: JSON.stringify({ ...filters, page: currentPage }), // Pass filters and page array as JSON
     });
 
     if (response.ok) {
