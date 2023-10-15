@@ -156,7 +156,6 @@ function createRaceCards() {
   for (let i = 0; i < 20; i++) {
     const newRaceCard = raceCardTemplate.cloneNode(true);
     newRaceCard.removeAttribute('id');
-    newRaceCard.style.display = 'flex';
     newRaceCard.classList.add('greyed-out');
     raceCardsContainer.appendChild(newRaceCard);
   }

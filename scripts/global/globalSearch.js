@@ -1,21 +1,3 @@
-// Placeholder texts for search bar rotation
-const placeholderTexts = [
-  "Search for Kayak races",
-  "Search for Running races",
-  "Search for Cycling races",
-  "Search for Mountain Bike races",
-];
-
-let placeholderIndex = 0;
-
-// Function to update the placeholder text
-function updatePlaceholder(autocompleteInstance) {
-  autocompleteInstance.update({
-    placeholder: placeholderTexts[placeholderIndex]
-  });
-  placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
-}
-
 // Convert text to Title Case
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function(txt) {
@@ -33,7 +15,6 @@ const indexName = "treccy_races_all";
 // Initialize Algolia Autocomplete
 const autocompleteInstance = autocomplete({
   container: "#global-race-search",
-  placeholder: placeholderTexts[placeholderIndex],
   detachedMediaQuery: '',
   openOnFocus: true,
   getSources({ query, state }) {
