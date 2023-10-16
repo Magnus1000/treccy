@@ -520,6 +520,7 @@ body.dark,body[data-theme=dark]{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
     width: 100%
 }
 .aa-ItemContent:empty{
