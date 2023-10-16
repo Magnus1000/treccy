@@ -1,14 +1,38 @@
+// Function to send a view event to Algolia
+function sendViewEventToAlgolia() {
+    const algolia_id_wf = document.body.getAttribute('algolia_object_id_wf'); // Assuming algolia_id_wf is set as an attribute on the body tag
+  
+    if (algolia_id_wf) {
+      // Send view event to Algolia
+      aa('viewedObjectIDs', {
+        index: 'races', // Replace with your Algolia index name
+        eventName: 'Page Viewed',
+        objectIDs: [algolia_id_wf]
+      });
+  
+      console.log(`Sent view event for objectID: ${algolia_id_wf}`);
+    } else {
+      console.log('algolia_id_wf attribute not found. Cannot send view event.');
+    }
+  }
+
 // Fetch Algolia keys from the serverless function
 async function fetchAlgoliaKeysAndInit() {
     try {
         const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();
 
+        // Import Algolia autocomplete package
+        const { autocomplete } = window['@algolia/autocomplete-js'];
+        
         // Initialize Algolia Insights
         window.aa('init', {
             appId: appId,
             apiKey: apiKey
         });
+
+        // Send view event to Algolia
+        sendViewEventToAlgolia();
 
         // Check if user location is in local storage
         let lat, lng;
@@ -19,9 +43,6 @@ async function fetchAlgoliaKeysAndInit() {
             // Get user location if not in local storage
             [lat, lng] = await getUserLocation();
         }
-
-        // Import Algolia autocomplete package
-        const { autocomplete } = window['@algolia/autocomplete-js'];
 
         const autocompleteInstance = autocomplete({
             container: "#global-race-search",
