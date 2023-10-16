@@ -371,6 +371,7 @@ body.dark,body[data-theme=dark]{
     margin:var(--aa-spacing-half) .5em var(--aa-spacing-half) 0;*/
     color: #69706d;
     font-size: 10px;
+    margin: 0px;
 }
 .aa-SourceHeader:empty{
     display:none
@@ -789,7 +790,7 @@ body.dark,body[data-theme=dark]{
     height:32px
 }
 .aa-DetachedContainer .aa-SourceHeader{
-    *margin:calc((16 * 1 * 1px) / 2) 0 calc((16 * 1 * 1px) / 2) 2px;
+    margin:calc((16 * 1 * 1px) / 2) 0 calc((16 * 1 * 1px) / 2) 2px;
     margin:calc(calc(16 * 1 * 1px) / 2) 0 calc(calc(16 * 1 * 1px) / 2) 2px;
     margin:var(--aa-spacing-half) 0 var(--aa-spacing-half) 2px
 }
