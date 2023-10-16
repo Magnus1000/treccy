@@ -950,3 +950,10 @@ body.dark,body[data-theme=dark]{
     margin: 0;
 }
 
+.date-container {
+    font-size: 0.72em;
+}
+
+.sports-container {
+    font-size: 0.7em;
+}
