@@ -441,17 +441,6 @@ body.dark,body[data-theme=dark]{
     padding:10px;
 }
 
-.aa-ItemSuggestion{
-    align-items:center;
-    border-radius:5px;
-    cursor:pointer;
-    display:grid;
-    min-height:calc((16 * 1 * 1px)*2.5);
-    min-height:calc(calc(16 * 1 * 1px)*2.5);
-    min-height:calc(var(--aa-spacing)*2.5);
-    padding:5px 10px 5px 10px;
-}
-
 .aa-Item[aria-selected=true]{
     background-color:rgba(var(--aa-selected-color-rgb),var(--aa-selected-color-alpha))
 }
@@ -555,6 +544,16 @@ body.dark,body[data-theme=dark]{
     row-gap: 2px
 }
 .aa-ItemContentTitle{
+    display:inline-block;
+    margin:0 .5em 0 0;
+    max-width:100%;
+    overflow:hidden;
+    padding:0;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.aa-ItemContentTitleSuggestions{
+    font-size: 14px;
     display:inline-block;
     margin:0 .5em 0 0;
     max-width:100%;
