@@ -20,6 +20,9 @@ async function fetchAlgoliaKeysAndInit() {
             [lat, lng] = await getUserLocation();
         }
 
+        // Import Algolia autocomplete package
+        const { autocomplete } = window['@algolia/autocomplete-js'];
+
         const autocompleteInstance = autocomplete({
             container: "#global-race-search",
             detachedMediaQuery: "",
