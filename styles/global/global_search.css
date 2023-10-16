@@ -957,3 +957,10 @@ body.dark,body[data-theme=dark]{
 .sports-container {
     font-size: 0.7em;
 }
+
+.aa-flex-containter {
+    display: flex;
+    flex-direction: row;
+    column-gap: 30px;
+    justify-content: space-between;
+}
