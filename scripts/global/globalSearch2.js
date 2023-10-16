@@ -17,9 +17,7 @@ try {
 
 // Call the function to fetch keys and initialize Algolia
 fetchAlgoliaKeysAndInit();
-</script>
 
-<script>
 // Function to convert text to Title Case
 function toTitleCase(str) {
 return str.replace(/\w\S*/g, function(txt) {
