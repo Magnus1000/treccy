@@ -958,7 +958,7 @@ body.dark,body[data-theme=dark]{
     font-size: 0.7em;
 }
 
-.aa-flex-containter {
+.aa-flex-container {
     display: flex;
     flex-direction: row;
     column-gap: 30px;
