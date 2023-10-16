@@ -371,7 +371,7 @@ body.dark,body[data-theme=dark]{
     margin:var(--aa-spacing-half) .5em var(--aa-spacing-half) 0;*/
     color: #69706d;
     font-size: 10px;
-    margin: 0px;
+    margin: 0px!important;
 }
 .aa-SourceHeader:empty{
     display:none
