@@ -564,7 +564,7 @@ body.dark,body[data-theme=dark]{
     white-space:nowrap
 }
 .aa-ItemContentSubtitle{
-    font-size:.92em
+    font-size:.75em
 }
 .aa-ItemContentSubtitleIcon:before{
     border-color:rgba(128, 126, 163,.64);
