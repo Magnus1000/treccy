@@ -517,18 +517,10 @@ body.dark,body[data-theme=dark]{
     padding:var(--aa-spacing-half)
 }
 .aa-ItemContent{
-    align-items:center;
-    cursor:pointer;
-    display:grid;
-    gap:calc((16 * 1 * 1px) / 2);
-    gap:calc(calc(16 * 1 * 1px) / 2);
-    grid-gap:calc((16 * 1 * 1px) / 2);
-    grid-gap:calc(calc(16 * 1 * 1px) / 2);
-    grid-gap:var(--aa-spacing-half);
-    gap:var(--aa-spacing-half);
-    grid-auto-flow:column;
-    line-height:1.25em;
-    overflow:hidden
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%
 }
 .aa-ItemContent:empty{
     display:none
@@ -556,13 +548,10 @@ body.dark,body[data-theme=dark]{
     padding-left:calc(var(--aa-icon-size) + var(--aa-spacing))
 }
 .aa-ItemContentBody{
-    display:grid;
-    gap:calc(((16 * 1 * 1px) / 2)/2);
-    gap:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(((16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(var(--aa-spacing-half)/2);
-    gap:calc(var(--aa-spacing-half)/8)
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    row-gap: 2px
 }
 .aa-ItemContentTitle{
     display:inline-block;
@@ -663,16 +652,9 @@ body.dark,body[data-theme=dark]{
 }
 .aa-ItemLink,.aa-ItemWrapper{
     align-items:center;
-    color:inherit;
-    display:grid;
-    gap:calc(((16 * 1 * 1px) / 2)/2);
-    gap:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(((16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    grid-gap:calc(var(--aa-spacing-half)/2);
-    gap:calc(var(--aa-spacing-half)/2);
-    grid-auto-flow:column;
-    justify-content:space-between;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
     width:100%
 }
 .aa-ItemLink{
