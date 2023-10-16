@@ -437,10 +437,7 @@ body.dark,body[data-theme=dark]{
     min-height:calc((16 * 1 * 1px)*2.5);
     min-height:calc(calc(16 * 1 * 1px)*2.5);
     min-height:calc(var(--aa-spacing)*2.5);
-    padding:calc(((16 * 1 * 1px) / 2)/2);
-    padding:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    padding:calc(var(--aa-spacing-half)/2);
-    margin-bottom: 10px;
+    padding:10px;
 }
 .aa-Item[aria-selected=true]{
     background-color:rgba(var(--aa-selected-color-rgb),var(--aa-selected-color-alpha))
@@ -797,9 +794,9 @@ body.dark,body[data-theme=dark]{
     height:32px
 }
 .aa-DetachedContainer .aa-SourceHeader{
-    margin:calc((16 * 1 * 1px) / 2) 0 calc((16 * 1 * 1px) / 2) 2px;
+    /*margin:calc((16 * 1 * 1px) / 2) 0 calc((16 * 1 * 1px) / 2) 2px;
     margin:calc(calc(16 * 1 * 1px) / 2) 0 calc(calc(16 * 1 * 1px) / 2) 2px;
-    margin:var(--aa-spacing-half) 0 var(--aa-spacing-half) 2px
+    margin:var(--aa-spacing-half) 0 var(--aa-spacing-half) 2px*/
 }
 .aa-DetachedContainer .aa-Panel{
     background-color:rgba(255, 255, 255,1);
@@ -961,6 +958,6 @@ body.dark,body[data-theme=dark]{
 .aa-flex-container {
     display: flex;
     flex-direction: row;
-    column-gap: 30px;
+    column-gap: 50px;
     justify-content: space-between;
 }
