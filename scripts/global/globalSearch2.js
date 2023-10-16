@@ -14,7 +14,6 @@ try {
     console.error('Error fetching Algolia keys:', error);
 }
 }
-
 // Call the function to fetch keys and initialize Algolia
 fetchAlgoliaKeysAndInit();
 
@@ -36,13 +35,46 @@ openOnFocus: true,
 insights: true,
 getSources({ query, state }) {
     console.log("Query received:", query);
-
     if (!query) {
     console.log("No query.");
     return [];
     }
-
     return [
+    {
+        sourceId: "region_sports",
+        async getItems() {
+        // Fetch from the serverless function for "treccy_region_sports_category"
+        try {
+            const response = await fetch(`https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaceCategoriesAlgolia?query=${query}`);
+            const results = await response.json();
+            console.log("Results for region sports:", results);
+            return results;
+        } catch (error) {
+            console.error("Error fetching results for region sports:", error);
+            return [];
+        }
+        },
+        templates: {
+        header({ items, state, html }) {
+            return html`
+            <div class="aa-SourceHeader">SUGGESTIONS</div>
+            `;
+        },
+        item({ item, components, html }) {
+            const onClickHandler = () => {
+            window.location.href = `https://www.treccy.com/${item.region_ag}`;
+            };
+            return html`
+            <a class="aa-ItemLink" onclick="${onClickHandler}">
+                <div class="aa-ItemContent">
+                <div class="aa-ItemContentTitleSuggestions">
+                    ${item.name_ag}
+                </div>
+                </div>
+            </a>`;
+        },
+        },
+    },
     {
         sourceId: "races",
         async getItems() {
@@ -62,6 +94,11 @@ getSources({ query, state }) {
         }
         },
         templates: {
+        header({ items, state, html }) {
+            return html`
+            <div class="aa-SourceHeader">RESULTS</div>
+            `;
+        },
         item({ item, components, html }) {
             // Add Algolia Insights click event
             const onClickHandler = () => {
@@ -84,13 +121,19 @@ getSources({ query, state }) {
                 <div class="aa-ItemContent">
                 <div class="aa-ItemContentBody">
                     <div class="aa-ItemContentTitle">
-                    ${item.name_ag} 
+                    ${item.name_ag}
                     </div>
                     <div class="aa-ItemContentSubtitle">
-                    ${item.city_ag}, ${item.region_ag}, ${item.country_ag} - ${formattedDate} 
+                    ${item.city_ag}, ${item.region_ag}, ${item.country_ag}
                     </div>
-                    <div class="aa-ItemContentDescription">
-                    ${sports} 
+                    <!-- The new flex div containing the date and sports -->
+                    <div class="aa-flex-container">
+                    <div class="date-container">
+                        ${formattedDate}
+                    </div>
+                    <div class="sports-container">
+                        ${sports}
+                    </div>
                     </div>
                 </div>
                 </div>
