@@ -439,7 +439,8 @@ body.dark,body[data-theme=dark]{
     min-height:calc(var(--aa-spacing)*2.5);
     padding:calc(((16 * 1 * 1px) / 2)/2);
     padding:calc(calc(calc(16 * 1 * 1px) / 2)/2);
-    padding:calc(var(--aa-spacing-half)/2)
+    padding:calc(var(--aa-spacing-half)/2);
+    margin-bottom: 10px;
 }
 .aa-Item[aria-selected=true]{
     background-color:rgba(var(--aa-selected-color-rgb),var(--aa-selected-color-alpha))
