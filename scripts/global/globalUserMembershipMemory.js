@@ -22,22 +22,21 @@ async function getUserLocation() {
     // Check if user location is stored in local storage
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
-        const [lat, lng, [city, region, country]] = userLocation;
-        console.log(`Using lat:${lat} and lng:${lng} from localStorage`); // Log to specify whether location was set from URL, localStorage or IP address
-        return [latitude, longitude, [city, region, country]];  
+      const [lat, lng, [city, region, country]] = userLocation;
+      console.log(`Using lat:${lat} and lng:${lng} from localStorage`); // Log to specify whether location was set from URL, localStorage or IP address
+      return [lat, lng, [city, region, country]];  
     }
 
     // If user location is not stored in local storage, fetch it from IP address
     const response = await fetch('https://ipapi.co/json/');
     const data = await response.json();
-    const { latitude, longitude, city, region, country } = data;
-    const location = `${city}, ${region},${country}`;
-    setElementValue('location-search-bar', location);
+    const { latitude: lat, longitude: lng, city, region, country } = data;
+    const location = [city, region, country];
     console.log(`Updating location search bar with ${location}`);
-    const userLocationArray = [latitude, longitude, location];
+    const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
-    console.log(`Using lat:${latitude} and lng:${longitude} from IP address`); // Log to specify whether location was set from URL, localStorage or IP address
-    return [latitude, longitude, [city, region, country]];
+    console.log(`Using lat:${lat} and lng:${lng} from IP address`); // Log to specify whether location was set from URL, localStorage or IP address
+    return userLocationArray;
 }
 
 document.addEventListener('DOMContentLoaded', checkUserToken); // Check user token on page load
