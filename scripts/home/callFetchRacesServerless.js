@@ -20,10 +20,9 @@ async function checkURLParams() {
   lng = parseFloat(urlSearchParams.get('lng'));
 
   if (isNaN(lat) || isNaN(lng)) {
-    const location = await getUserLocation();
-    console.log(`Using lat and lng from getUserLocation function:`, location);
-    lat = parseFloat(location.lat);
-    lng = parseFloat(location.lng);
+    const userLocationArray = await getUserLocation();
+    [lat, lng, [city, region, country]] = userLocationArray;
+    console.log(`Using lat: ${lat} and lng: ${lng} from getUserLocation function`);
     if (isNaN(lat) || isNaN(lng)) {
       console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
       lat = 40.014;
