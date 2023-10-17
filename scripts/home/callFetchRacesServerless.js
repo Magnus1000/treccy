@@ -26,7 +26,7 @@ async function checkURLParams() {
     if (isNaN(lat) || isNaN(lng)) {
       console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
       lat = 40.014;
-      lng = 105.270;
+      lng = -105.270;
     }
   }
 

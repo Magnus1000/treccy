@@ -32,7 +32,6 @@ async function getUserLocation() {
     const data = await response.json();
     const { latitude: lat, longitude: lng, city, region, country } = data;
     const location = [city, region, country];
-    console.log(`Updating location search bar with ${location}`);
     const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
     console.log(`Using lat:${lat} and lng:${lng} from IP address`); // Log to specify whether location was set from URL, localStorage or IP address

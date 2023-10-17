@@ -52,10 +52,10 @@ async function displayMapWithResults() {
     let lat = parseFloat(urlParams.get('lat'));
     let lng = parseFloat(urlParams.get('lng'));
     if (isNaN(lat) || isNaN(lng)) {
-      const userLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
-      if (userLocation && userLocation.length >= 2) {
-        lat = parseFloat(userLocation[0]);
-        lng = parseFloat(userLocation[1]);
+      const userLocationArray = JSON.parse(localStorage.getItem('userLocation'));
+      if (userLocationArray && userLocationArray.length >= 2) {
+        lat = parseFloat(userLocationArray[0]);
+        lng = parseFloat(userLocationArray[1]);
       }
     }
     if (isNaN(lat) || isNaN(lng)) {
