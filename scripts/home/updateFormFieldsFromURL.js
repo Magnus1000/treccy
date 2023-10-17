@@ -18,7 +18,7 @@ const updateFormFieldsFromURL = () => {
 
     // If lat, lng, or location are not available in the URL params, check localStorage
     if (!lat || !lng || !location) {
-        const localStorageUserLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
+        const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
         if (localStorageUserLocation) {
             lat = lat || localStorageUserLocation[0];
             lng = lng || localStorageUserLocation[1];

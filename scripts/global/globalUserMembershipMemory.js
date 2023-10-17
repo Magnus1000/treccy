@@ -39,4 +39,3 @@ async function getUserLocation() {
     return { lat: latitude, lng: longitude, city, region };
 }
 
-// Add code below to send events to Tealium

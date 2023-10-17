@@ -87,7 +87,7 @@ const updateURLWithFilters = () => {
   if (lat && lng && location) {
     // Store location data in local storage
     const localStorageUserLocation = [lat, lng, location];
-    localStorage.setItem('localStorageUserLocation', JSON.stringify(localStorageUserLocation)); //
+    localStorage.setItem('userLocation', JSON.stringify(localStorageUserLocation)); //
     console.log(`Location data stored in local storage as ${localStorageUserLocation}`);
   }
 };
@@ -120,7 +120,7 @@ const hideFilterForm = () => {
   }
 };
 
-// Function to update left side location text with form values
+// Function to update location button on left with form values
 const pushValuesToDivs = () => {
   // Get the element and value of the search input field with ID 'location-search-bar'
   const locationElement = document.getElementById('location-search-bar');
