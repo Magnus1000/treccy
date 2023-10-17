@@ -1,6 +1,4 @@
 async function fetchEmailRacesFromVercel(lat, lng) {
-    // fetch lat lng 
-    getUserLocation();
     const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchEmailRaces.js';
     const filters = { lat, lng, results: 5 };
     try {
@@ -81,7 +79,8 @@ function addTomorrowsDate() {
 }
 
 window.addEventListener('load', async () => {
-    const { lat, lng } = await getUserLocation();
+    const userLocationArray = await getUserLocation();
+    [lat, lng, [city, region, country]] = userLocationArray;
     await fetchEmailRacesFromVercel(lat, lng);
     addTomorrowsDate();
 });
