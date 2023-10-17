@@ -25,7 +25,7 @@ async function checkURLParams() {
   const maxDist = parseInt(urlSearchParams.get('maxDist'));
   const dateFrom = parseInt(urlSearchParams.get('fromDate'));
   const dateTo = parseInt(urlSearchParams.get('toDate'));
-  const radius = parseInt(urlSearchParams.get('radius')) // Removed Fallback|| 500000; // Set fallback radius to 100km
+  const radius = parseInt(urlSearchParams.get('radius')) 
   let lat = parseFloat(urlSearchParams.get('lat'));
   let lng = parseFloat(urlSearchParams.get('lng'));
 

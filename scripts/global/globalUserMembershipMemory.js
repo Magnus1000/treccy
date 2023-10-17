@@ -1,5 +1,5 @@
-// Import UUID Library
-import uuid from 'uuid';
+//Load UUID library from a CDN
+<script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script>
 
 // Function to save user token to local storage
 function saveTokenToLocalStorage(token) {
