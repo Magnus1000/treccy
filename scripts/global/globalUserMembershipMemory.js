@@ -8,7 +8,7 @@ function checkUserToken() {
     // Generate a new token using UUID
     const newToken = generateUserToken();
     console.log("Generated new token: ", newToken);
-    localStorage.setItem('userToken', newtoken);
+    localStorage.setItem('userToken', newToken);
     console.log("Token has been saved to local storage");
 }
 
