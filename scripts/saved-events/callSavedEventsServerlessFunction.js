@@ -15,7 +15,7 @@ async function fetchLikes() {
 
 // Function to fetch saved races from Vercel function
 async function fetchSavedRacesFromVercel(objectIDs) {
-  const apiUrl = 'https://treccy-serverside-magnus1000.vercel.app/api/fetchSavedRaces';
+  const apiUrl = 'https://treccy-serverside-magnus1000.vercel.app/api/treccywebsite/fetchSavedRaces';
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

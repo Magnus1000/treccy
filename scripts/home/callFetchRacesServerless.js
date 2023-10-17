@@ -3,7 +3,7 @@ console.log("Fetch and Load Results Script");
 
 let currentPage = 0; // Initialize current page to 0 for Algolia's zero-based pagination
 
-// Function to find approximate address based on IP address
+/*/ Function to find approximate address based on IP address
 async function getUserLocation() {
   const response = await fetch('https://ipapi.co/json/');
   const data = await response.json();
@@ -11,7 +11,7 @@ async function getUserLocation() {
   const location = `${city}, ${region}`;
   setElementValue('location-search-bar', location);
   return { lat: latitude, lng: longitude, city, region };
-}
+}*/
 
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
@@ -30,7 +30,7 @@ async function checkURLParams() {
   let lng = parseFloat(urlSearchParams.get('lng'));
 
   if (isNaN(lat) || isNaN(lng)) {
-    const localStorageUserLocation = JSON.parse(localStorage.getItem('localStorageUserLocation'));
+    const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (localStorageUserLocation && localStorageUserLocation.length >= 2) {
       console.log(`Using lat:${localStorageUserLocation[0]} and lng:${localStorageUserLocation[1]} from localStorage`);
       lat = parseFloat(localStorageUserLocation[0]);
@@ -85,7 +85,7 @@ async function checkURLParams() {
 
 // Function to fetch races races from Vercel function
 async function fetchRacesFromVercel(filters) {
-  const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaces';
+  const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchRaces';
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

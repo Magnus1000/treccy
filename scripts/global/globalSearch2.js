@@ -23,7 +23,7 @@ function sendViewEventToAlgolia() {
 // Fetch Algolia keys from the serverless function
 async function fetchAlgoliaKeysAndInit() {
     try {
-        const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/initializeAlgolia.js');
+        const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();
 
         // Import Algolia autocomplete package

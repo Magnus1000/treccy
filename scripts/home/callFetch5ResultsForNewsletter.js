@@ -20,7 +20,7 @@ async function getUserLocation() {
 async function fetchEmailRacesFromVercel(lat, lng) {
     // fetch lat lng 
     getUserLocation();
-    const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/fetchEmailRaces.js';
+    const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchEmailRaces.js';
     const filters = { lat, lng, results: 5 };
     try {
         const response = await fetch(apiUrl, {
