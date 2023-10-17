@@ -20,15 +20,14 @@ async function checkURLParams() {
   let lng = parseFloat(urlSearchParams.get('lng'));
 
   if (isNaN(lat) || isNaN(lng)) {
-      await getUserLocation();
-      console.log(`Using lat:${userLocation[0]} and lng:${userLocation[1]} from getUserLocation function`);
-      lat = parseFloat(userLocation[0]);
-      lng = parseFloat(userLocation[1]);
-      if (isNaN(lat) || isNaN(lng)) {
-        console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
-        lat = 40.014;
-        lng = 105.270;
-      }
+    await getUserLocation();
+    console.log(`Using lat:${userLocation[0]} and lng:${userLocation[1]} from getUserLocation function`);
+    lat = parseFloat(userLocation[0]);
+    lng = parseFloat(userLocation[1]);
+    if (isNaN(lat) || isNaN(lng)) {
+      console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
+      lat = 40.014;
+      lng = 105.270;
     }
   }
 
