@@ -21,6 +21,7 @@ async function checkURLParams() {
 
   if (isNaN(lat) || isNaN(lng)) {
     const location = await getUserLocation();
+    console.log(`Using lat and lng from getUserLocation function:`, location);
     lat = parseFloat(location.lat);
     lng = parseFloat(location.lng);
     if (isNaN(lat) || isNaN(lng)) {

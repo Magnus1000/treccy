@@ -1,22 +1,3 @@
-async function getUserLocation() {
-    let lat = parseFloat(localStorage.getItem('lat'));
-    let lng = parseFloat(localStorage.getItem('lng'));
-
-    if (isNaN(lat) || isNaN(lng)) {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        lat = parseFloat(data.latitude);
-        lng = parseFloat(data.longitude);
-        localStorage.setItem('lat', lat);
-        localStorage.setItem('lng', lng);
-        console.log(`Using lat:${lat} and lng:${lng} from IP address`);
-    } else {
-        console.log(`Using lat:${lat} and lng:${lng} from localStorage`);
-    }
-
-    return { lat, lng };
-}
-
 async function fetchEmailRacesFromVercel(lat, lng) {
     // fetch lat lng 
     getUserLocation();

@@ -24,7 +24,7 @@ async function getUserLocation() {
     if (userLocation) {
         const [lat, lng, [city, region, country]] = userLocation;
         console.log(`Using lat:${lat} and lng:${lng} from localStorage`); // Log to specify whether location was set from URL, localStorage or IP address
-        return { lat, lng, city, region, country };  
+        return [latitude, longitude, [city, region, country]];  
     }
 
     // If user location is not stored in local storage, fetch it from IP address
@@ -37,7 +37,7 @@ async function getUserLocation() {
     const userLocationArray = [latitude, longitude, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
     console.log(`Using lat:${latitude} and lng:${longitude} from IP address`); // Log to specify whether location was set from URL, localStorage or IP address
-    return { lat: latitude, lng: longitude, city, region, country };
+    return [latitude, longitude, [city, region, country]];
 }
 
 document.addEventListener('DOMContentLoaded', checkUserToken); // Check user token on page load
