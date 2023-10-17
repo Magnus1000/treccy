@@ -1,20 +1,24 @@
 // Function to send a view event to Algolia
 function sendViewEventToAlgolia() {
     const algolia_id_wf = document.body.getAttribute('algolia_object_id_wf'); // Assuming algolia_id_wf is set as an attribute on the body tag
-  
+
     if (algolia_id_wf) {
-      // Send view event to Algolia
-      aa('viewedObjectIDs', {
-        index: 'races', // Replace with your Algolia index name
-        eventName: 'Page Viewed',
-        objectIDs: [algolia_id_wf]
-      });
-  
-      console.log(`Sent view event for objectID: ${algolia_id_wf}`);
+        // Save user token to local storage
+        const userToken = saveTokenToLocalStorage();
+        
+        // Send view event to Algolia with user token
+        aa('viewedObjectIDs', {
+            index: 'races', // Replace with your Algolia index name
+            eventName: 'Page Viewed',
+            objectIDs: [algolia_id_wf],
+            userToken: userToken
+        });
+
+        console.log(`Sent view event for objectID: ${algolia_id_wf}`);
     } else {
-      console.log('algolia_id_wf attribute not found. Cannot send view event.');
+        console.log('algolia_id_wf attribute not found. Cannot send view event.');
     }
-  }
+}
 
 // Fetch Algolia keys from the serverless function
 async function fetchAlgoliaKeysAndInit() {
