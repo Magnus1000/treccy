@@ -3,16 +3,6 @@ console.log("Fetch and Load Results Script");
 
 let currentPage = 0; // Initialize current page to 0 for Algolia's zero-based pagination
 
-/*/ Function to find approximate address based on IP address
-async function getUserLocation() {
-  const response = await fetch('https://ipapi.co/json/');
-  const data = await response.json();
-  const { latitude, longitude, city, region } = data;
-  const location = `${city}, ${region}`;
-  setElementValue('location-search-bar', location);
-  return { lat: latitude, lng: longitude, city, region };
-}*/
-
 let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
 let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
 
@@ -30,16 +20,10 @@ async function checkURLParams() {
   let lng = parseFloat(urlSearchParams.get('lng'));
 
   if (isNaN(lat) || isNaN(lng)) {
-    const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
-    if (localStorageUserLocation && localStorageUserLocation.length >= 2) {
-      console.log(`Using lat:${localStorageUserLocation[0]} and lng:${localStorageUserLocation[1]} from localStorage`);
-      lat = parseFloat(localStorageUserLocation[0]);
-      lng = parseFloat(localStorageUserLocation[1]);
-    } else {
-      const userLocation = await getUserLocation();
-      console.log(`Using lat:${userLocation.lat} and lng:${userLocation.lng} from IP address`);
-      lat = parseFloat(userLocation.lat);
-      lng = parseFloat(userLocation.lng);
+      await getUserLocation();
+      console.log(`Using lat:${userLocation[0]} and lng:${userLocation[1]} from getUserLocation function`);
+      lat = parseFloat(userLocation[0]);
+      lng = parseFloat(userLocation[1]);
       if (isNaN(lat) || isNaN(lng)) {
         console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
         lat = 40.014;
