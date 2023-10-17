@@ -16,12 +16,11 @@ async function checkURLParams() {
   const dateFrom = parseInt(urlSearchParams.get('fromDate'));
   const dateTo = parseInt(urlSearchParams.get('toDate'));
   const radius = parseInt(urlSearchParams.get('radius')) 
-  let lat = parseFloat(urlSearchParams.get('lat'));
-  let lng = parseFloat(urlSearchParams.get('lng'));
+  lat = parseFloat(urlSearchParams.get('lat'));
+  lng = parseFloat(urlSearchParams.get('lng'));
 
   if (isNaN(lat) || isNaN(lng)) {
     const location = await getUserLocation();
-    console.log(`Using lat and lng from getUserLocation function`);
     lat = parseFloat(location.lat);
     lng = parseFloat(location.lng);
     if (isNaN(lat) || isNaN(lng)) {
