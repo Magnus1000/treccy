@@ -66,7 +66,7 @@ async function fetchAlgoliaKeysAndInit() {
                             // Fetch from the serverless function for "treccy_region_sports_category"
                             try {
                                 const response = await fetch(
-                                    `https://treccy-serverside-magnus1000team.vercel.app/api/fetchRaceCategoriesAlgolia?query=${query}&lat=${lat}&lng=${lng}`
+                                    `https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchRaceCategoriesAlgolia?query=${query}&lat=${lat}&lng=${lng}`
                                 );
                                 const results = await response.json();
                                 console.log("Results for region sports:", results);
@@ -105,7 +105,7 @@ async function fetchAlgoliaKeysAndInit() {
                             // Call the serverless function hosted on Vercel
                             try {
                                 const response = await fetch(
-                                    `https://treccy-serverside-magnus1000team.vercel.app/api/globalSearchServerless.js?query=${query}&lat=${lat}&lng=${lng}&aroundLatLng=${lat},${lng}&aroundRadius=100000`
+                                    `https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/globalSearchServerless.js?query=${query}&lat=${lat}&lng=${lng}&aroundLatLng=${lat},${lng}&aroundRadius=100000`
                                 );
                                 const results = await response.json();
 
@@ -220,24 +220,6 @@ async function fetchAlgoliaKeysAndInit() {
 function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-}
-
-// Get user location using the Geolocation API
-function getUserLocation() {
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                localStorage.setItem('userLocation', JSON.stringify([lat, lng]));
-                resolve([lat, lng]);
-            },
-            error => {
-                console.error('Error getting user location:', error);
-                reject(error);
-            }
-        );
     });
 }
 
