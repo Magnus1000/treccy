@@ -41,7 +41,7 @@ function sendWebhook(email, params) {
   const signupPage = window.location.href;
   const payload = {
     email,
-    params,
+    params: getQueryParams(),
     signup_page: signupPage,
     user_subscribed_status: getUserSubscribed(),
     user_token: checkUserToken()
