@@ -55,7 +55,7 @@ const updateFormFieldsFromURL = () => {
         if (locationSearchBar) {
             locationSearchBar.setAttribute('data-lat', lat);
             locationSearchBar.setAttribute('data-lon', lng);
-            locationSearchBar.value = locationValue; // Set the value of the location search bar to city, region
+            locationSearchBar.value = locationValue.join(', '); // Set the value of the location search bar to city, region
         }
     }
 

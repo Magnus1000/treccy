@@ -88,7 +88,7 @@ const updateURLWithFilters = () => {
 
   if (lat && lng && location) {
     // Store location data in local storage
-    const localStorageUserLocation = [lat, lng, location];
+    const localStorageUserLocation = [lat, lng, [location]];
     localStorage.setItem('userLocation', JSON.stringify(localStorageUserLocation));
     console.log(`Location data stored in local storage as ${localStorageUserLocation}`);
   }
