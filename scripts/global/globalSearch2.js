@@ -38,6 +38,7 @@ async function fetchAlgoliaKeysAndInit() {
         // Send view event to Algolia
         sendViewEventToAlgolia();
 
+        //I might want to consolidate this with the other url params function at some point
         // Check if user location is in URL params
         const urlParams = new URLSearchParams(window.location.search);
         let lat = urlParams.get('lat');
