@@ -3,8 +3,8 @@ function sendViewEventToAlgolia() {
     const algolia_id_wf = document.body.getAttribute('algolia_object_id_wf'); // Assuming algolia_id_wf is set as an attribute on the body tag
 
     if (algolia_id_wf) {
-        // Save user token to local storage
-        const userToken = saveTokenToLocalStorage();
+        // Check if there is user token in local storage
+        const userToken = checkUserToken();
         
         // Send view event to Algolia with user token
         aa('viewedObjectIDs', {
@@ -85,6 +85,15 @@ async function fetchAlgoliaKeysAndInit() {
                             item({ item, components, html }) {
                                 const onClickHandler = () => {
                                     window.location.href = `https://www.treccy.com/${item.region_ag}`;
+                                    // Check if there is user token in local storage
+                                    const userToken = checkUserToken();
+                                    // Send click event to Algolia with user token
+                                    window.aa('clickedObjectIDs', {
+                                        index: 'races', // Replace with your Algolia index name
+                                        eventName: 'Item Clicked',
+                                        objectIDs: [item.objectID],
+                                        userToken: userToken
+                                    });
                                 };
                                 return html`
                                     <a class="aa-ItemLink" onclick="${onClickHandler}">
@@ -131,6 +140,8 @@ async function fetchAlgoliaKeysAndInit() {
                                         index: "races",
                                         objectIDs: [item.objectID],
                                         queryID: item.__queryID,
+                                        // Check if there is user token in local storage
+                                        userToken: checkUserToken()
                                     });
                                 };
 
