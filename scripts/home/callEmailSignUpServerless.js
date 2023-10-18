@@ -1,8 +1,3 @@
-// Function to get the user token from local storage
-function getUserToken() {
-return localStorage.getItem('userToken');
-}  
-
 // Function to validate email format
 function isValidEmail(email) {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -39,7 +34,8 @@ function sendWebhook(email, params) {
     email,
     params,
     signup_page: signupPage,
-    user_token: getUserToken()
+    user_subscribed_status: getUserSubscribed(),
+    user_token: checkUserToken()
   };
 
   const url = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/emailSignUp.js';
@@ -84,6 +80,19 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
   }
 });
 
+function getUserSubscribed() {
+  const userSubscribed = localStorage.getItem('userSubscribed');
+  console.log('getUserSubscribed - userSubscribed:', userSubscribed);
+  if (userSubscribed === null) {
+    console.log('getUserSubscribed - returning false');
+    return false;
+  }
+  console.log('getUserSubscribed - returning userSubscribed:', userSubscribed);
+  return userSubscribed;
+}
+
+
+// Function to update the userSubscribed value in localStorage
 function updateUserSubscribed() {
   localStorage.setItem('userSubscribed', 'true');
 }
