@@ -32,16 +32,19 @@ async function getQueryParams() {
 }
 
 // Function to send the webhook
-function sendWebhook(email, params) {
+async function sendWebhook(email) {
   if (!isValidEmail(email)) {
     console.error('Invalid email:', email);
     return;
   }
 
   const signupPage = window.location.href;
+  const params = await getQueryParams(); // Awaiting the async function here
+  console.log("Fetched params: ", params); // Log the fetched params
+
   const payload = {
     email,
-    params: getQueryParams(),
+    params,
     signup_page: signupPage,
     user_subscribed_status: getUserSubscribed(),
     user_token: checkUserToken()
