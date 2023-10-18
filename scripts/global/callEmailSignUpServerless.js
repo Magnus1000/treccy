@@ -10,7 +10,6 @@ function getEmail() {
   return emailElement ? emailElement.value : '';
 }
 
-// Function to get URL parameters
 async function getQueryParams() {
   const params = {};
   const queryString = window.location.search.substring(1);
@@ -19,6 +18,15 @@ async function getQueryParams() {
     const [key, value] = pair.split('=');
     params[decodeURIComponent(key)] = decodeURIComponent(value);
   }
+  // Extract sports parameters and store them in an array
+  const sports = [];
+  let i = 0;
+  while (params[`sport${i}`]) {
+    sports.push(params[`sport${i}`]);
+    delete params[`sport${i}`];
+    i++;
+  }
+  params.sports = sports;
   // If lat, lng, city, or region are not available in the URL params, check localStorage
   if (!params.lat || !params.lng || !params.city || !params.region) {
     const userLocationArray = await getUserLocation();
