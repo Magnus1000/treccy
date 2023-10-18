@@ -9,6 +9,7 @@ console.log("Started fetching location...");
 
 // Check for geolocation support
 if (navigator.geolocation) {
+    // Get the current position
     navigator.geolocation.getCurrentPosition(async function(position) {
         // Extract latitude and longitude
         const latitude = position.coords.latitude;
@@ -16,7 +17,7 @@ if (navigator.geolocation) {
         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
         // Define the URL for the Vercel function
-        const vercelFunctionURL = "https://your-vercel-url-here";
+        const vercelFunctionURL = "https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchUserLocationBrowser.js";
 
         // Make a POST request to the Vercel function
         const requestOptions = {
