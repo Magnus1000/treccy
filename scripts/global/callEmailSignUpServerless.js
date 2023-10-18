@@ -11,7 +11,7 @@ function getEmail() {
 }
 
 // Function to get URL parameters
-function getQueryParams() {
+async function getQueryParams() {
   const params = {};
   const queryString = window.location.search.substring(1);
   const pairs = queryString.split('&');
