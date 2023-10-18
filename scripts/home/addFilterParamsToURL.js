@@ -50,10 +50,12 @@ const updateURLWithFilters = () => {
   const { fromDate, toDate } = getDateRange();
 
   // Get the lat, lng, city and region values from the search bar
-  const lat = document.getElementById('location-search-bar')?.getAttribute('data-lat') ?? '';
-  const lng = document.getElementById('location-search-bar')?.getAttribute('data-lon') ?? '';
-  const city = document.getElementById('location-search-bar')?.getAttribute('data-city') ?? '';
-  const region = document.getElementById('location-search-bar')?.getAttribute('data-region') ?? '';
+  const locationSearchBar = document.getElementById('location-search-bar');
+  const lat = locationSearchBar?.getAttribute('data-lat') ?? '';
+  const lng = locationSearchBar?.getAttribute('data-lon') ?? '';
+  const city = locationSearchBar?.getAttribute('data-city') ?? '';
+  const region = locationSearchBar?.getAttribute('data-region') ?? '';
+  console.log(`Location search bar values: ${lat}, ${lng}, ${city}, ${region}`);
 
   // Filters collection
   const filters = {

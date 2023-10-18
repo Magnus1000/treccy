@@ -80,6 +80,7 @@ async function setupSearchSuggestions() {
             suggestionsBox.style.display = "none";
 
             console.log("Suggestion clicked and input filled.");
+            console.log("Attributes set:", searchInput.attributes);
           });
         });
       } else {
