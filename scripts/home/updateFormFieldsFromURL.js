@@ -48,14 +48,12 @@ const updateFormFieldsFromURL = () => {
     // Update lat, lng, and location form fields
     if (lat && lng && location) {
         const locationSearchBar = document.getElementById('location-search-bar');
-        const locationValue = `${location}`;
-        //setElementValue('latitude', lat);
-        //setElementValue('longitude', lng);
+        const locationValue = location;
         console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${locationValue}`);
         if (locationSearchBar) {
             locationSearchBar.setAttribute('data-lat', lat);
             locationSearchBar.setAttribute('data-lon', lng);
-            locationSearchBar.value = locationValue.join(', '); // Set the value of the location search bar to city, region
+            locationSearchBar.value = locationValue // Set the value of the location search bar
         }
     }
 
