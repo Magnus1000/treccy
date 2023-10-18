@@ -70,7 +70,7 @@ async function sendWebhook(email) {
   .then(response => response.text())
   .then(data => {
     console.log('Webhook response:', data);
-    if (data.includes('user_subscribed')) {
+    if (data.includes('user_subscribed_successfully')) {
       updateUserSubscribed();
       removeActiveClassFromEmailSignupLongWrapper();
     }
