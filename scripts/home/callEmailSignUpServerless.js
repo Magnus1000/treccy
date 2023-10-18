@@ -21,7 +21,7 @@ function getQueryParams() {
   }
   // If lat, lng, city, or region are not available in the URL params, check localStorage
   if (!params.lat || !params.lng || !params.city || !params.region) {
-    const [lat, lng, [city, region]] = getUserFunction();
+    const [lat, lng, [city, region]] = getUserLocation();
     params.lat = lat;
     params.lng = lng;
     params.city = city;
