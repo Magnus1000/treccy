@@ -19,6 +19,14 @@ function getQueryParams() {
     const [key, value] = pair.split('=');
     params[decodeURIComponent(key)] = decodeURIComponent(value);
   }
+  // If lat, lng, city, or region are not available in the URL params, check localStorage
+  if (!params.lat || !params.lng || !params.city || !params.region) {
+    const [lat, lng, [city, region]] = getUserFunction();
+    params.lat = lat;
+    params.lng = lng;
+    params.city = city;
+    params.region = region;
+  }
   return params;
 }
 
