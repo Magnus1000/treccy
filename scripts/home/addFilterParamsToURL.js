@@ -49,10 +49,11 @@ const updateURLWithFilters = () => {
   // Get the fromDate and toDate from the date picker
   const { fromDate, toDate } = getDateRange();
 
-  // Get the location value from the search bar
-  const location = getElementValue('location-search-bar'); //Needed to load the URL param value into the search bar
+  // Get the lat, lng, city and region values from the search bar
   const lat = document.getElementById('location-search-bar')?.getAttribute('data-lat') ?? '';
   const lng = document.getElementById('location-search-bar')?.getAttribute('data-lon') ?? '';
+  const city = document.getElementById('location-search-bar')?.getAttribute('data-city') ?? '';
+  const region = document.getElementById('location-search-bar')?.getAttribute('data-region') ?? '';
 
   // Filters collection
   const filters = {
@@ -61,7 +62,8 @@ const updateURLWithFilters = () => {
     radius: getElementValue('location-radius'),
     fromDate,
     toDate,
-    location,
+    city,
+    region,
     lat,
     lng,
   };
@@ -84,10 +86,10 @@ const updateURLWithFilters = () => {
   // Update the URL without causing a page reload
   history.pushState({}, '', '?' + params.toString());
 
-  if (lat && lng && location) {
+  if (lat && lng && city && region) {
     // Store location data in local storage
-    const localStorageUserLocation = [lat, lng, location];
-    localStorage.setItem('userLocation', JSON.stringify(localStorageUserLocation)); //
+    const localStorageUserLocation = [lat, lng, [city, region]];
+    localStorage.setItem('userLocation', JSON.stringify(localStorageUserLocation));
     console.log(`Location data stored in local storage as ${localStorageUserLocation}`);
   }
 };
