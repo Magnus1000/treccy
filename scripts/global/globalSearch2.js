@@ -38,14 +38,20 @@ async function fetchAlgoliaKeysAndInit() {
         // Send view event to Algolia
         sendViewEventToAlgolia();
 
-        // Check if user location is in local storage
-        let lat, lng;
-        const localStorageUserLocation = localStorage.getItem('userLocation');
-        if (localStorageUserLocation) {
-            [lat, lng] = JSON.parse(localStorageUserLocation);
-        } else {
-            // Get user location if not in local storage
-            [lat, lng] = await getUserLocation();
+        // Check if user location is in URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        let lat = urlParams.get('lat');
+        let lng = urlParams.get('lng');
+        if (!lat || !lng) {
+            // Check if user location is in local storage
+            const localStorageUserLocation = localStorage.getItem('userLocation');
+            if (localStorageUserLocation) {
+                [lat, lng] = JSON.parse(localStorageUserLocation);
+            } else {
+                // Get user location if not in local storage
+                const userLocationArray = await getUserLocation();
+                [lat, lng, [location]] = userLocationArray;
+            }
         }
 
         const autocompleteInstance = autocomplete({
