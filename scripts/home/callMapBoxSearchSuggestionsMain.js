@@ -64,7 +64,7 @@ async function setupSearchSuggestions() {
           suggestionItem.addEventListener('click', () => {
             const latitude = suggestion.coordinates[1];
             const longitude = suggestion.coordinates[0];
-            const city = suggestion.city || '';
+            const city = suggestion.place || '';
             const region = suggestion.region || '';
             const country = suggestion.country || '';
 
