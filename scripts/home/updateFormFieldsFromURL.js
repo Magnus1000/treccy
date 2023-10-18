@@ -14,17 +14,16 @@ const updateFormFieldsFromURL = () => {
     // Check if lat, lng, city and region are available in the URL params
     let lat = urlParams.get('lat');
     let lng = urlParams.get('lng');
-    let city = urlParams.get('city');
     let region = urlParams.get('region');
+    let 
 
     // If lat, lng, or location are not available in the URL params, check localStorage
-    if (!lat || !lng || !city || !region) {
+    if (!lat || !lng || !location) {
         const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
         if (localStorageUserLocation) {
             lat = lat || localStorageUserLocation[0];
             lng = lng || localStorageUserLocation[1];
-            city = city || localStorageUserLocation[2][0]; // Access the first element of the array
-            region = region || localStorageUserLocation[2][1]; // Access the second element of the array
+            location = location || localStorageUserLocation[2]; // Access the third element of the array
         }
     }
 
@@ -48,17 +47,15 @@ const updateFormFieldsFromURL = () => {
     };
 
     // Update lat, lng, and location form fields
-    if (lat && lng && city && region) {
+    if (lat && lng && location) {
         const locationSearchBar = document.getElementById('location-search-bar');
-        const locationValue = `${city}, ${region}`;
-        setElementValue('latitude', lat);
-        setElementValue('longitude', lng);
+        const locationValue = `${location}`;
+        //setElementValue('latitude', lat);
+        //setElementValue('longitude', lng);
         console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${locationValue}`);
         if (locationSearchBar) {
             locationSearchBar.setAttribute('data-lat', lat);
             locationSearchBar.setAttribute('data-lon', lng);
-            locationSearchBar.setAttribute('data-city', city);
-            locationSearchBar.setAttribute('data-region', region);
             locationSearchBar.value = locationValue; // Set the value of the location search bar to city, region
         }
     }

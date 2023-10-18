@@ -47,8 +47,6 @@ if (navigator.geolocation) {
         // Update the search input with new data
         searchInput.setAttribute('data-lat', latitude);
         searchInput.setAttribute('data-lon', longitude);
-        searchInput.setAttribute('data-region', region);
-        searchInput.setAttribute('data-city', city);
 
         // Populate the search bar with the location
         const placeName = [city, region].join(', ');

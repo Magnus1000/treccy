@@ -64,17 +64,12 @@ async function setupSearchSuggestions() {
           suggestionItem.addEventListener('click', () => {
             const latitude = suggestion.coordinates[1];
             const longitude = suggestion.coordinates[0];
-            const city = suggestion.place || '';
-            const region = suggestion.region || '';
-            const country = suggestion.country || '';
+            const placeName = suggestion.place_name || '';
 
             // Fill the search input with the suggestion and its data
             searchInput.value = placeName;
             searchInput.setAttribute('data-lat', latitude);
             searchInput.setAttribute('data-lon', longitude);
-            searchInput.setAttribute('data-region', region);
-            searchInput.setAttribute('data-city', city);
-            searchInput.setAttribute('data-country', country);
             suggestionsBox.innerHTML = "";
             suggestionsBox.classList.remove('active');
             suggestionsBox.style.display = "none";
