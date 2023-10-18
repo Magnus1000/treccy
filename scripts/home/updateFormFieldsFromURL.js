@@ -11,11 +11,10 @@ const updateFormFieldsFromURL = () => {
     // Fetch the current URL and its query parameters
     const urlParams = new URLSearchParams(window.location.search);
 
-    // Check if lat, lng, city and region are available in the URL params
+    // Check if lat, lng and location are available in the URL params
     let lat = urlParams.get('lat');
     let lng = urlParams.get('lng');
-    let region = urlParams.get('region');
-    let 
+    let location = urlParams.get('location');
 
     // If lat, lng, or location are not available in the URL params, check localStorage
     if (!lat || !lng || !location) {
