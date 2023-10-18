@@ -11,24 +11,21 @@ const updateFormFieldsFromURL = () => {
     // Fetch the current URL and its query parameters
     const urlParams = new URLSearchParams(window.location.search);
 
-    // Check if lat, lng, and location are available in the URL params
+    // Check if lat, lng, city and region are available in the URL params
     let lat = urlParams.get('lat');
     let lng = urlParams.get('lng');
-    let location = urlParams.get('location');
+    let city = urlParams.get('city');
+    let region = urlParams.get('region');
 
     // If lat, lng, or location are not available in the URL params, check localStorage
-    if (!lat || !lng || !location) {
+    if (!lat || !lng || !city || !region) {
         const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
         if (localStorageUserLocation) {
             lat = lat || localStorageUserLocation[0];
             lng = lng || localStorageUserLocation[1];
-            location = location || localStorageUserLocation[2];
+            city = city || localStorageUserLocation[2][0]; // Access the first element of the array
+            region = region || localStorageUserLocation[2][1]; // Access the second element of the array
         }
-    }
-
-    // Log the source and value of the location search bar
-    if (location) {
-        console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${location}`); // Log to specify whether location was set from URL or localStorage
     }
 
     // Update sport checkboxes based on 'sport' URL params
@@ -48,20 +45,22 @@ const updateFormFieldsFromURL = () => {
         radius: value => setElementValue('location-radius', value),
         fromDate: value => {}, // Will handle this part later
         toDate: value => {}, // Will handle this part later
-        location: value => setElementValue('location-search-bar', value),
-        lat: value => document.getElementById('location-search-bar')?.setAttribute('data-lat', value),
-        lng: value => document.getElementById('location-search-bar')?.setAttribute('data-lon', value),
     };
 
     // Update lat, lng, and location form fields
-    if (lat) {
+    if (lat && lng && city && region) {
+        const locationSearchBar = document.getElementById('location-search-bar');
+        const locationValue = `${city}, ${region}`;
         setElementValue('latitude', lat);
-    }
-    if (lng) {
         setElementValue('longitude', lng);
-    }
-    if (location) {
-        setElementValue('location-search-bar', location);
+        console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${locationValue}`);
+        if (locationSearchBar) {
+            locationSearchBar.setAttribute('data-lat', lat);
+            locationSearchBar.setAttribute('data-lon', lng);
+            locationSearchBar.setAttribute('data-city', city);
+            locationSearchBar.setAttribute('data-region', region);
+            locationSearchBar.value = locationValue; // Set the value of the location search bar to city, region
+        }
     }
 
     // Update other form fields based on the remaining URL params
