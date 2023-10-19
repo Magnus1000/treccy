@@ -28,13 +28,12 @@ async function getQueryParams() {
   }
   params.sports = sports;
   // If lat, lng, city, or region are not available in the URL params, check localStorage
-  if (!params.lat || !params.lng || !params.city || !params.region) {
+  if (!params.lat || !params.lng || !params.location) {
     const userLocationArray = await getUserLocation();
-    [lat, lng, [city, region]] = userLocationArray;
+    [lat, lng, [location]] = userLocationArray;
     params.lat = lat;
     params.lng = lng;
-    params.city = city;
-    params.region = region;
+    params.location = location;
   }
   return params;
 }
@@ -55,7 +54,8 @@ async function sendWebhook(email) {
     params,
     signup_page: signupPage,
     user_subscribed_status: getUserSubscribed(),
-    user_token: checkUserToken()
+    user_token: checkUserToken(),
+    location_source: getLocationSource()
   };
 
   const url = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/emailSignUp.js';
@@ -115,6 +115,10 @@ function getUserSubscribed() {
 // Function to update the userSubscribed value in localStorage
 function updateUserSubscribed() {
   localStorage.setItem('userSubscribed', 'true');
+}
+
+function getLocationSource() {
+  return localStorage.getItem('locationSource');
 }
 
 function removeActiveClassFromEmailSignupLongWrapper() {

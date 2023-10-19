@@ -49,8 +49,14 @@ const updateURLWithFilters = () => {
   const locationSearchBar = document.getElementById('location-search-bar');
   const lat = locationSearchBar?.getAttribute('data-lat') ?? '';
   const lng = locationSearchBar?.getAttribute('data-lon') ?? '';
+  const source = locationSearchBar?.getAttribute('source') ?? '';
   const location = locationSearchBar?.value ?? '';
   console.log(`Location search bar values: ${lat}, ${lng}, ${location}`);
+
+  // Function to get the value of an element by ID
+  function getElementValue(id) {
+    return document.getElementById(id).value;
+  }
 
   // Filters collection
   const filters = {
@@ -86,6 +92,7 @@ const updateURLWithFilters = () => {
     // Store location data in local storage
     const localStorageUserLocation = [lat, lng, [location]];
     localStorage.setItem('userLocation', JSON.stringify(localStorageUserLocation));
+    localStorage.setItem('locationSource', source);
     console.log(`Location data stored in local storage as ${localStorageUserLocation}`);
   }
 };

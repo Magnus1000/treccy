@@ -50,6 +50,7 @@ async function getUserLocation() {
     const location = [city, region];
     const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
+    localStorage.setItem('locationSource', "ip_address");
     console.log(`userLocation set to ${userLocationArray} by IP address in the getUserLocation function`);
     console.log(`Global variable lat ${lat} reassigned from IP address in the getUserLocation function`);
     console.log(`Global variable lat ${lng} reassigned from IP address in the getUserLocation function`);

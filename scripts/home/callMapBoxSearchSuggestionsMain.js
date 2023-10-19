@@ -73,6 +73,7 @@ async function setupSearchSuggestions() {
             searchInput.value = placeName;
             searchInput.setAttribute('data-lat', latitude);
             searchInput.setAttribute('data-lon', longitude);
+            searchInput.setAttribute('source', 'mapbox_suggestion');
             suggestionsBox.innerHTML = "";
             suggestionsBox.classList.remove('active');
             suggestionsBox.style.display = "none";
