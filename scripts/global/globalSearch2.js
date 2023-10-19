@@ -6,22 +6,6 @@ console.log('Importing autocomplete library...');
 const { autocomplete } = window['@algolia/autocomplete-js'];
 console.log('Autocomplete library loaded successfully!');
 
-// Function to fetch Algolia API keys and initialize Algolia
-async function fetchAlgoliaKeysAndInit() {
-    try {
-        console.log('Fetching Algolia API keys...');
-        const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
-        const { appId, apiKey } = await response.json();
-        console.log(`Algolia API keys fetched: ${appId}, ${apiKey}`);
-
-        console.log('Initializing Algolia Insights...');
-        await initAlgoliaInsights(appId, apiKey);
-
-        console.log('Algolia API keys fetched and Algolia Insights initialized.');
-    } catch (error) {
-        console.error('Error initializing Algolia:', error);
-    }
-}
 // This is an asynchronous function to initialize Algolia Insights and Autocomplete
 async function initAlgoliaInsights(appId, apiKey) {
     // Initialize Algolia Insights
@@ -57,7 +41,7 @@ function sendViewEventToAlgolia() {
 }
 
 // Fetch Algolia keys from the serverless function
-async function fetchAlgoliaKeysAndInit() {
+async function fetchAlgoliaKeysAndInit(lat, lng) {
     try {
         const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();

@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   const filters = await checkURLParams();
 });
 document.addEventListener('DOMContentLoaded', async function() {
-  await fetchAlgoliaKeysAndInit();
+  await fetchAlgoliaKeysAndInit(lat,lng);
 });
 document.addEventListener("DOMContentLoaded", function() {
   const locationButton = document.getElementById("location-button");
