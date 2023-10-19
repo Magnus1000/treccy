@@ -149,9 +149,32 @@ const pushValuesToDivs = () => {
   }
 };
 
-document.getElementById('filter-open').addEventListener('click', showFilterForm);
-document.getElementById('filter-open-mobile').addEventListener('click', showFilterForm);
-document.getElementById('location-div-left').addEventListener('click', showFilterForm);
+// Set up search suggestions so its only called once
+let searchSuggestionsSetUp = false;
+
+document.getElementById('filter-open').addEventListener('click', function() {
+  showFilterForm();
+  if (!searchSuggestionsSetUp) {
+    setupSearchSuggestions();
+    searchSuggestionsSetUp = true; // Set searchSuggestionsSetUp to true so that the setupSearchSuggestions function is not called again
+  }
+});
+
+document.getElementById('location-div-left').addEventListener('click', function() {
+  showFilterForm();
+  if (!searchSuggestionsSetUp) {
+    setupSearchSuggestions();
+    searchSuggestionsSetUp = true; // Set searchSuggestionsSetUp to true so that the setupSearchSuggestions function is not called again
+  }
+});
+
+document.getElementById('filter-open-mobile').addEventListener('click', function() {
+  showFilterForm();
+  if (!searchSuggestionsSetUp) {
+    setupSearchSuggestions();
+    searchSuggestionsSetUp = true; // Set searchSuggestionsSetUp to true so that the setupSearchSuggestions function is not called again
+  }
+});
 document.getElementById('filter-close').addEventListener('click', hideFilterForm);
 
 // Declare a variable to store the URL before form submission

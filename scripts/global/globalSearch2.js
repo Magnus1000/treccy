@@ -1,3 +1,6 @@
+//Log the initiation of the script
+console.log("globalSearch2.js script initiated");
+
 // Function to send a view event to Algolia
 function sendViewEventToAlgolia() {
     const algolia_id_wf = document.body.getAttribute('algolia_object_id_wf'); // Assuming algolia_id_wf is set as an attribute on the body tag
@@ -221,8 +224,6 @@ async function fetchAlgoliaKeysAndInit() {
                 ];
             },
         });
-
-        console.log("Algolia Global Search initialized.");
 
         document.addEventListener('keydown', (event) => {
             if (event.metaKey && event.key.toLowerCase() === 'k') {
