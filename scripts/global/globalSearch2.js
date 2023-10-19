@@ -1,31 +1,38 @@
 //Log the initiation of the script
 console.log("globalSearch2.js script initiated");
 
+// Import autocomplete from Algolia Autocomplete library
+const { autocomplete } = window['@algolia/autocomplete-js'];
+
+// Function to fetch Algolia API keys and initialize Algolia
 async function fetchAlgoliaKeysAndInit() {
-    try {
-        const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
-        const { appId, apiKey } = await response.json();
-        initAlgoliaInsights(appId, apiKey);
-        const autocompleteInstance = initAutocomplete(lat, lng);
-        addKeyboardShortcutToOpenAutocomplete(autocompleteInstance);
-        console.log('Algolia API keys fetched and Algolia Insights initialized.');
-    } catch (error) {
-        console.error('Error initializing Algolia:', error);
-    }
+try {
+    // Fetch API keys for Algolia
+    const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
+    const { appId, apiKey } = await response.json();
+    console.log('Fetched Algolia keys:', appId, apiKey); // Logging fetched keys
+
+    // Initialize Algolia Insights and Autocomplete
+    await initAlgoliaInsights(appId, apiKey);
+
+    // Log completion
+    console.log('Algolia API keys fetched and Algolia Insights initialized.');
+} catch (error) {
+    console.error('Error initializing Algolia:', error); // Log errors
+}
 }
 
 // Function to initialize Algolia Insights and send page view event
 async function initAlgoliaInsights(appId, apiKey) {
-    const { autocomplete } = window['@algolia/autocomplete-js'];
-    await autocomplete({
-        appId,
-        apiKey,
-        onLoad: async () => {
-            await window.aa('init', { appId, apiKey });
-            await sendViewEventToAlgolia();
-            console.log('Algolia Insights initialized and page view event sent.');
-        },
-    });
+await autocomplete({
+    appId,
+    apiKey,
+    onLoad: async () => {
+    await window.aa('init', { appId, apiKey });
+    await sendViewEventToAlgolia();
+    console.log('Algolia Insights initialized and page view event sent.'); // Log success
+    },
+});
 }
 
 async function sendViewEventToAlgolia() {
