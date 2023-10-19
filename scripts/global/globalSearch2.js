@@ -12,7 +12,8 @@ async function fetchAlgoliaKeysAndInit() {
         console.log('Fetching Algolia API keys...');
         const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();
-        
+        console.log(`Algolia API keys fetched: ${appId}, ${apiKey}`);
+
         console.log('Initializing Algolia Insights...');
         await initAlgoliaInsights(appId, apiKey);
 
@@ -21,26 +22,16 @@ async function fetchAlgoliaKeysAndInit() {
         console.error('Error initializing Algolia:', error);
     }
 }
-
 // This is an asynchronous function to initialize Algolia Insights and Autocomplete
 async function initAlgoliaInsights(appId, apiKey) {
-    // Initialize Algolia's Autocomplete feature
-    await autocomplete({
-        appId,  // Algolia Application ID
-        apiKey, // Algolia API Key
-        onLoad: async () => { // This function will run when the Autocomplete library is loaded
-            console.log('Algolia Insights initialization in progress...');
-            
-            // Initialize Algolia Insights
-            await window.aa('init', { appId, apiKey });
-            
-            // Send a view event to Algolia
-            sendViewEventToAlgolia();
-            
-            // Log completion to the console
-            console.log('Algolia Insights initialized and page view event sent.');
-        },
-    });
+    // Initialize Algolia Insights
+    await window.aa('init', { appId, apiKey });
+    
+    // Send a view event to Algolia
+    sendViewEventToAlgolia();
+    
+    // Log completion to the console
+    console.log('Algolia Insights initialized and page view event sent.');
 }
 
 // Function to send a view event to Algolia
@@ -65,7 +56,7 @@ function sendViewEventToAlgolia() {
     }
 }
 
-function getSources({ query, state }) {
+getSources({ query, state }) {
     console.log("Query received:", query);
     if (!query) {
         console.log("No query.");
@@ -224,7 +215,7 @@ function getSources({ query, state }) {
             },
         },
     ];
-}
+},
 
 function addKeyboardShortcutToOpenAutocomplete(autocompleteInstance) {
     document.addEventListener('keydown', (event) => {
