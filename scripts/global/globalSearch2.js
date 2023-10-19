@@ -43,6 +43,7 @@ async function sendViewEventToAlgolia() {
 
 // Function to populate the search bar with results and suggestions
 function initAutocomplete(lat, lng) {
+    console.log('Initializing autocomplete with lat:', lat, 'and lng:', lng);
     return autocomplete({
         container: '#global-race-search',
         detachedMediaQuery: '',
@@ -71,7 +72,7 @@ function initAutocomplete(lat, lng) {
                     sourceId: 'races',
                     getItems: () => fetchGlobalSearchResults(query, lat, lng),
                     templates: {
-                        header: ({ html }) => html`<div class="aa-SourceHeader">RESULTS</div>`,
+                        header: ({ html }) => html`<div class="aa-SourceHeader">RACES</div>`,
                         item: ({ item, html }) => html`
                             <a class="aa-ItemLink" href="/race/${item.slug_ag}">
                                 <div class="aa-ItemContent">
