@@ -74,7 +74,6 @@ async function checkURLParams() {
 
   try {
     console.log("Filters:", filters); //JSON object
-    console.log(`Setting global lat and lng variables... (${lat},${lng})`);
     await fetchRacesFromVercel(filters);
   } catch (error) {
     console.error(`Error fetching races: ${error}`);

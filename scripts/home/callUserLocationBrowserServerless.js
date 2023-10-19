@@ -1,3 +1,6 @@
+// Log the initiation of the script
+console.log("callUserLocationBrowserServerless.js script initiated");
+
 // Function to handle location fetching and integration with Vercel function
 async function getLocationAndPopulateField() {
 // Initialize UI elements

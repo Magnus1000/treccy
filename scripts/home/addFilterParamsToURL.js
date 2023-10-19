@@ -1,13 +1,6 @@
 // Log the initiation of the script
 console.log("addFilterParamsToURL.js script initiated");
 
-// Function to get element value by ID
-const getElementValue = id => {
-  console.trace();
-  const elem = document.getElementById(id);
-  return elem?.value ?? null;
-};
-
 // Function to convert date string to Unix timestamp
 const convertToUnix = dateStr => {
   const [day, month, year] = dateStr.split(" ");

@@ -40,20 +40,20 @@ async function fetchAlgoliaKeysAndInit() {
 
         //I might want to consolidate this with the other url params function at some point
         // Check if user location is in URL params
-        const urlParams = new URLSearchParams(window.location.search);
-        let lat = urlParams.get('lat');
-        let lng = urlParams.get('lng');
-        if (!lat || !lng) {
+        //const urlParams = new URLSearchParams(window.location.search);
+        //let lat = urlParams.get('lat');
+        //let lng = urlParams.get('lng');
+        //if (!lat || !lng) {
             // Check if user location is in local storage
-            const localStorageUserLocation = localStorage.getItem('userLocation');
-            if (localStorageUserLocation) {
-                [lat, lng] = JSON.parse(localStorageUserLocation);
-            } else {
+            //const localStorageUserLocation = localStorage.getItem('userLocation');
+            //if (localStorageUserLocation) {
+                //[lat, lng] = JSON.parse(localStorageUserLocation);
+            //} else {
                 // Get user location if not in local storage
-                const userLocationArray = await getUserLocation();
-                [lat, lng, [location]] = userLocationArray;
-            }
-        }
+                //const userLocationArray = await getUserLocation();
+                //[lat, lng, [location]] = userLocationArray;
+            //}
+        //}
 
         const autocompleteInstance = autocomplete({
             container: "#global-race-search",

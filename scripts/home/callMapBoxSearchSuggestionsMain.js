@@ -1,3 +1,6 @@
+// Log the initiation of the script
+console.log("callMapBoxSearchSuggestionsMain.js script initiated");
+
 // Define an asynchronous function to set up the search suggestions feature
 async function setupSearchSuggestions() {
   // Get references to the search input and suggestions box elements
@@ -92,8 +95,3 @@ async function setupSearchSuggestions() {
     }
   });
 }
-
-// Add a DOMContentLoaded event listener to set up the search suggestions when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-  setupSearchSuggestions();
-});
