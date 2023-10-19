@@ -71,9 +71,3 @@ if (navigator.geolocation) {
     console.log("Geolocation is not supported by this browser.");
 }
 }
-
-// Add an event listener to handle button click
-document.addEventListener("DOMContentLoaded", function() {
-const locationButton = document.getElementById("location-button");
-locationButton.addEventListener("click", getLocationAndPopulateField);
-});

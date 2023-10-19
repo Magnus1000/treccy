@@ -208,10 +208,6 @@ function populateRaceCards(results) {
   }); 
 }
 
-document.addEventListener("DOMContentLoaded", async function() {
-  const filters = await checkURLParams();
-});
-
 // The function to add "greyed-out" class to divs with class "race-card-component"
 function addGreyedOutClass() {
   // Find all the div elements with the class "race-card-component"
@@ -296,3 +292,15 @@ const updateFormFieldsFromURL = (params) => {
     }
   }
 };
+
+//Function to call all the functions that need to be called when the page loads
+document.addEventListener("DOMContentLoaded", async function() {
+  const filters = await checkURLParams();
+});
+document.addEventListener('DOMContentLoaded', async function() {
+  await fetchAlgoliaKeysAndInit();
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const locationButton = document.getElementById("location-button");
+  locationButton.addEventListener("click", getLocationAndPopulateField);
+});
