@@ -65,7 +65,7 @@ function sendViewEventToAlgolia() {
     }
 }
 
-getSources({ query, state }) {
+function getSources({ query, state }) {
     console.log("Query received:", query);
     if (!query) {
         console.log("No query.");
@@ -224,7 +224,7 @@ getSources({ query, state }) {
             },
         },
     ];
-},
+}
 
 function addKeyboardShortcutToOpenAutocomplete(autocompleteInstance) {
     document.addEventListener('keydown', (event) => {
