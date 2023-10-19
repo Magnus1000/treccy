@@ -10,7 +10,6 @@ try {
     // Fetch API keys for Algolia
     const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
     const { appId, apiKey } = await response.json();
-    console.log('Fetched Algolia keys:', appId, apiKey); // Logging fetched keys
 
     // Initialize Algolia Insights and Autocomplete
     await initAlgoliaInsights(appId, apiKey);
