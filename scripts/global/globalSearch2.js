@@ -131,3 +131,6 @@ function formatDate(dateString) {
 function toTitleCase(str) {
     return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
+
+// Function to call the fetchAlgoliaKeysAndInit function on pageload
+document.addEventListener('DOMContentLoaded', fetchAlgoliaKeysAndInit);
