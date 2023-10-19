@@ -1,32 +1,50 @@
 // Log the initiation of the script
-console.log("Fetch and Load Results Script");
+console.log("callFetchRacesServerless.js script initiated");
 
 let currentPage = 0; // Initialize current page to 0 for Algolia's zero-based pagination
 
-let lat; // Declare global variable for latitude (to be set in CheckURLParams function)
-let lng; // Declare global variable for longitude (to be set in CheckURLParams function)
+const extractURLParams = () => {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  let params = {};
+  for (const [key, value] of urlSearchParams.entries()) {
+    if (/^sport\d+$/.test(key)) {
+      params.sports = params.sports || [];
+      params.sports.push(value.replace(/-/g, ' '));
+    } else if (key === 'lat') {
+      lat = parseFloat(value);
+      console.log(`Global variable lat ${lat} set from URL in extractURLParams function`);
+    } else if (key === 'lng') {
+      lng = parseFloat(value);
+      console.log(`Global variable lng ${lng} set from URL in extractURLParams function`);
+    } else {
+      params[key] = value;
+    }
+  }
+  console.log("Extracted URL parameters: ", params);
+  return params;
+};
 
 async function checkURLParams() {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const sports = Array.from(urlSearchParams.keys())
-    .filter(key => /^sport\d+$/.test(key))
-    .map(key => urlSearchParams.get(key).replace(/-/g, ' '));
-  const minDist = parseInt(urlSearchParams.get('minDist'));
-  const maxDist = parseInt(urlSearchParams.get('maxDist'));
-  const dateFrom = parseInt(urlSearchParams.get('fromDate'));
-  const dateTo = parseInt(urlSearchParams.get('toDate'));
-  const radius = parseInt(urlSearchParams.get('radius')) 
-  lat = parseFloat(urlSearchParams.get('lat'));
-  lng = parseFloat(urlSearchParams.get('lng'));
+    const params = extractURLParams();
+    const sports = params.sports || [];
+    const minDist = parseInt(params.minDist);
+    const maxDist = parseInt(params.maxDist);
+    const dateFrom = parseInt(params.fromDate);
+    const dateTo = parseInt(params.toDate);
+    const radius = parseInt(params.radius);
+    let lat = parseFloat(params.lat);
+    let lng = parseFloat(params.lng);
 
   if (isNaN(lat) || isNaN(lng)) {
     const userLocationArray = await getUserLocation();
     [lat, lng, [city, region]] = userLocationArray;
-    console.log(`Using lat: ${lat} and lng: ${lng} from getUserLocation function`);
+    console.log(`Global variable lat ${lat} and ${lng} set from getUserLocation function within the checkURLParams function`);
     if (isNaN(lat) || isNaN(lng)) {
       console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
       lat = 40.014;
+      console.log(`Global variable lat ${lat} set from fourth fallback option in checkURLParams function`);
       lng = -105.270;
+      console.log(`Global variable lng ${lng} set from fourth fallback option in checkURLParams function`);
     }
   }
 
@@ -62,7 +80,8 @@ async function checkURLParams() {
     console.error(`Error fetching races: ${error}`);
   }
 
-  updateFormFieldsFromURL();
+  // Call updateFormFieldsFromURL with params as an argument
+  updateFormFieldsFromURL(params);
 }
 
 // Function to fetch races races from Vercel function
@@ -208,3 +227,73 @@ function addGreyedOutClass() {
     console.log(`Added 'greyed-out' class to element: ${element}`);
   });
 }
+
+// Helper function to set an element's value by its ID
+const setElementValue = (id, value) => {
+  console.trace();
+  const elem = document.getElementById(id);
+  if (elem) {
+      elem.value = value;
+  }
+};
+
+// Function to update the form fields based on the URL params
+const updateFormFieldsFromURL = (params) => {
+  console.trace();
+  // Check if params is undefined or null
+  if (!params) {
+    console.warn("Missing params argument in updateFormFieldsFromURL, extracting from URL again");
+    params = extractURLParams();
+  }
+  let lat = params.lat;
+  let lng = params.lng;
+  let location = params.location;
+
+  // If lat, lng, or location are not available in the URL params, check localStorage
+  if (!lat || !lng || !location) {
+    const localStorageUserLocation = JSON.parse(localStorage.getItem('userLocation'));
+    if (localStorageUserLocation) {
+      lat = lat || localStorageUserLocation[0];
+      lng = lng || localStorageUserLocation[1];
+      location = location || localStorageUserLocation[2];
+    }
+  }
+
+  // Update sport checkboxes based on 'sport' URL params
+  if (params.sports) {
+    params.sports.forEach((value) => {
+      const checkbox = document.querySelector(`.sport-checkbox[filter-value="${value}"]`);
+      checkbox.checked = true;
+      const parentWrapper = checkbox.closest('.sport-checkbox-button');
+      parentWrapper.classList.add('selected');
+    });
+  }
+
+  // Update other form fields based on the remaining URL params
+  const fieldMappings = {
+    minDist: value => setElementValue('minimum-distance', value / 1000),
+    maxDist: value => setElementValue('maximum-distance', value / 1000),
+    radius: value => setElementValue('location-radius', value),
+    fromDate: value => {},
+    toDate: value => {},
+  };
+
+  // Update lat, lng, and location form fields
+  if (lat && lng && location) {
+    const locationSearchBar = document.getElementById('location-search-bar');
+    console.log(`Location search bar value set from ${lat && lng ? 'URL' : 'localStorage'}: ${location}`);
+    if (locationSearchBar) {
+      locationSearchBar.setAttribute('data-lat', lat);
+      locationSearchBar.setAttribute('data-lon', lng);
+      locationSearchBar.value = location; // Set the value of the location search bar
+    }
+  }
+
+  // Update other form fields based on the remaining URL params
+  for (const [key, value] of Object.entries(params)) {
+    const updateField = fieldMappings[key];
+    if (updateField) {
+      updateField(value);
+    }
+  }
+};

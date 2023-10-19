@@ -1,5 +1,19 @@
+// Log the initiation of the script
+console.log("globalUserMembershipMemory.js script initiated");
+
+var lat; // Declare global variable for latitude
+console.log(`Global variable lat ${lat} declared in the globalUserMembershipMemory.js script`);
+var lng; // Declare global variable for longitude
+console.log(`Global variable lng ${lng} declared in the globalUserMembershipMemory.js script`);
+
 // Function to check and set a user token to local storage
-function checkUserToken() {
+(async () => {
+    const userToken = await checkUserToken();
+    console.log(`User token: ${userToken}`);
+})();
+
+// Function to check and set a user token to local storage
+async function checkUserToken() {
     const existingToken = localStorage.getItem('userToken');
     if (existingToken) {
         console.log("User token already exists in local storage");
@@ -12,6 +26,7 @@ function checkUserToken() {
     console.log("Token has been saved to local storage");
     return newToken;
 }
+
 // Function to generate a user token
 function generateUserToken() {
     return uuid.v4();
@@ -23,7 +38,8 @@ async function getUserLocation() {
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
       const [lat, lng, [city, region]] = userLocation;
-      console.log(`Using lat:${lat} and lng:${lng} from localStorage`); // Log to specify whether location was set from URL, localStorage or IP address
+      console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
+      console.log(`Global variable lat ${lng} reassigned from localStorage in the getUserLocation function`);
       return [lat, lng, [city, region]];  
     }
 
@@ -34,8 +50,8 @@ async function getUserLocation() {
     const location = [city, region];
     const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
-    console.log(`Using lat:${lat} and lng:${lng} from IP address`); // Log to specify whether location was set from URL, localStorage or IP address
+    console.log(`userLocation set to ${userLocationArray} by IP address in the getUserLocation function`);
+    console.log(`Global variable lat ${lat} reassigned from IP address in the getUserLocation function`);
+    console.log(`Global variable lat ${lng} reassigned from IP address in the getUserLocation function`);
     return userLocationArray;
 }
-
-document.addEventListener('DOMContentLoaded', checkUserToken); // Check user token on page load
