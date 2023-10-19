@@ -37,16 +37,16 @@ async function getUserLocation() {
     // Check if user location is stored in local storage
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
-      const [lat, lng, [city, region]] = userLocation;
-      console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
-      console.log(`Global variable lat ${lng} reassigned from localStorage in the getUserLocation function`);
-      return [lat, lng, [city, region]];  
+        [lat, lng, [city, region]] = userLocation; //Add const to set as local variable
+        console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
+        console.log(`Global variable lat ${lng} reassigned from localStorage in the getUserLocation function`);
+        return [lat, lng, [city, region]];  
     }
 
     // If user location is not stored in local storage, fetch it from IP address
     const response = await fetch('https://ipapi.co/json/');
     const data = await response.json();
-    const { latitude: lat, longitude: lng, city, region } = data;
+    ({ latitude: lat, longitude: lng, city, region } = data); //Add const to set as local variable
     const location = [city, region];
     const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
