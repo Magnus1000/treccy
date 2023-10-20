@@ -19,12 +19,12 @@ async function initAlgoliaInsights(appId, apiKey) {
 }
 
 // Function to send a view event to Algolia
-function sendViewEventToAlgolia() {
+async function sendViewEventToAlgolia() {  // Marking function as async
     const algolia_id_wf = document.body.getAttribute('algolia_object_id_wf');
     
     if (algolia_id_wf) {
         console.log('Checking for user token in local storage...');
-        const userToken = checkUserToken();
+        const userToken = await checkUserToken(); // Using await
         
         console.log(`Sending view event for objectID: ${algolia_id_wf}`);
         aa('viewedObjectIDs', {
@@ -85,10 +85,12 @@ async function fetchAlgoliaKeysAndInit(lat, lng) {
                                 `;
                             },
                             item({ item, components, html }) {
-                                const onClickHandler = () => {
+                                const onClickHandler = async () => {  // Marking function as async
                                     window.location.href = `https://www.treccy.com/${item.region_ag}`;
-                                    // Check if there is user token in local storage
-                                    const userToken = checkUserToken();
+                            
+                                    // Await for the user token from local storage
+                                    const userToken = await checkUserToken();  // Using await
+                            
                                     // Send click event to Algolia with user token
                                     window.aa('clickedObjectIDs', {
                                         index: 'races', // Replace with your Algolia index name

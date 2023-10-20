@@ -39,7 +39,7 @@ async function getQueryParams() {
 }
 
 // Function to send the webhook
-async function sendWebhook(email) {
+async function sendWebhook(email) {  // Marking function as async
   if (!isValidEmail(email)) {
     console.error('Invalid email:', email);
     return;
@@ -49,15 +49,20 @@ async function sendWebhook(email) {
   const params = await getQueryParams(); // Awaiting the async function here
   console.log("Fetched params: ", params); // Log the fetched params
 
+  // Awaiting the checkUserToken function here
+  const userToken = await checkUserToken();
+
   const payload = {
     email,
     params,
     signup_page: signupPage,
     user_subscribed_status: getUserSubscribed(),
-    user_token: checkUserToken(),
+    user_token: userToken,
     location_source: getLocationSource()
   };
 
+  console.log('Sending webhook with payload:', payload);
+  
   const url = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/emailSignUp.js';
 
   fetch(url, {
@@ -76,6 +81,7 @@ async function sendWebhook(email) {
     }
   });
 }
+
 
 // Event listener for the email submit button
 document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
