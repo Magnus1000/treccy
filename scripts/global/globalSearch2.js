@@ -146,14 +146,14 @@ async function fetchAlgoliaKeysAndInit() {
                             },
                             item({ item, components, html }) {
                                 // Add Algolia Insights click event
-                                const onClickHandler = () => {
+                                const onClickHandler = async () => {  // Marking function as async
                                     window.aa("clickedObjectIDsAfterSearch", {
                                         eventName: "Item Clicked",
                                         index: "races",
                                         objectIDs: [item.objectID],
                                         queryID: item.__queryID,
-                                        // Check if there is user token in local storage
-                                        userToken: checkUserToken()
+                                        // Await for the user token from local storage
+                                        userToken: await checkUserToken()  // Using await here
                                     });
                                 };
 
