@@ -57,8 +57,10 @@ async function fetchAlgoliaKeysAndInit() {
             getSources: async ({ query, state }) => {
                 // Check and update lat and lng if they are undefined or null
                 if (lat === null || lat === undefined || lng === null || lng === undefined) {
-                    await getUserLocation(); // Using your existing getUserLocation function
-                    console.log(`Updated lat and lng to ${lat}, ${lng}`);
+                    const userLocationArray = await getUserLocation();
+                    lat = userLocationArray[0];
+                    lng = userLocationArray[1];
+                    console.log(`Updated lat and lng to ${lat}, ${lng} from getUserLocation function`);
                 }
                 console.log("Current lat and lng:", lat, lng);
 
