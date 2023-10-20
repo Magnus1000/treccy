@@ -37,7 +37,9 @@ async function checkURLParams() {
 
   if (isNaN(lat) || isNaN(lng)) {
     const userLocationArray = await getUserLocation();
-    [lat, lng, location] = userLocationArray; // Lat and lng are already reassigned globally in getUserLocation function so keeping it local here
+    // Lat and lng are already reassigned globally in getUserLocation function so keeping it local here
+    lat = userLocationArray[0]; 
+    lng = userLocationArray[1];
     if (isNaN(lat) || isNaN(lng)) {
       console.log(`Using lat:40.014 and lng:105.270 as fourth fallback option`);
       lat = 40.014;
