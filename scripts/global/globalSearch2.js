@@ -118,7 +118,7 @@ async function fetchAlgoliaKeysAndInit(lat, lng) {
                             // Call the serverless function hosted on Vercel
                             try {
                                 const response = await fetch(
-                                    `https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/globalSearchServerless.js?query=${query}&lat=${lat}&lng=${lng}&aroundLatLng=${lat},${lng}&aroundRadius=100000`
+                                    `https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/globalSearchServerless.js?query=${query}&lat=${lat}&lng=${lng}&aroundLatLng=${lat},${lng}`
                                 );
                                 const results = await response.json();
 
