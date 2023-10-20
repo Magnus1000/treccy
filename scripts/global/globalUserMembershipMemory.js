@@ -37,10 +37,10 @@ async function getUserLocation() {
     // Check if user location is stored in local storage
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
-        [lat, lng, [city, region]] = userLocation; //Add const to set as local variable
+        [lat, lng, location] = userLocation; //Add const to set as local variable
         console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
         console.log(`Global variable lat ${lng} reassigned from localStorage in the getUserLocation function`);
-        return [lat, lng, [city, region]];  
+        return [lat, lng, location];  
     }
 
     // If user location is not stored in local storage, fetch it from IP address
