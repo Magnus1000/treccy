@@ -41,7 +41,7 @@ async function sendViewEventToAlgolia() {  // Marking function as async
 }
 
 // Fetch Algolia keys from the serverless function
-async function fetchAlgoliaKeysAndInit(lat, lng) {
+async function fetchAlgoliaKeysAndInit() {
     try {
         const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();
@@ -57,6 +57,7 @@ async function fetchAlgoliaKeysAndInit(lat, lng) {
             insights: true,
             getSources({ query, state }) {
                 console.log("Query received:", query);
+                console.log("Current lat and lng:", lat, lng);
                 if (!query) {
                     console.log("No query.");
                     return [];

@@ -81,9 +81,9 @@ function addTomorrowsDate() {
 // Function to call all required functions on pageload
 document.addEventListener('DOMContentLoaded', async function() {
     addTomorrowsDate();
+    await fetchAlgoliaKeysAndInit();
     const userLocationArray = await getUserLocation();
     lat = userLocationArray[0];
     lng = userLocationArray[1];
-    await fetchAlgoliaKeysAndInit(lat,lng);
     await fetchEmailRacesFromVercel(lat, lng);
 });

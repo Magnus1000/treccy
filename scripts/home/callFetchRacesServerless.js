@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   const filters = await checkURLParams();
 });
 document.addEventListener('DOMContentLoaded', async function() {
-  await fetchAlgoliaKeysAndInit(lat,lng);
+  await fetchAlgoliaKeysAndInit();
 });
 document.addEventListener("DOMContentLoaded", function() {
   const locationButton = document.getElementById("location-button");
