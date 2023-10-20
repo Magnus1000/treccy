@@ -35,10 +35,13 @@ function generateUserToken() {
 // Function to find approximate address based on IP address
 async function getUserLocation() {
     // Attempt to get user location from local storage
+    // Attempt to get user location from local storage
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
-        // Using destructuring to reassign lat, lng globally, and declare location as local variable
-        [lat, lng, let location] = userLocation;
+        // Declare location variable before destructuring assignment
+        let location;
+        // Using destructuring to reassign lat, lng globally, and assign value to location variable
+        [lat, lng, location] = userLocation;
         console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
         console.log(`Global variable lng ${lng} reassigned from localStorage in the getUserLocation function`);
         return [lat, lng, location];
