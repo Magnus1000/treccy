@@ -38,7 +38,7 @@ async function getUserLocation() {
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
         // Using destructuring to reassign lat, lng globally, and declare location as local variable
-        [lat, lng, const location] = userLocation;
+        [lat, lng, let location] = userLocation;
         console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
         console.log(`Global variable lng ${lng} reassigned from localStorage in the getUserLocation function`);
         return [lat, lng, location];
