@@ -118,3 +118,30 @@ function removeActiveClassFromEmailSignupLongWrapper() {
   }
 }
 
+// Function to toggle the focus class on the email header
+function applyFocusClass() {
+  const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
+  if (emailSignupLongHeader) {
+    emailSignupLongHeader.classList.add('focus');
+    console.log('Added focus class to email signup long header');
+  } else {
+    console.warn('Email signup long header not found');
+  }
+}
+
+const emailSignupDiv = document.querySelector('.email-sign-up-div');
+emailSignupDiv.addEventListener('click', function(event) {
+  if (event.target.closest('.email-sign-up-div')) {
+    applyFocusClass();
+  }
+});
+
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.email-sign-up-div')) {
+    const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
+    if (emailSignupLongHeader) {
+      emailSignupLongHeader.classList.remove('focus');
+      console.log('Removed focus class from email signup long header');
+    }
+  }
+});
