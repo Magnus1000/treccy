@@ -18,8 +18,17 @@ async function sendWebhook(email) {  // Marking function as async
   }
 
   const signupPage = window.location.href;
-  const params = extractURLParams(); // Awaiting the async function here
+  let params = extractURLParams(); // Awaiting the async function here
   console.log("Fetched params: ", params); // Log the fetched params
+
+  // Check if lat, lng and location exist in params
+  if (!params.lat || !params.lng || !params.location) {
+    // Call the getUserLocation function to get [lat, lng, location]
+    const userLocation = await getUserLocation();
+    params.lat = userLocation[0];
+    params.lng = userLocation[1];
+    params.location = userLocation[2];
+  }
 
   // Awaiting the checkUserToken function here
   const userToken = await checkUserToken();
