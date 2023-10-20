@@ -78,22 +78,12 @@ function addTomorrowsDate() {
     tomorrowsDateDiv.textContent = formattedDate;
 }
 
-window.addEventListener('load', async () => {
-    const userLocationArray = await getUserLocation();
-    let lat = userLocationArray[0];
-    let lng = userLocationArray[1];
-    await fetchEmailRacesFromVercel(lat, lng);
-    addTomorrowsDate();
-});
-
-//Function to call all the functions that need to be called when the page loads
+// Function to call all required functions on pageload
 document.addEventListener('DOMContentLoaded', async function() {
-    await fetchAlgoliaKeysAndInit(lat,lng);
-});
-window.addEventListener('load', async () => {
-    const userLocationArray = await getUserLocation();
-    let lat = userLocationArray[0];
-    let lng = userLocationArray[1];
-    await fetchEmailRacesFromVercel(lat, lng);
     addTomorrowsDate();
+    const userLocationArray = await getUserLocation();
+    lat = userLocationArray[0];
+    lng = userLocationArray[1];
+    await fetchAlgoliaKeysAndInit(lat,lng);
+    await fetchEmailRacesFromVercel(lat, lng);
 });
