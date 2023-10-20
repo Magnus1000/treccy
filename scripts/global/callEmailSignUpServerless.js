@@ -10,34 +10,6 @@ function getEmail() {
   return emailElement ? emailElement.value : '';
 }
 
-async function getQueryParams() {
-  const params = {};
-  const queryString = window.location.search.substring(1);
-  const pairs = queryString.split('&');
-  for (const pair of pairs) {
-    const [key, value] = pair.split('=');
-    params[decodeURIComponent(key)] = decodeURIComponent(value);
-  }
-  // Extract sports parameters and store them in an array
-  const sports = [];
-  let i = 0;
-  while (params[`sport${i}`]) {
-    sports.push(params[`sport${i}`]);
-    delete params[`sport${i}`];
-    i++;
-  }
-  params.sports = sports;
-  // If lat, lng, city, or region are not available in the URL params, check localStorage
-  if (!params.lat || !params.lng || !params.location) {
-    const userLocationArray = await getUserLocation();
-    [lat, lng, [location]] = userLocationArray;
-    params.lat = lat;
-    params.lng = lng;
-    params.location = location;
-  }
-  return params;
-}
-
 // Function to send the webhook
 async function sendWebhook(email) {  // Marking function as async
   if (!isValidEmail(email)) {
@@ -46,7 +18,7 @@ async function sendWebhook(email) {  // Marking function as async
   }
 
   const signupPage = window.location.href;
-  const params = await getQueryParams(); // Awaiting the async function here
+  const params = extractURLParams(); // Awaiting the async function here
   console.log("Fetched params: ", params); // Log the fetched params
 
   // Awaiting the checkUserToken function here
@@ -96,7 +68,7 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
       return;
     }
 
-    const params = getQueryParams();
+    const params = extractURLParams();
     console.log('Sending webhook with email:', email, 'and parameters:', params);
     sendWebhook(email, params);
     updateUserSubscribed();
