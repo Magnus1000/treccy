@@ -46,22 +46,27 @@ async function fetchAlgoliaKeysAndInit() {
         const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeAlgolia.js');
         const { appId, apiKey } = await response.json();
         console.log(`Algolia API keys fetched: ${appId}, ${apiKey}`);
-        console.log('Initializing Algolia Insights...');
         await initAlgoliaInsights(appId, apiKey);
-        console.log('Algolia API keys fetched and Algolia Insights initialized.');
-
+        console.log('Algolia Insights initialized.');
+        
         const autocompleteInstance = autocomplete({
             container: "#global-race-search",
             detachedMediaQuery: "",
             openOnFocus: true,
             insights: true,
-            getSources({ query, state }) {
-                console.log("Query received:", query);
+            getSources: async ({ query, state }) => {
+                // Check and update lat and lng if they are undefined or null
+                if (lat === null || lat === undefined || lng === null || lng === undefined) {
+                    await getUserLocation(); // Using your existing getUserLocation function
+                    console.log(`Updated lat and lng to ${lat}, ${lng}`);
+                }
                 console.log("Current lat and lng:", lat, lng);
+
                 if (!query) {
                     console.log("No query.");
                     return [];
                 }
+                
                 return [
                     {
                         sourceId: "region_sports",
