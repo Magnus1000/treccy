@@ -34,25 +34,33 @@ function generateUserToken() {
 
 // Function to find approximate address based on IP address
 async function getUserLocation() {
-    // Check if user location is stored in local storage
+    // Attempt to get user location from local storage
     const userLocation = JSON.parse(localStorage.getItem('userLocation'));
     if (userLocation) {
-        [lat, lng, location] = userLocation; //Add const to set as local variable
+        // Using destructuring to reassign lat, lng globally, and declare location as local variable
+        [lat, lng, const location] = userLocation;
         console.log(`Global variable lat ${lat} reassigned from localStorage in the getUserLocation function`);
-        console.log(`Global variable lat ${lng} reassigned from localStorage in the getUserLocation function`);
-        return [lat, lng, location];  
+        console.log(`Global variable lng ${lng} reassigned from localStorage in the getUserLocation function`);
+        return [lat, lng, location];
     }
 
-    // If user location is not stored in local storage, fetch it from IP address
+    // Fetch user location from IP address if not found in local storage
     const response = await fetch('https://ipapi.co/json/');
     const data = await response.json();
-    ({ latitude: lat, longitude: lng, city, region } = data); //Add const to set as local variable
-    const location = [city, region];
+
+    // Reassign global lat and lng variables, and declare location as a local variable
+    lat = data.latitude;
+    lng = data.longitude;
+    const location = [data.city, data.region];
+
+    // Store the user location in local storage
     const userLocationArray = [lat, lng, location];
     localStorage.setItem('userLocation', JSON.stringify(userLocationArray));
     localStorage.setItem('locationSource', "ip_address");
+
     console.log(`userLocation set to ${userLocationArray} by IP address in the getUserLocation function`);
     console.log(`Global variable lat ${lat} reassigned from IP address in the getUserLocation function`);
-    console.log(`Global variable lat ${lng} reassigned from IP address in the getUserLocation function`);
+    console.log(`Global variable lng ${lng} reassigned from IP address in the getUserLocation function`);
+    
     return userLocationArray;
 }
