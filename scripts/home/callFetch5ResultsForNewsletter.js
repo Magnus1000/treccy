@@ -80,7 +80,20 @@ function addTomorrowsDate() {
 
 window.addEventListener('load', async () => {
     const userLocationArray = await getUserLocation();
-    [lat, lng, [city, region, country]] = userLocationArray;
+    let lat = userLocationArray[0];
+    let lng = userLocationArray[1];
+    await fetchEmailRacesFromVercel(lat, lng);
+    addTomorrowsDate();
+});
+
+//Function to call all the functions that need to be called when the page loads
+document.addEventListener('DOMContentLoaded', async function() {
+    await fetchAlgoliaKeysAndInit(lat,lng);
+});
+window.addEventListener('load', async () => {
+    const userLocationArray = await getUserLocation();
+    let lat = userLocationArray[0];
+    let lng = userLocationArray[1];
     await fetchEmailRacesFromVercel(lat, lng);
     addTomorrowsDate();
 });
