@@ -14,8 +14,11 @@ function getEmail() {
 async function sendWebhook(email) {  // Marking function as async
   if (!isValidEmail(email)) {
     console.error('Invalid email:', email);
+    emailSignupButton.disabled = false; // Enabling the button
     return;
   }
+  const emailSignupButton = document.getElementById('subscribe-to-notifications-button');
+  emailSignupButton.disabled = true; // Disabling the button
 
   const signupPage = window.location.href;
   let params = extractURLParams(); // Awaiting the async function here
@@ -46,6 +49,10 @@ async function sendWebhook(email) {  // Marking function as async
   
   const url = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/emailSignUp.js';
 
+  // Displaying a message until the webhook response is received
+  const emailSignupField = document.getElementById('email-signup-field');
+  emailSignupField.value = 'Carb-loading your details...';
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -60,6 +67,9 @@ async function sendWebhook(email) {  // Marking function as async
       updateUserSubscribed();
       removeActiveClassFromEmailSignupLongWrapper();
     }
+    // Removing the message from the input field after the webhook response is received
+    emailSignupField.value = '';
+    emailSignupButton.disabled = false; // Enabling the button
   });
 }
 
@@ -108,6 +118,7 @@ function getLocationSource() {
   return localStorage.getItem('locationSource');
 }
 
+// Function to remove the active class from the email signup long wrapper once the user has subscribed
 function removeActiveClassFromEmailSignupLongWrapper() {
   const emailSignupLongWrapper = document.querySelector('.email-signup-long-wrapper');
   if (emailSignupLongWrapper) {
