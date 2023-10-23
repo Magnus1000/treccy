@@ -965,7 +965,7 @@ body.dark,body[data-theme=dark]{
     flex-direction: row;
 }
 
-.aa-ItemIcon {
+.aa-ItemCustomIcon {
     height: 20px;
     justify-content: center;
     align-items: center;
