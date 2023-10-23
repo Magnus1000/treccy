@@ -15,20 +15,19 @@ function manageMapViewClass(showMap) {
 }
 
 async function createMarkerOnMap(map, result) {
-  // Create an image element for the marker icon
-  const markerIcon = new Image(32, 32);
-  markerIcon.src = getMarkerIcon(result.sports_ag);
-
-  // Clone and populate the div
-  const popupHTML = await cloneAndPopulateDiv(result); // Wait for the Promise to resolve
-
+  // Create a new div element for the marker icon instead of image
+  const markerIcon = document.createElement('div');
+  markerIcon.className = 'markerIconClass';
+  markerIcon.style.backgroundImage = `url(${getMarkerIcon(result.sports_ag)})`;
+  if (result.sports_ag.length > 1) {
+      markerIcon.innerHTML = `+${result.sports_ag.length - 1}`; // Display the additional sports count
+  }
+  const popupHTML = await cloneAndPopulateDiv(result);
   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
-
   const marker = new mapboxgl.Marker({ element: markerIcon, anchor: 'bottom' })
-    .setLngLat([result._geoloc.lng, result._geoloc.lat])
-    .setPopup(popup)
-    .addTo(map);
-
+      .setLngLat([result._geoloc.lng, result._geoloc.lat])
+      .setPopup(popup)
+      .addTo(map);
   currentMarkers.push(marker);
 }
 
