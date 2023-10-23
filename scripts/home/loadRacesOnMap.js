@@ -1,15 +1,23 @@
-<!-- Mapbox styles and scripts -->
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css" />
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-
 const currentMarkers = []; // Define the currentMarkers array
+
+// Function to add or remove "map-view" class
+function manageMapViewClass(showMap) {
+  // Find the div with class "map-and-list-wrapper"
+  const wrapperDiv = document.querySelector('.map-and-list-wrapper');
+
+  if (showMap) {
+    // Add "map-view" class
+    wrapperDiv.classList.add('map-view');
+  } else {
+    // Remove "map-view" class
+    wrapperDiv.classList.remove('map-view');
+  }
+}
 
 async function createMarkerOnMap(map, result) {
   // Create an image element for the marker icon
   const markerIcon = new Image(50, 50);
-  markerIcon.src = result.photo_main_ag;
+  markerIcon.src = getMarkerIcon(result.sports_ag);
 
   // Clone and populate the div
   const popupHTML = await cloneAndPopulateDiv(result); // Wait for the Promise to resolve
@@ -112,8 +120,49 @@ async function toggleView(showMap) {
     document.getElementById('showListrow').style.display = showMap ? 'flex' : 'none';
     document.getElementById('showMaprow').style.display = showMap ? 'none' : 'flex';
     document.getElementById('race-grid-container').style.display = showMap ? 'none' : 'grid';
+    
+    // Add or remove "map-view" class
+      manageMapViewClass(showMap);
 
     if (showMap) {
         displayMapWithResults(lat, lng); // Passing in global variables for lat and lng
     }
+}
+
+// Function to get the marker icon based on the sports_ag value
+function getMarkerIcon(sports) {
+  let markerIconSrc = '';
+  const sportToIconMap = {
+    'Aquabike': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Aquathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Canoeing': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf441b62af154c47bb29b_canoe-icon-white.svg',
+    'Cycling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf530f9121f403b35cfc2_person-biking-solid-white.svg',
+    'Cyclocross': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg,
+    'Duathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf466b62af154c47bd51b_duathlon-white.svg',
+    'E-Biking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf47eb62af154c47bfba2_solid-person-biking-circle-bolt-white.svg',
+    'Gravel Biking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf521e3e8f97337dfa5b5_person-biking-mountain-solid-white.svg',
+    'Kayaking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf48be3e8f97337dee5db_kayak-svg-white.svg',
+    'Mountain Biking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf49a722f7ce55d05ace9_person-biking-mountain-solid-white-1.svg',
+    'Multisport': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf431b05ba5609db9c810_multisport-white.svg',
+    'Nordic': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Obstacle': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Orienteering': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Outrigger': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4aab4f9def31a6bb7e6_outrigger-icon-white.svg',
+    'Rowing': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4c2ac2fb6a71adc1921_rowing-icon-white.svg',
+    'Running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4d0fd19962a330ec0f9_person-running-solid-white.svg',
+    'Stand Up Paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4d7722f7ce55d05dc6e_paddleboard-white.svg',
+    'Surfski': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
+    'Swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4e119f4ee801a5a891f_person-swimming-solid-white.svg',
+    'Trail Running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4ec15486531fd1a3bdc_trail-running-white.svg',
+    'Triathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4f6321d770f2238dc27_triathlon-white.svg',
+    'Walking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf50bb62af154c47ca612_person-walking-solid-white.svg'
+  };
+
+  sports.forEach(sport => {
+    if (sportToIconMap[sport]) {
+      markerIconSrc = sportToIconMap[sport];
+    }
+  });
+
+  return markerIconSrc;
 }
