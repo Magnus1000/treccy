@@ -960,13 +960,12 @@ body.dark,body[data-theme=dark]{
 
 .aa-ItemInnerRow {
     display: flex;
-    column-gap: 10px;
     align-items: center;
     flex-direction: row;
 }
 
 .aa-ItemCustomIcon {
-    height: 20px;
+    height: 1em;
     justify-content: center;
     align-items: center;
     transition: all .3s;
