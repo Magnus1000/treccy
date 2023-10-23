@@ -16,7 +16,7 @@ function manageMapViewClass(showMap) {
 
 async function createMarkerOnMap(map, result) {
   // Create an image element for the marker icon
-  const markerIcon = new Image(50, 50);
+  const markerIcon = new Image(32, 32);
   markerIcon.src = getMarkerIcon(result.sports_ag);
 
   // Clone and populate the div
