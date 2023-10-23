@@ -14,21 +14,26 @@ function manageMapViewClass(showMap) {
   }
 }
 
+// This function creates a marker on the map for a given result
 async function createMarkerOnMap(map, result) {
   // Create a new div element for the marker icon instead of image
   const markerIcon = document.createElement('div');
   markerIcon.className = 'markerIconClass';
-  markerIcon.style.backgroundImage = `url(${getMarkerIcon(result.sports_ag)})`;
+  markerIcon.style.backgroundImage = `url(${getMarkerIcon(result.sports_ag)})`; // Set the background image of the marker icon
   if (result.sports_ag.length > 1) {
-      markerIcon.innerHTML = `+${result.sports_ag.length - 1}`; // Display the additional sports count
+      // If there are multiple sports, create a new div element for the race count
+      const raceCount = document.createElement('div');
+      raceCount.className = 'race-count';
+      raceCount.innerHTML = `+${result.sports_ag.length - 1}`; // Display the additional sports count
+      markerIcon.appendChild(raceCount); // Add the race count div as a child of the marker icon
   }
-  const popupHTML = await cloneAndPopulateDiv(result);
-  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
-  const marker = new mapboxgl.Marker({ element: markerIcon, anchor: 'bottom' })
-      .setLngLat([result._geoloc.lng, result._geoloc.lat])
-      .setPopup(popup)
-      .addTo(map);
-  currentMarkers.push(marker);
+  const popupHTML = await cloneAndPopulateDiv(result); // Clone and populate the div for the popup
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML); // Create a new popup with the cloned and populated div
+  const marker = new mapboxgl.Marker({ element: markerIcon, anchor: 'bottom' }) // Create a new marker with the marker icon as the element and the bottom as the anchor
+      .setLngLat([result._geoloc.lng, result._geoloc.lat]) // Set the longitude and latitude of the marker
+      .setPopup(popup) // Set the popup for the marker
+      .addTo(map); // Add the marker to the map
+  currentMarkers.push(marker); // Add the marker to the current markers array
 }
 
 // New function to clone and populate the div
