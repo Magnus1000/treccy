@@ -111,7 +111,7 @@ async function fetchAlgoliaKeysAndInit() {
                                 <a class="aa-ItemLink" onclick="${onClickHandler}">
                                 <div class="aa-ItemContent">
                                   <div class="aa-ItemInnerRow">
-                                    <img class="aa-ItemIcon" src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg">
+                                    <img class="font-awesome-icon" src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg"></img>
                                     <div class="aa-ItemContentTitleSuggestions">
                                     </div>
                                     ${item.name_ag}
