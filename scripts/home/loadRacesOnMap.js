@@ -156,12 +156,5 @@ function getMarkerIcon(sports) {
     'Triathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/6536b69668e3ae76ff963f8d_triathlon-circle-icon.svg',
     'Walking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/6536bc8d9155007524f811c6_walking-circle-icon.svg'
   };
-
-  sports.forEach(sport => {
-    if (sportToIconMap[sport]) {
-      markerIconSrc = sportToIconMap[sport];
-    }
-  });
-
-  return markerIconSrc;
+  return sportToIconMap[sports[0]] || ''; // Use the first sport to get the icon URL
 }
