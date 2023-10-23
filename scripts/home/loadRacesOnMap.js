@@ -137,7 +137,7 @@ function getMarkerIcon(sports) {
     'Aquathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
     'Canoeing': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf441b62af154c47bb29b_canoe-icon-white.svg',
     'Cycling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf530f9121f403b35cfc2_person-biking-solid-white.svg',
-    'Cyclocross': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg,
+    'Cyclocross': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
     'Duathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf466b62af154c47bd51b_duathlon-white.svg',
     'E-Biking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf47eb62af154c47bfba2_solid-person-biking-circle-bolt-white.svg',
     'Gravel Biking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf521e3e8f97337dfa5b5_person-biking-mountain-solid-white.svg',
