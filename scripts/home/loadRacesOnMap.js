@@ -153,7 +153,7 @@ function getMarkerIcon(sports) {
     'Stand Up Paddling': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4d7722f7ce55d05dc6e_paddleboard-white.svg',
     'Surfski': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg',
     'Swimming': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4e119f4ee801a5a891f_person-swimming-solid-white.svg',
-    'Trail Running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4ec15486531fd1a3bdc_trail-running-white.svg',
+    'Trail Running': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/6536b6bbc8b75bcb180b2dbb_trailrunning-circle-icon.svg',
     'Triathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf4f6321d770f2238dc27_triathlon-white.svg',
     'Walking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/652bf50bb62af154c47ca612_person-walking-solid-white.svg'
   };
