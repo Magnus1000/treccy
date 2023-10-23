@@ -109,12 +109,14 @@ async function fetchAlgoliaKeysAndInit() {
                                 };
                                 return html`
                                 <a class="aa-ItemLink" onclick="${onClickHandler}">
-                                    <div class="aa-ItemContent" style="display: flex; align-items: center;">
-                                        <img src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg" style="margin-right: 10px; width: 40px; height: 40px;">
-                                        <div class="aa-ItemContentTitleSuggestions">
-                                            ${item.name_ag}
-                                        </div>
+                                <div class="aa-ItemContent">
+                                  <div class="aa-ItemInnerRow">
+                                    <img class="aa-ItemIcon" src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg">
+                                    <div class="aa-ItemContentTitleSuggestions">
                                     </div>
+                                    ${item.name_ag}
+                                  </div>
+                                </div>
                                 </a>`;
                             },
                         },

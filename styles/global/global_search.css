@@ -957,3 +957,15 @@ body.dark,body[data-theme=dark]{
     column-gap: 50px;
     justify-content: space-between;
 }
+
+.aa-ItemIcon{
+    height: 1em;
+    align-self: middle;
+}
+
+.aa-ItemInnerRow {
+    display: flex;
+    column-gap: 10px;
+    align-content: middle;
+    flex-direction: row;
+}
