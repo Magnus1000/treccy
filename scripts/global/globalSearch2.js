@@ -94,7 +94,7 @@ async function fetchAlgoliaKeysAndInit() {
                             },
                             item({ item, components, html }) {
                                 const onClickHandler = async () => {  // Marking function as async
-                                    window.location.href = `https://www.treccy.com/region/${item.region_ag}#races`;
+                                    window.location.href = `https://www.treccy.com/region/${item.region_ag.toLowerCase()}#races?${item.sports_ag.toLowerCase()}`;
                             
                                     // Await for the user token from local storage
                                     const userToken = await checkUserToken();  // Using await
