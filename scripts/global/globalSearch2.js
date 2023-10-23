@@ -94,7 +94,7 @@ async function fetchAlgoliaKeysAndInit() {
                             },
                             item({ item, components, html }) {
                                 const onClickHandler = async () => {  // Marking function as async
-                                    window.location.href = `https://www.treccy.com/${item.region_ag}`;
+                                    window.location.href = `https://www.treccy.com/region/${item.region_ag}#races`;
                             
                                     // Await for the user token from local storage
                                     const userToken = await checkUserToken();  // Using await
@@ -108,13 +108,14 @@ async function fetchAlgoliaKeysAndInit() {
                                     });
                                 };
                                 return html`
-                                    <a class="aa-ItemLink" onclick="${onClickHandler}">
-                                        <div class="aa-ItemContent">
-                                            <div class="aa-ItemContentTitleSuggestions">
-                                                ${item.name_ag}
-                                            </div>
+                                <a class="aa-ItemLink" onclick="${onClickHandler}">
+                                    <div class="aa-ItemContent" style="display: flex; align-items: center;">
+                                        <img src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg" style="margin-right: 10px; width: 40px; height: 40px;">
+                                        <div class="aa-ItemContentTitleSuggestions">
+                                            ${item.name_ag}
                                         </div>
-                                    </a>`;
+                                    </div>
+                                </a>`;
                             },
                         },
                     },
@@ -141,7 +142,7 @@ async function fetchAlgoliaKeysAndInit() {
                         templates: {
                             header({ items, state, html }) {
                                 return html`
-                                    <div class="aa-SourceHeader">RESULTS</div>
+                                    <div class="aa-SourceHeader">RACES</div>
                                 `;
                             },
                             item({ item, components, html }) {
