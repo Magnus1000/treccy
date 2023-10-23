@@ -964,3 +964,11 @@ body.dark,body[data-theme=dark]{
     align-items: center;
     flex-direction: row;
 }
+
+.aa-ItemIcon {
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s;
+    display: flex;
+}
