@@ -47,8 +47,9 @@ async function cloneAndPopulateDiv(result) {
   clonedDiv.querySelector('.map-popup-link-block').href = `/race/${result.slug_ag}`;
   clonedDiv.querySelector('.map-popup-header').innerText = result.name_ag;
   clonedDiv.querySelector('.map-popup-city-text').innerText = result.city_ag;
-  clonedDiv.querySelector('.map-popup-country-text').innerText = result.country_ag;
+  clonedDiv.querySelector('.map-popup-region-text').innerText = result.region_ag;
   clonedDiv.querySelector('.map-popup-date-text').innerText = formatDate(result.date_ag);
+  clonedDiv.querySelector('.map-popup-distances').innerText = result.distances_display_ag;
 
   return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
 }
