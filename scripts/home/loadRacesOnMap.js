@@ -19,12 +19,12 @@ async function createMarkerOnMap(map, result) {
   // Create a new div element for the marker icon instead of image
   const markerIcon = document.createElement('div');
   markerIcon.className = 'markerIconClass';
-  markerIcon.style.backgroundImage = `url(${getMarkerIcon(result.sports_ag)})`; // Set the background image of the marker icon
-  if (result.sports_ag.length > 1) {
+  markerIcon.style.backgroundImage = `url(${getMarkerIcon(result.sports_search_ag)})`; // Set the background image of the marker icon
+  if (result.sports_search_ag.length > 1) {
       // If there are multiple sports, create a new div element for the race count
       const raceCount = document.createElement('div');
       raceCount.className = 'race-count';
-      raceCount.innerHTML = `+${result.sports_ag.length - 1}`; // Display the additional sports count
+      raceCount.innerHTML = `+${result.sports_search_ag.length - 1}`; // Display the additional sports count
       markerIcon.appendChild(raceCount); // Add the race count div as a child of the marker icon
   }
   const popupHTML = await cloneAndPopulateDiv(result); // Clone and populate the div for the popup
@@ -42,7 +42,7 @@ async function cloneAndPopulateDiv(result) {
   const clonedDiv = document.getElementById('map-pop-up').cloneNode(true);
 
   // Populate elements within the cloned div
-  clonedDiv.querySelector('.map-popup-sport').innerText = result.sports_ag.join(', ');
+  clonedDiv.querySelector('.map-popup-sport').innerText = result.sports_display_ag;
   clonedDiv.querySelector('.map-popup-image').src = result.photo_main_ag;
   clonedDiv.querySelector('.map-popup-link-block').href = `/race/${result.slug_ag}`;
   clonedDiv.querySelector('.map-popup-header').innerText = result.name_ag;
