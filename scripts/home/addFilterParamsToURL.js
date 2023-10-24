@@ -167,14 +167,6 @@ document.getElementById('filter-open').addEventListener('click', function() {
   }
 });
 
-document.getElementById('location-div-left').addEventListener('click', function() {
-  showFilterForm();
-  if (!searchSuggestionsSetUp) {
-    setupSearchSuggestions();
-    searchSuggestionsSetUp = true; // Set searchSuggestionsSetUp to true so that the setupSearchSuggestions function is not called again
-  }
-});
-
 document.getElementById('filter-open-mobile').addEventListener('click', function() {
   showFilterForm();
   if (!searchSuggestionsSetUp) {
