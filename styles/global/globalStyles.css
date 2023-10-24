@@ -1,0 +1,44 @@
+/* Mapbox Map Styles */
+
+/* Override default Mapbox Popup Styles */
+.mapboxgl-popup-tip {
+    display: none;
+}
+
+.mapboxgl-popup-content {
+    position: relative;
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(27, 43, 28, 0.2);
+    padding: 0;
+    pointer-events: auto;
+    width: 300px;
+    height: fit-content;
+}
+
+.active-vertical-menu-item,
+.active-horizontal-menu-item {
+  font-weight: 700;
+}
+
+/*Like Button Styles*/
+
+/* Default state: Outline visible, filled hidden */
+#outlineHeart {
+fill: #BFF103!important;
+}
+
+/* Filled Heart, initially hidden */
+#filledHeart {
+fill: #BFF103!important;
+}
+
+/* When class 'is-liked' is added to parent, hide outline and show filled */
+.like-button.is-liked #outlineHeart {
+display: none!important;
+}
+
+.like-button.is-liked #filledHeart {
+display: inline!important;
+}
+
