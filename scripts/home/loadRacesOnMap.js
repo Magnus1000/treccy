@@ -50,6 +50,7 @@ async function cloneAndPopulateDiv(result) {
   clonedDiv.querySelector('.map-popup-region-text').innerText = result.region_ag;
   clonedDiv.querySelector('.map-popup-date-text').innerText = formatDate(result.date_ag);
   clonedDiv.querySelector('.map-popup-distances').innerText = result.distances_display_ag;
+  clonedDiv.querySelector('.map-pop-up-div').href = `/race/${result.slug_ag}`;
 
   return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
 }
