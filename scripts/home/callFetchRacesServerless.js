@@ -192,7 +192,6 @@ function populateRaceCards(results) {
       const raceCardToPopulate = existingRaceCards[index];
       removeGreyedOutFromElementAndChildren(raceCardToPopulate);
       const formattedDate = formatDate(result.date_ag);
-      const formattedSports = formatSports(result.sports_ag);
       raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
       raceCardToPopulate.querySelector('.race-card-image').src = result.photo_main_ag;
       raceCardToPopulate.querySelector('.race-card-image').alt = result.name_ag;
@@ -201,7 +200,7 @@ function populateRaceCards(results) {
       raceCardToPopulate.querySelector('.race-card-display-distance').textContent = result.distances_display_ag;
       raceCardToPopulate.querySelector('.race-city-text').textContent = result.city_ag;
       raceCardToPopulate.querySelector('.race-country-text').textContent = result.country_ag;
-      raceCardToPopulate.querySelector('.race-sport-text').textContent = formattedSports;
+      raceCardToPopulate.querySelector('.race-sport-text').textContent = result.sports_display_ag;
       raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
       raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
     }

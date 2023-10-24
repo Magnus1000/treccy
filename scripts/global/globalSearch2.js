@@ -166,8 +166,6 @@ async function fetchAlgoliaKeysAndInit() {
                                     "en-US",
                                     { month: "short" }
                                 )} ${date.getFullYear()}`;
-                                // Convert disciplines to proper case
-                                const sports = toTitleCase(item.sports_ag.join(", "));
 
                                 return html`
                                     <a
@@ -189,7 +187,7 @@ async function fetchAlgoliaKeysAndInit() {
                                                         ${formattedDate}
                                                     </div>
                                                     <div class="sports-container">
-                                                        ${sports}
+                                                        ${item.sports_display_ag}
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,12 +200,12 @@ async function fetchAlgoliaKeysAndInit() {
                                     // Iterate over the hits to find the first one with the necessary attributes
                                     for (const hit of state.results[0].hits) {
                                         if (
-                                            hit.sports_ag &&
+                                            hit.sports_search_ag &&
                                             hit.city_ag &&
                                             hit.region_ag &&
                                             hit.country_ag
                                         ) {
-                                            const sports = toTitleCase(hit.sports_ag.join(", "));
+                                            const sports = hit.sports_search_ag;
                                             const city = hit.city_ag;
                                             const region = hit.region_ag;
                                             const countryAgLower = hit.country_ag.toLowerCase();
