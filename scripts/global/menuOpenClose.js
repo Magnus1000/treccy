@@ -9,8 +9,13 @@ profilePill.addEventListener('click', () => {
         mobileMenuOverlay.style.display = 'flex';
         console.log('Mobile menu opened');
     } else {
-        desktopProfileDropdownDiv.style.display = 'flex';
-        console.log('Desktop menu opened');
+        if (desktopProfileDropdownDiv.style.display === 'flex') {
+            desktopProfileDropdownDiv.style.display = 'none';
+            console.log('Desktop menu closed');
+        } else {
+            desktopProfileDropdownDiv.style.display = 'flex';
+            console.log('Desktop menu opened');
+        }
     }
 });
 
@@ -19,14 +24,3 @@ mobileMenuOverlay.addEventListener('click', () => {
     mobileMenuOverlay.style.display = 'none';
     console.log('Mobile menu closed');
 });
-
-// Function to close the desktop profile dropdown div when clicking outside of it
-const closeDesktopProfileDropdown = (event) => {
-    if (!desktopProfileDropdownDiv.contains(event.target)) {
-        desktopProfileDropdownDiv.style.display = 'none';
-        console.log('Desktop menu closed');
-    }
-};
-
-// Add event listener to document object
-document.addEventListener('click', closeDesktopProfileDropdown);
