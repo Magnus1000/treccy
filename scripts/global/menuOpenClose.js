@@ -15,7 +15,6 @@ profilePill.addEventListener('click', () => {
 });
 
 // Add event listener to mobile menu overlay
-const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 mobileMenuOverlay.addEventListener('click', () => {
     mobileMenuOverlay.style.display = 'none';
     console.log('Mobile menu closed');
