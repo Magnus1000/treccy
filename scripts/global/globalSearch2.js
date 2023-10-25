@@ -246,3 +246,14 @@ function toTitleCase(str) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
+
+// Function to update the Algolia input placeholder
+function updateAlgoliaPlaceholder() {
+    const algoliaInput = document.querySelector('.aa-Input');
+    if (algoliaInput) {
+    algoliaInput.setAttribute('placeholder', 'E.g trail run in Queenstown');
+    console.log('Algolia placeholder updated.');
+    } else {
+    console.log('Algolia input not found.');
+    }
+}

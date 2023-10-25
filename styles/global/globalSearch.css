@@ -6,7 +6,7 @@
     --aa-spacing:calc(var(--aa-base-unit)*var(--aa-spacing-factor)*1px);
     --aa-spacing-half:calc(var(--aa-spacing)/2);
     --aa-panel-max-height:650px;
-    --aa-base-z-index:9999;
+    --aa-base-z-index:99999;
     --aa-font-size:calc(var(--aa-base-unit)*1px);
     --aa-font-family:inherit;
     --aa-font-weight-medium:500;
@@ -192,16 +192,7 @@ body.dark,body[data-theme=dark]{
     padding:0;
     width:100%
 }
-.aa-Input::-moz-placeholder{
-    color:rgba(128, 126, 163,0.6);
-    color:rgba(var(--aa-muted-color-rgb),var(--aa-muted-color-alpha));
-    opacity:1
-}
-.aa-Input::placeholder{
-    color:rgba(128, 126, 163,0.6);
-    color:rgba(var(--aa-muted-color-rgb),var(--aa-muted-color-alpha));
-    opacity:1
-}
+
 .aa-Input:focus{
     border-color:none;
     box-shadow:none;
@@ -971,4 +962,11 @@ body.dark,body[data-theme=dark]{
     align-items: center;
     transition: all .3s;
     display: flex;
+}
+
+.aa-Input::-moz-placeholder{
+    color:#807E77;
+}
+.aa-Input::placeholder{
+    color:#807E77;
 }
