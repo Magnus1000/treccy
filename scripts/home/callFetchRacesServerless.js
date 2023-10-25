@@ -188,19 +188,23 @@ function populateRaceCards(results) {
         removeGreyedOutFromElementAndChildren(raceCardToPopulate);
         const formattedDate = formatDate(result.date_ag);
         const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
+        // If statement to check if raceCardTopBlock exists
         if (raceCardTopBlock) {
           raceCardTopBlock.setAttribute('href', `/race/${result.slug_ag}`);
         }
         const raceCardImage = raceCardToPopulate.querySelector('.race-card-image');
+        // If statement to check if raceCardImage exists
         if (raceCardImage) {
           raceCardImage.setAttribute('src', result.photo_main_ag);
           raceCardImage.setAttribute('alt', result.name_ag);
         }
         const cardTextLinkBlock = raceCardToPopulate.querySelector('.card-text-link-block');
+        // If statement to check if cardTextLinkBlock exists
         if (cardTextLinkBlock) {
           cardTextLinkBlock.setAttribute('href', `/race/${result.slug_ag}`);
         }
         const raceCardHeading = raceCardToPopulate.querySelector('.race-card-heading');
+        // If statement to check if raceCardHeading exists
         if (raceCardHeading) {
           raceCardHeading.textContent = result.name_ag;
         }
