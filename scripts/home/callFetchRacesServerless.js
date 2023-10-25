@@ -187,17 +187,47 @@ function populateRaceCards(results) {
         const raceCardToPopulate = existingRaceCards[index];
         removeGreyedOutFromElementAndChildren(raceCardToPopulate);
         const formattedDate = formatDate(result.date_ag);
-        raceCardToPopulate.querySelector('.race-card-top-block')?.setAttribute('href', `/race/${result.slug_ag}`);
-        raceCardToPopulate.querySelector('.race-card-image')?.setAttribute('src', result.photo_main_ag);
-        raceCardToPopulate.querySelector('.race-card-image')?.setAttribute('alt', result.name_ag);
-        raceCardToPopulate.querySelector('.card-text-link-block')?.setAttribute('href', `/race/${result.slug_ag}`);
-        raceCardToPopulate.querySelector('.race-card-heading')?.textContent = result.name_ag;
-        raceCardToPopulate.querySelector('.race-card-display-distance')?.textContent = result.distances_display_ag;
-        raceCardToPopulate.querySelector('.race-city-text')?.textContent = result.city_ag;
-        raceCardToPopulate.querySelector('.race-country-text')?.textContent = result.country_ag;
-        raceCardToPopulate.querySelector('.race-sport-text')?.textContent = result.sports_display_ag;
-        raceCardToPopulate.querySelector('.race-card-date-text')?.textContent = formattedDate;
-        raceCardToPopulate.querySelector('.like-button-div .like-button')?.setAttribute('data-object-id', result.objectID);
+        const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
+        if (raceCardTopBlock) {
+          raceCardTopBlock.setAttribute('href', `/race/${result.slug_ag}`);
+        }
+        const raceCardImage = raceCardToPopulate.querySelector('.race-card-image');
+        if (raceCardImage) {
+          raceCardImage.setAttribute('src', result.photo_main_ag);
+          raceCardImage.setAttribute('alt', result.name_ag);
+        }
+        const cardTextLinkBlock = raceCardToPopulate.querySelector('.card-text-link-block');
+        if (cardTextLinkBlock) {
+          cardTextLinkBlock.setAttribute('href', `/race/${result.slug_ag}`);
+        }
+        const raceCardHeading = raceCardToPopulate.querySelector('.race-card-heading');
+        if (raceCardHeading) {
+          raceCardHeading.textContent = result.name_ag;
+        }
+        const raceCardDisplayDistance = raceCardToPopulate.querySelector('.race-card-display-distance');
+        if (raceCardDisplayDistance) {
+          raceCardDisplayDistance.textContent = result.distances_display_ag;
+        }
+        const raceCityText = raceCardToPopulate.querySelector('.race-city-text');
+        if (raceCityText) {
+          raceCityText.textContent = result.city_ag;
+        }
+        const raceCountryText = raceCardToPopulate.querySelector('.race-country-text');
+        if (raceCountryText) {
+          raceCountryText.textContent = result.country_ag;
+        }
+        const raceSportText = raceCardToPopulate.querySelector('.race-sport-text');
+        if (raceSportText) {
+          raceSportText.textContent = result.sports_display_ag;
+        }
+        const raceCardDateText = raceCardToPopulate.querySelector('.race-card-date-text');
+        if (raceCardDateText) {
+          raceCardDateText.textContent = formattedDate;
+        }
+        const likeButton = raceCardToPopulate.querySelector('.like-button-div .like-button');
+        if (likeButton) {
+          likeButton.setAttribute('data-object-id', result.objectID);
+        }
       }
     } catch (error) {
       console.error(`Error populating race card ${index}: ${error}`);
