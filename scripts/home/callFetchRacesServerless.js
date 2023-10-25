@@ -212,9 +212,9 @@ function populateRaceCards(results) {
         if (raceCityText) {
           raceCityText.textContent = result.city_ag;
         }
-        const raceCountryText = raceCardToPopulate.querySelector('.race-country-text');
+        const raceCountryText = raceCardToPopulate.querySelector('.race-region-text');
         if (raceCountryText) {
-          raceCountryText.textContent = result.country_ag;
+          raceCountryText.textContent = result.region_ag;
         }
         const raceSportText = raceCardToPopulate.querySelector('.race-sport-text');
         if (raceSportText) {
