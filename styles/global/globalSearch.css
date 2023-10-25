@@ -924,7 +924,7 @@ body.dark,body[data-theme=dark]{
     }
 }
 
-/*Style Changes*/
+/*Custom Styling*/
 /*Styling the Placeholder Text*/
 .aa-DetachedSearchButtonPlaceholder {
     color: #807E77;
@@ -969,4 +969,9 @@ body.dark,body[data-theme=dark]{
 }
 .aa-Input::placeholder{
     color:#807E77;
+}
+
+.aa-DetachedContainer {
+    top: 20px;
+    border-radius: 10px 10px 0 0;
 }
