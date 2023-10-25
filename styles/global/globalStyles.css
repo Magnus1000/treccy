@@ -74,3 +74,17 @@ display: none!important;
 display: inline!important;
 }
 
+/* Update z-index for lightbox so it's above back and share buttons*/
+.w-lightbox-backdrop {
+    z-index: 99999;
+}
+
+/* Exit icon style */
+.w-lightbox-close {
+    border-radius: 50%;
+    width: 44px;
+    background-color: #1b2b1c;
+    border: solid 1px #ffffff;
+    top: 2%;
+    right: 2%!important;
+}
