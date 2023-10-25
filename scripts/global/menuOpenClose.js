@@ -19,3 +19,14 @@ mobileMenuOverlay.addEventListener('click', () => {
     mobileMenuOverlay.style.display = 'none';
     console.log('Mobile menu closed');
 });
+
+// Function to close the desktop profile dropdown div when clicking outside of it
+const closeDesktopProfileDropdown = (event) => {
+    if (!desktopProfileDropdownDiv.contains(event.target)) {
+        desktopProfileDropdownDiv.style.display = 'none';
+        console.log('Desktop menu closed');
+    }
+};
+
+// Add event listener to document object
+document.addEventListener('click', closeDesktopProfileDropdown);
