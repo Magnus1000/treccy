@@ -3,6 +3,7 @@ const profilePill = document.getElementById('profile-pill');
 const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 const desktopProfileDropdownDiv = document.getElementById('desktop-profile-dropdown-div');
 
+// Function to add event listener to profile pill
 profilePill.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
         mobileMenuOverlay.style.display = 'flex';
@@ -13,14 +14,9 @@ profilePill.addEventListener('click', () => {
     }
 });
 
-// Add event listener to close button
-const closeButton = document.getElementById('close-button');
-closeButton.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-        mobileMenuOverlay.style.display = 'none';
-        console.log('Mobile menu closed');
-    } else {
-        desktopProfileDropdownDiv.style.display = 'none';
-        console.log('Desktop menu closed');
-    }
+// Add event listener to mobile menu overlay
+const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+mobileMenuOverlay.addEventListener('click', () => {
+    mobileMenuOverlay.style.display = 'none';
+    console.log('Mobile menu closed');
 });
