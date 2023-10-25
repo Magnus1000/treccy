@@ -174,35 +174,33 @@ function hideUnusedRaceCards() {
   });
 }
 
-// Function to populate race cards
 function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   const raceGrid = document.getElementById('race-grid-container'); 
 
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
 
-  /* Clear the contents of the race cards container
-  if (!calledByScroll) { // Check if the function was called by the scroll event. If so, don't clear the container
-  addGreyedOutClass();
-  }*/
-
   // Loop through each result and create a new race card
   results.forEach((result, index) => {
-    if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
-      const raceCardToPopulate = existingRaceCards[index];
-      removeGreyedOutFromElementAndChildren(raceCardToPopulate);
-      const formattedDate = formatDate(result.date_ag);
-      raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
-      raceCardToPopulate.querySelector('.race-card-image').src = result.photo_main_ag;
-      raceCardToPopulate.querySelector('.race-card-image').alt = result.name_ag;
-      raceCardToPopulate.querySelector('.card-text-link-block').href = `/race/${result.slug_ag}`;
-      raceCardToPopulate.querySelector('.race-card-heading').textContent = result.name_ag;
-      raceCardToPopulate.querySelector('.race-card-display-distance').textContent = result.distances_display_ag;
-      raceCardToPopulate.querySelector('.race-city-text').textContent = result.city_ag;
-      raceCardToPopulate.querySelector('.race-country-text').textContent = result.country_ag;
-      raceCardToPopulate.querySelector('.race-sport-text').textContent = result.sports_display_ag;
-      raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
-      raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
+    try {
+      if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
+        const raceCardToPopulate = existingRaceCards[index];
+        removeGreyedOutFromElementAndChildren(raceCardToPopulate);
+        const formattedDate = formatDate(result.date_ag);
+        raceCardToPopulate.querySelector('.race-card-top-block').href = `/race/${result.slug_ag}`;
+        raceCardToPopulate.querySelector('.race-card-image').src = result.photo_main_ag;
+        raceCardToPopulate.querySelector('.race-card-image').alt = result.name_ag;
+        raceCardToPopulate.querySelector('.card-text-link-block').href = `/race/${result.slug_ag}`;
+        raceCardToPopulate.querySelector('.race-card-heading').textContent = result.name_ag;
+        raceCardToPopulate.querySelector('.race-card-display-distance').textContent = result.distances_display_ag;
+        raceCardToPopulate.querySelector('.race-city-text').textContent = result.city_ag;
+        raceCardToPopulate.querySelector('.race-country-text').textContent = result.country_ag;
+        raceCardToPopulate.querySelector('.race-sport-text').textContent = result.sports_display_ag;
+        raceCardToPopulate.querySelector('.race-card-date-text').textContent = formattedDate;
+        raceCardToPopulate.querySelector('.like-button-div .like-button').setAttribute('data-object-id', result.objectID);
+      }
+    } catch (error) {
+      console.error(`Error populating race card ${index}: ${error}`);
     }
   }); 
 }
