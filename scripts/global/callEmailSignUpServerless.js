@@ -17,7 +17,7 @@ async function sendWebhook(email) {  // Marking function as async
     emailSignupButton.disabled = false; // Enabling the button
     return;
   }
-  const emailSignupButton = document.getElementById('subscribe-to-notifications-button');
+  const emailSignupButton = document.getElementById('subscribe-button');
   emailSignupButton.disabled = true; // Disabling the button
 
   const signupPage = window.location.href;
@@ -65,7 +65,6 @@ async function sendWebhook(email) {  // Marking function as async
     console.log('Webhook response:', data);
     if (data.includes('user_subscribed_successfully')) {
       updateUserSubscribed();
-      removeActiveClassFromEmailSignupLongWrapper();
     }
     // Removing the message from the input field after the webhook response is received
     emailSignupField.value = '';
@@ -75,10 +74,11 @@ async function sendWebhook(email) {  // Marking function as async
 
 
 // Event listener for the email submit button
-document.getElementById('subscribe-to-notifications-button').addEventListener('click', function() {
+document.getElementById('subscribe-button').addEventListener('click', function(event) {
+  event.preventDefault(); 
   const emailFieldDiv = document.getElementById('email-signup-field');
   
-  if (!emailFieldDiv.classList.contains('active') || (emailFieldDiv.classList.contains('active') && emailFieldDiv.value === '')) {
+  if (!emailFieldDiv.classList.contains('focused') || (emailFieldDiv.classList.contains('focused') && emailFieldDiv.value === '')) {
     applyFocusClass();
   } else {
     const email = getEmail();
@@ -118,17 +118,6 @@ function getLocationSource() {
   return localStorage.getItem('locationSource');
 }
 
-// Function to remove the active class from the email signup long wrapper once the user has subscribed
-function removeActiveClassFromEmailSignupLongWrapper() {
-  const emailSignupLongWrapper = document.querySelector('.email-signup-long-wrapper');
-  if (emailSignupLongWrapper) {
-    emailSignupLongWrapper.classList.remove('active');
-    console.log('Removed active class from email signup long wrapper');
-  } else {
-    console.warn('Email signup long wrapper not found');
-  }
-}
-
 // Function to toggle the focus class on the email header
 function applyFocusClass() {
   const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
@@ -150,17 +139,24 @@ function applyFocusClass() {
 
 const emailSignupDiv = document.querySelector('.email-sign-up-div');
 emailSignupDiv.addEventListener('click', function(event) {
+  event.preventDefault();
   if (event.target.closest('.email-sign-up-div')) {
     applyFocusClass();
   }
 });
 
-document.addEventListener('click', function(event) {
-  if (!event.target.closest('.email-sign-up-div')) {
-    const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
-    if (emailSignupLongHeader) {
-      emailSignupLongHeader.classList.remove('focus');
-      console.log('Removed focus class from email signup long header');
-    }
+// Function to show or hide the email signup div
+function hideEmailDivsIfSubscribed() {
+  const userSubscribed = getUserSubscribed();
+  if (userSubscribed) {
+    const emailDivs = document.querySelectorAll('[data-email-div="true"]');
+    emailDivs.forEach((div) => {
+      div.style.display = 'none';
+    });
   }
+}
+
+// Call the function to hide the email divs if the user is subscribed
+window.addEventListener('load', function() {
+  hideEmailDivsIfSubscribed();
 });
