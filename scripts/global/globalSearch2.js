@@ -249,23 +249,3 @@ function toTitleCase(str) {
     });
 }
 
-// Function to update the Algolia input placeholder
-function updateAlgoliaPlaceholder() {
-    const algoliaInput = document.querySelector('.aa-Input');
-    if (algoliaInput) {
-        algoliaInput.setAttribute('placeholder', 'E.g trail run in Queenstown');
-        console.log('Algolia placeholder updated.');
-    } else {
-        console.log('Algolia input not found.');
-    }
-}
-
-// Add an event listener to the search button that calls the updateAlgoliaPlaceholder() function
-const searchButton = document.querySelector('.aa-DetachedSearchButton');
-if (searchButton) {
-    searchButton.addEventListener('click', updateAlgoliaPlaceholder);
-    console.log('Event listener added to search button.');
-} else {
-    console.log('Search button not found.');
-}
-
