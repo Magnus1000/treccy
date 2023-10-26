@@ -79,7 +79,7 @@ document.getElementById('subscribe-to-notifications-button').addEventListener('c
   const emailFieldDiv = document.getElementById('email-signup-field');
   
   if (!emailFieldDiv.classList.contains('active') || (emailFieldDiv.classList.contains('active') && emailFieldDiv.value === '')) {
-    toggleEmailAndButtonClasses();
+    applyFocusClass();
   } else {
     const email = getEmail();
     if (!isValidEmail(email)) {
@@ -132,8 +132,12 @@ function removeActiveClassFromEmailSignupLongWrapper() {
 // Function to toggle the focus class on the email header
 function applyFocusClass() {
   const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
+  const emailExpandArrow = document.querySelector('.email-expand-arrow');
+  const emailInputField = document.querySelector('.email-input-field');
   if (emailSignupLongHeader) {
-    emailSignupLongHeader.classList.add('focus');
+    emailSignupLongHeader.classList.add('focused');
+    emailExpandArrow.classList.add('focused');
+    emailInputField.classList.add('focused');
     console.log('Added focus class to email signup long header');
   } else {
     console.warn('Email signup long header not found');
