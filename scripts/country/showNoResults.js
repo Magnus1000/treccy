@@ -1,5 +1,5 @@
 // Select the collection list element
-const collectionList = document.querySelector('.collection-list');
+const collectionList = document.querySelector('.region-races-collection-list');
 
 // Initialize a variable to hold the count of displayed items
 let displayedCount = 0;
@@ -11,7 +11,7 @@ const observer = new MutationObserver(function(mutations) {
         // Check if the mutation is a childList mutation (i.e. items were added or removed from the list)
         if (mutation.type === 'childList') {
             // Get all items in the collection list (assuming they have a class 'collection-item')
-            const items = collectionList.querySelectorAll('.collection-item-2-column-row');
+            const items = collectionList.querySelectorAll('.region-races-item');
 
             // Reset the displayed count to 0
             displayedCount = 0;
