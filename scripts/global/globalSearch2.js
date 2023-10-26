@@ -51,6 +51,7 @@ async function fetchAlgoliaKeysAndInit() {
         
         const autocompleteInstance = autocomplete({
             container: "#global-race-search",
+            placeholder: 'Search for races',
             detachedMediaQuery: "",
             openOnFocus: true,
             insights: true,
