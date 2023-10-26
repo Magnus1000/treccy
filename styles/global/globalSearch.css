@@ -983,11 +983,19 @@ body.dark,body[data-theme=dark]{
     color:#807E77;
 }
 
-.aa-DetachedContainer {
-    top: 20px;
-    border-radius: 10px 10px 0 0;
-}
-
 .aa-DetachedOverlay {
     background-color: rgb(10, 15, 13, 0.5)
+}
+
+@media (max-width: 767px) {
+    .aa-DetachedContainer {
+        top: 20px;
+        border-radius: 10px 10px 0 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .aa-DetachedContainer {
+        border-radius: 10px;
+    }
 }
