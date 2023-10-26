@@ -134,10 +134,14 @@ function applyFocusClass() {
   const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
   const emailExpandArrow = document.querySelector('.email-expand-arrow');
   const emailInputField = document.querySelector('.email-input-field');
+  const emailInputDiv = document.querySelector('.email-input-div');
+  const emailSignUpDiv = document.querySelector('.email-sign-up-div');
   if (emailSignupLongHeader) {
     emailSignupLongHeader.classList.add('focused');
     emailExpandArrow.classList.add('focused');
     emailInputField.classList.add('focused');
+    emailInputDiv.classList.add('focused');
+    emailSignUpDiv.classList.add('focused');
     console.log('Added focus class to email signup long header');
   } else {
     console.warn('Email signup long header not found');
