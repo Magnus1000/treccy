@@ -16,6 +16,9 @@ function manageMapViewClass(showMap) {
 
 // This function creates a marker on the map for a given result
 async function createMarkerOnMap(map, result) {
+  if (!Array.isArray(result.sports_search_ag)) {
+    return; // Skip the result if sports_search_ag is not a valid array
+  }
   // Create a new div element for the marker icon instead of image
   const markerIcon = document.createElement('div');
   markerIcon.className = 'markerIconClass';
@@ -36,21 +39,55 @@ async function createMarkerOnMap(map, result) {
   currentMarkers.push(marker); // Add the marker to the current markers array
 }
 
-// New function to clone and populate the div
 async function cloneAndPopulateDiv(result) {
   // Clone the original div by its ID "map-pop-up"
   const clonedDiv = document.getElementById('map-pop-up').cloneNode(true);
 
   // Populate elements within the cloned div
-  clonedDiv.querySelector('.map-popup-sport').innerText = result.sports_display_ag;
-  clonedDiv.querySelector('.map-popup-image').src = result.photo_main_ag;
-  clonedDiv.querySelector('.map-popup-link-block').href = `/race/${result.slug_ag}`;
-  clonedDiv.querySelector('.map-popup-header').innerText = result.name_ag;
-  clonedDiv.querySelector('.map-popup-city-text').innerText = result.city_ag;
-  clonedDiv.querySelector('.map-popup-region-text').innerText = result.region_ag;
-  clonedDiv.querySelector('.map-popup-date-text').innerText = formatDate(result.date_ag);
-  clonedDiv.querySelector('.map-popup-distances').innerText = result.distances_display_ag;
-  clonedDiv.querySelector('.map-pop-up-div').href = `/race/${result.slug_ag}`;
+  const sportElement = clonedDiv.querySelector('.map-popup-sport');
+  if (sportElement) {
+    sportElement.innerText = result.sports_display_ag || '';
+  }
+
+  const imageElement = clonedDiv.querySelector('.map-popup-image');
+  if (imageElement) {
+    imageElement.src = result.photo_main_ag || '';
+  }
+
+  const linkBlockElement = clonedDiv.querySelector('.map-popup-link-block');
+  if (linkBlockElement) {
+    linkBlockElement.href = `/race/${result.slug_ag}` || '';
+  }
+
+  const headerElement = clonedDiv.querySelector('.map-popup-header');
+  if (headerElement) {
+    headerElement.innerText = result.name_ag || '';
+  }
+
+  const cityElement = clonedDiv.querySelector('.map-popup-city-text');
+  if (cityElement) {
+    cityElement.innerText = result.city_ag || '';
+  }
+
+  const regionElement = clonedDiv.querySelector('.map-popup-region-text');
+  if (regionElement) {
+    regionElement.innerText = result.region_ag || '';
+  }
+
+  const dateElement = clonedDiv.querySelector('.map-popup-date-text');
+  if (dateElement) {
+    dateElement.innerText = formatDate(result.date_ag) || '';
+  }
+
+  const distancesElement = clonedDiv.querySelector('.map-popup-distances');
+  if (distancesElement) {
+    distancesElement.innerText = result.distances_display_ag || '';
+  }
+
+  const popUpDivElement = clonedDiv.querySelector('.map-pop-up-div');
+  if (popUpDivElement) {
+    popUpDivElement.href = `/race/${result.slug_ag}` || '';
+  }
 
   return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
 }
@@ -163,5 +200,5 @@ function getMarkerIcon(sports) {
     'Triathlon': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/6536b69668e3ae76ff963f8d_triathlon-circle-icon.svg',
     'Walking': 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed6/6536bc8d9155007524f811c6_walking-circle-icon.svg'
   };
-  return sportToIconMap[sports[0]] || ''; // Use the first sport to get the icon URL
+  return sportToIconMap[sports?.[0]] || 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg'; // Use the first sport to get the icon URL
 }

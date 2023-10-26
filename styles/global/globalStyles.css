@@ -89,3 +89,7 @@ display: inline!important;
     right: 2%!important;
 }
 
+/* Hide Mapbox Controls*/
+.mapboxgl-control-container {
+    display: none;
+}
