@@ -148,7 +148,7 @@ emailSignupDiv.addEventListener('click', function(event) {
 // Function to show or hide the email signup div
 function hideEmailDivsIfSubscribed() {
   const userSubscribed = getUserSubscribed();
-  if (!userSubscribed) {
+  if (userSubscribed === false || userSubscribed === null) {
     const emailDivs = document.querySelectorAll('[data-email-div="true"]');
     emailDivs.forEach((div) => {
       div.style.display = 'flex';
