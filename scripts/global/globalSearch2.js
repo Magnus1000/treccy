@@ -261,7 +261,7 @@ function updateAlgoliaPlaceholder() {
 }
 
 // Add an event listener to the search button that calls the updateAlgoliaPlaceholder() function
-const searchButton = document.querySelector('#global-race-search-button');
+const searchButton = document.querySelector('#global-race-search');
 if (searchButton) {
     searchButton.addEventListener('click', updateAlgoliaPlaceholder);
     console.log('Event listener added to search button.');
