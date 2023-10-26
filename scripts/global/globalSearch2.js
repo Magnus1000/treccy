@@ -110,12 +110,14 @@ async function fetchAlgoliaKeysAndInit() {
                                 return html`
                                 <a class="aa-ItemLink" onclick="${onClickHandler}">
                                 <div class="aa-ItemContent">
-                                  <div class="aa-ItemInnerRow">
-                                    <img class="aa-ItemCustomIcon" src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg"></img>
-                                    <div class="aa-ItemContentTitleSuggestions">
+                                    <div class="aa-ItemInnerRow">
+                                        <div class="aa-ItemCustomIconWrapper">
+                                            <img class="aa-ItemCustomIcon" src="https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/65366117554535d3e42aa823_location-icon.svg"></img>
+                                        </div>
+                                        <div class="aa-ItemContentTitleSuggestions">
+                                        </div>
+                                        ${item.name_ag}
                                     </div>
-                                    ${item.name_ag}
-                                  </div>
                                 </div>
                                 </a>`;
                             },
