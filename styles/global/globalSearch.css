@@ -987,3 +987,7 @@ body.dark,body[data-theme=dark]{
     top: 20px;
     border-radius: 10px 10px 0 0;
 }
+
+.aa-DetachedOverlay {
+    background-color: rgb(10, 15, 13, 0.5)
+}
