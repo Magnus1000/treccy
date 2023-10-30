@@ -65,6 +65,7 @@ async function sendWebhook(email) {  // Marking function as async
     console.log('Webhook response:', data);
     if (data.includes('user_subscribed_successfully')) {
       updateUserSubscribed();
+      loadDivInSlices();
     }
     // Removing the message from the input field after the webhook response is received
     emailSignupField.value = '';
