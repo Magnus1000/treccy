@@ -51,7 +51,8 @@ async function sendWebhook(email) {  // Marking function as async
 
   // Displaying a message until the webhook response is received
   const emailSignupField = document.getElementById('email-signup-field');
-  emailSignupField.value = 'Carb-loading your details...';
+  emailSignupField.opacity = 0.5;
+  //emailSignupField.value = 'Carb-loading your details...';
 
   fetch(url, {
     method: 'POST',
@@ -119,23 +120,36 @@ function getLocationSource() {
   return localStorage.getItem('locationSource');
 }
 
-// Function to toggle the focus class on the email header
+// Function to add the focus class to the email signup elements when the email field is clicked
 function applyFocusClass() {
   const emailSignupLongHeader = document.querySelector('.email-signup-long-header');
-  const emailExpandArrow = document.querySelector('.email-expand-arrow');
-  const emailInputField = document.querySelector('.email-input-field');
-  const emailInputDiv = document.querySelector('.email-input-div');
-  const emailSignUpDiv = document.querySelector('.email-sign-up-div');
   if (emailSignupLongHeader) {
     emailSignupLongHeader.classList.add('focused');
-    emailExpandArrow.classList.add('focused');
-    emailInputField.classList.add('focused');
-    emailInputDiv.classList.add('focused');
-    emailSignUpDiv.classList.add('focused');
-    console.log('Added focus class to email signup long header');
   } else {
     console.warn('Email signup long header not found');
   }
+
+  const emailExpandArrow = document.querySelector('.email-expand-arrow');
+  if (emailExpandArrow) {
+    emailExpandArrow.classList.add('focused');
+  }
+
+  const emailInputField = document.querySelector('.email-input-field');
+  if (emailInputField) {
+    emailInputField.classList.add('focused');
+  }
+
+  const emailInputDiv = document.querySelector('.email-input-div');
+  if (emailInputDiv) {
+    emailInputDiv.classList.add('focused');
+  }
+
+  const emailSignUpDiv = document.querySelector('.email-sign-up-div');
+  if (emailSignUpDiv) {
+    emailSignUpDiv.classList.add('focused');
+  }
+
+  console.log('Added focus class to email signup elements');
 }
 
 const emailSignupDiv = document.querySelector('.email-sign-up-div');
