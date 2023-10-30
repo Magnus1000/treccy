@@ -94,10 +94,11 @@ document.getElementById('subscribe-button').addEventListener('click', function(e
       return;
     }
 
-    const params = extractURLParams();
-    console.log('Sending webhook with email:', email, 'and parameters:', params);
-    sendWebhook(email, params);
-    updateUserSubscribed();
+    //const params = extractURLParams();
+    //console.log('Sending webhook with email:', email, 'and parameters:', params);
+    //sendWebhook(email, params);
+    //updateUserSubscribed();
+    sendWebhook(email);
 
     // Clear the email field
     document.getElementById('email-signup-field').value = '';
