@@ -21,8 +21,13 @@ async function sendWebhook(email) {  // Marking function as async
   emailSignupButton.disabled = true; // Disabling the button
 
   const signupPage = window.location.href;
-  let params = extractURLParams(); // Awaiting the async function here
-  console.log("Fetched params: ", params); // Log the fetched params
+  let params = {};
+  if (typeof extractURLParams === 'function') {
+    params = extractURLParams(); // Awaiting the async function here
+    console.log("Fetched params: ", params); // Log the fetched params
+  } else {
+    console.warn('extractURLParams is not defined');
+  }
 
   // Check if lat, lng and location exist in params
   if (!params.lat || !params.lng || !params.location) {
