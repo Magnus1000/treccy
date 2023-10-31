@@ -154,7 +154,7 @@ async function removeGreyedOutFromElementAndChildren(element) {
 
 // Function to create 20 race cards
 async function createRaceCards() {
-  const raceCardTemplate = await clearRaceCardData();
+  const raceCardTemplate = await getEmptyRaceCardTemplate();
   const raceCardsContainer = document.getElementById("race-grid-container");
 
   for (let i = 0; i < 20; i++) {
@@ -318,7 +318,7 @@ const updateFormFieldsFromURL = (params) => {
 };
 
 // This function returns a cleared version of the FIRST element that has a class of 'race-card'
-function getEmptyRaceCardTemplate() {
+async function getEmptyRaceCardTemplate() {
   const raceCardElement = document.querySelector('.race-card');
 
   if (raceCardElement) {
