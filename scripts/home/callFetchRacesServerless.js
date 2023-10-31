@@ -109,11 +109,13 @@ async function fetchRacesFromVercel(filters, currentPage) {
         console.log('No saved races found via Vercel function.');
         hideUnusedRaceCards(); // Hide all race cards if no results found
         setHasResults();
+        console.log(`Set hasResults to ${hasResults}`)
       }
     } catch (error) {
       console.error('An error occurred while fetching races from Vercel function:', error);
       hideUnusedRaceCards(); // Hide all race cards if an error occurs
       setHasResults();
+      console.log(`Set hasResults to ${hasResults}`)
     }
 }
 
@@ -134,11 +136,6 @@ async function checkScroll(filters) {
 
     // Call fetchRacesFromVercel with the current page number and filters
     await fetchRacesFromVercel(filters, currentPage);
-    //console.log(`${races}`);
-
-    // Call setHasResults with the fetched races
-    //setHasResults(races);
-    //console.log(`Set hasResults to ${hasResults}`)
 
     isLoading = false; // Set isLoading to false to indicate that the page has finished loading
   }
