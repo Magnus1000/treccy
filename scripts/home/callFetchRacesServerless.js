@@ -115,10 +115,11 @@ async function fetchRacesFromVercel(filters, currentPage) {
 
 // Wait for the previous results to load before fetching the next set of results
 let isLoading = false; // Add a global variable to track whether a page is currently being loaded
+let hasResults = true; // Add a global variable to track whether the most recent scroll yielded any search results
 
 // Function to check if the user has scrolled to the bottom
 async function checkScroll(filters) {
-  if (!isLoading && window.innerHeight + window.scrollY >= document.body.offsetHeight) { // Check if a page is not currently being loaded
+  if (!isLoading && hasResults && window.innerHeight + window.scrollY >= document.body.offsetHeight) { // Check if a page is not currently being loaded and the most recent scroll yielded search results
     isLoading = true; // Set isLoading to true to indicate that a page is being loaded
 
     // Call createRaceCards function with the fetched races
@@ -132,6 +133,11 @@ async function checkScroll(filters) {
 
     isLoading = false; // Set isLoading to false to indicate that the page has finished loading
   }
+}
+
+// Function to set hasResults to false if the most recent scroll yielded no search results
+function setHasResults(results) {
+  hasResults = results.length > 0;
 }
 
 // Listen for the scroll event
