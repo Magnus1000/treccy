@@ -177,6 +177,7 @@ function hideUnusedRaceCards() {
   });
 }
 
+// Function to populate the cards with results from algolia
 async function populateRaceCards(results) {
   console.log("Populating Race Cards...");
   //Find the container the cards are in
@@ -191,11 +192,21 @@ async function populateRaceCards(results) {
   // Log the count to the console
   console.log(`Total number of elements with class 'race-card greyed-out': ${count}`);
 
+  // Get the count of the elements
+  const countresults = results.length;
+
+  // Log the count to the console
+  console.log(`Total number of results': ${countresults}`);
+
+  // Log the existingRaceCards to the console
+  console.log(existingRaceCards);
+
   // Populate each card with the search result data
   results.forEach((result, index) => {
     try {
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
-        const raceCardToPopulate = existingRaceCards[index]; 
+        const raceCardToPopulate = existingRaceCards[index];
+        console.log(raceCardToPopulate); 
         const formattedDate = formatDate(result.date_ag);
         const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
         // If statement to check if raceCardTopBlock exists
