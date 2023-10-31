@@ -131,6 +131,9 @@ async function checkScroll(filters) {
     // Call fetchRacesFromVercel with the current page number and filters
     const races = await fetchRacesFromVercel(filters, currentPage);
 
+    // Call setHasResults with the fetched races
+    setHasResults(races);
+
     isLoading = false; // Set isLoading to false to indicate that the page has finished loading
   }
 }
