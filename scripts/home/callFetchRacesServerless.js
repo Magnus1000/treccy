@@ -140,7 +140,7 @@ async function checkScroll(filters) {
 
 // Function to set hasResults to false if the most recent scroll yielded no search results
 function setHasResults(results) {
-  hasResults = results.length > 0;
+  hasResults = results && results.length > 0;
 }
 
 // Listen for the scroll event
