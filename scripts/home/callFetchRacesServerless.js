@@ -337,6 +337,7 @@ async function getEmptyRaceCardTemplate() {
     const raceSportText = newRaceCardElement.querySelector('.race-sport-text');
     const raceCardDisplayDistance = newRaceCardElement.querySelector('.race-card-display-distance');
     const cardTextLinkBlock = newRaceCardElement.querySelector('.card-text-link-block');
+    const cardComponent = newRaceCardElement.querySelector('.race-card-component')
 
     if (raceCardImage) raceCardImage.classList.add('greyed-out');
     if (raceCardHeading) raceCardHeading.classList.add('greyed-out');
@@ -347,6 +348,7 @@ async function getEmptyRaceCardTemplate() {
     if (raceCardDisplayDistance) raceCardDisplayDistance.classList.add('greyed-out');
     if (cardTextLinkBlock) cardTextLinkBlock.classList.add('greyed-out');
     if (raceCardTopBlock) raceCardTopBlock.classList.add('greyed-out');
+    if (cardComponent) cardComponent.classList.add('greyed-out');
 
     // Clear data in each child element
     if (raceCardImage) raceCardImage.src = '';
