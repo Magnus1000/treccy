@@ -354,10 +354,9 @@ async function clearRaceCardData() {
     if (raceSportText) raceSportText.innerText = '';
     if (raceCardDisplayDistance) raceCardDisplayDistance.innerText = '';
     
-    // Log to console for debugging
-    console.log('Cleared data in the first race card while preserving structure');
+    return raceCardElement; // Return the race card element
   } else {
-    // Log to console if the element is not found
     console.log('Element with class "race-card" not found');
+    return null; // Return null if the element is not found
   }
 }
