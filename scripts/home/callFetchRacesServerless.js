@@ -185,6 +185,12 @@ async function populateRaceCards(results) {
   //Find the cards that are greyed out to populate with search result data
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card.greyed-out'));
 
+  // Get the count of the elements
+  const count = existingRaceCards.length;
+
+  // Log the count to the console
+  console.log(`Total number of elements with class 'race-card greyed-out': ${count}`);
+
   // Populate each card with the search result data
   results.forEach((result, index) => {
     try {
