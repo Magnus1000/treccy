@@ -203,7 +203,9 @@ async function populateRaceCards(results) {
 
   // Populate each card with the search result data
   results.forEach((result, index) => {
+
     try {
+      let raceCardToPopulate; // Declare the variable outside of try to make it accessible in the catch block
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
         const raceCardToPopulate = existingRaceCards[index];
         console.log(raceCardToPopulate); 
