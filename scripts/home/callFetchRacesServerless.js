@@ -314,18 +314,6 @@ const updateFormFieldsFromURL = (params) => {
   }
 };
 
-//Function to call all the functions that need to be called when the page loads
-document.addEventListener("DOMContentLoaded", async function() {
-  const filters = await checkURLParams();
-});
-document.addEventListener('DOMContentLoaded', async function() {
-  await fetchAlgoliaKeysAndInit();
-});
-document.addEventListener("DOMContentLoaded", function() {
-  const locationButton = document.getElementById("location-button");
-  locationButton.addEventListener("click", getLocationAndPopulateField);
-});
-
 // This function clears the data within the FIRST element that has a class of 'race-card'
 async function clearRaceCardData() {
   // Get the FIRST element by its class name
@@ -360,3 +348,15 @@ async function clearRaceCardData() {
     return null; // Return null if the element is not found
   }
 }
+
+//Function to call all the functions that need to be called when the page loads
+document.addEventListener("DOMContentLoaded", async function() {
+  const filters = await checkURLParams();
+});
+document.addEventListener('DOMContentLoaded', async function() {
+  await fetchAlgoliaKeysAndInit();
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const locationButton = document.getElementById("location-button");
+  locationButton.addEventListener("click", getLocationAndPopulateField);
+});
