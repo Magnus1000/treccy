@@ -237,7 +237,7 @@ async function populateRaceCards(results) {
           likeButton.setAttribute('data-object-id', result.objectID);
         }
       }
-      await removeGreyedOutFromElementAndChildren(raceCardToPopulate);
+      removeGreyedOutFromElementAndChildren(raceCardToPopulate);
     } catch (error) {
       console.error(`Error populating race card ${index}: ${error}`);
     }
