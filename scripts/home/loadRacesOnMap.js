@@ -54,11 +54,6 @@ async function cloneAndPopulateDiv(result) {
     imageElement.src = result.photo_main_ag || '';
   }
 
-  const linkBlockElement = clonedDiv.querySelector('.map-popup-link-block');
-  if (linkBlockElement) {
-    linkBlockElement.href = `/race/${result.slug_ag}` || '';
-  }
-
   const headerElement = clonedDiv.querySelector('.map-popup-header');
   if (headerElement) {
     headerElement.innerText = result.name_ag || '';
@@ -85,10 +80,12 @@ async function cloneAndPopulateDiv(result) {
   }
 
   const popUpDivElement = clonedDiv.querySelector('.map-pop-up-div');
+  console.log('popUpDivElement:', popUpDivElement); // Debugging line
   if (popUpDivElement) {
     popUpDivElement.href = `/race/${result.slug_ag}` || '';
   }
 
+  console.log('clonedDiv.outerHTML:', clonedDiv.outerHTML); // Debugging line
   return clonedDiv.outerHTML; // Returns the HTML content of the cloned and populated div
 }
 
