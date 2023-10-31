@@ -140,11 +140,11 @@ async function displayMapWithResults() {
     // Loop through race results and add new markers
     results.forEach(result => {
       createMarkerOnMap(map, result);
+      hideMapPopUp(); // Hide the div with ID "map-pop-up"
     });
 
     // Resize map to fit new markers
     map.resize();
-    hideMapPopUp(); // Hide the div with ID "map-pop-up"
   } catch (error) {
     // Log any errors that occur
     console.error("Error displaying map with results:", error);
