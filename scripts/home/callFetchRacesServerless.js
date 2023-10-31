@@ -186,21 +186,6 @@ async function populateRaceCards(results) {
   //Find the cards that are greyed out to populate with search result data
   const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card.greyed-out'));
 
-  // Get the count of the elements
-  const count = existingRaceCards.length;
-
-  // Log the count to the console
-  console.log(`Total number of elements with class 'race-card greyed-out': ${count}`);
-
-  // Get the count of the elements
-  const countresults = results.length;
-
-  // Log the count to the console
-  console.log(`Total number of results': ${countresults}`);
-
-  // Log the existingRaceCards to the console
-  console.log(existingRaceCards);
-
   // Populate each card with the search result data
   results.forEach((result, index) => {
 
@@ -208,7 +193,6 @@ async function populateRaceCards(results) {
       let raceCardToPopulate; // Declare the variable outside of try to make it accessible in the catch block
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
         const raceCardToPopulate = existingRaceCards[index];
-        console.log(raceCardToPopulate); 
         const formattedDate = formatDate(result.date_ag);
         const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
         removeGreyedOutFromElementAndChildren(raceCardToPopulate);
@@ -333,26 +317,34 @@ const updateFormFieldsFromURL = (params) => {
   }
 };
 
-// This function clears the data within the FIRST element that has a class of 'race-card'
-async function clearRaceCardData() {
-  // Get the FIRST element by its class name
+// This function returns a cleared version of the FIRST element that has a class of 'race-card'
+function getEmptyRaceCardTemplate() {
   const raceCardElement = document.querySelector('.race-card');
-  
-  // Check if the element exists
+
   if (raceCardElement) {
-    // Add "greyed-out" class to the race card element and all child elements
-    raceCardElement.classList.add('greyed-out');
-    raceCardElement.querySelectorAll('*').forEach(element => element.classList.add('greyed-out'));
-    
+    const newRaceCardElement = raceCardElement.cloneNode(true);
+
+    // Add the greyed-out class to the parent element
+    newRaceCardElement.classList.add('greyed-out');
+
+    // Add the greyed-out class to each child element
+    const raceCardImage = newRaceCardElement.querySelector('.race-card-image');
+    const raceCardHeading = newRaceCardElement.querySelector('.race-card-heading');
+    const raceCityText = newRaceCardElement.querySelector('.race-city-text');
+    const raceRegionText = newRaceCardElement.querySelector('.race-region-text');
+    const raceCardDateText = newRaceCardElement.querySelector('.race-card-date-text');
+    const raceSportText = newRaceCardElement.querySelector('.race-sport-text');
+    const raceCardDisplayDistance = newRaceCardElement.querySelector('.race-card-display-distance');
+
+    if (raceCardImage) raceCardImage.classList.add('greyed-out');
+    if (raceCardHeading) raceCardHeading.classList.add('greyed-out');
+    if (raceCityText) raceCityText.classList.add('greyed-out');
+    if (raceRegionText) raceRegionText.classList.add('greyed-out');
+    if (raceCardDateText) raceCardDateText.classList.add('greyed-out');
+    if (raceSportText) raceSportText.classList.add('greyed-out');
+    if (raceCardDisplayDistance) raceCardDisplayDistance.classList.add('greyed-out');
+
     // Clear data in each child element
-    const raceCardImage = raceCardElement.querySelector('.race-card-image');
-    const raceCardHeading = raceCardElement.querySelector('.race-card-heading');
-    const raceCityText = raceCardElement.querySelector('.race-city-text');
-    const raceRegionText = raceCardElement.querySelector('.race-region-text');
-    const raceCardDateText = raceCardElement.querySelector('.race-card-date-text');
-    const raceSportText = raceCardElement.querySelector('.race-sport-text');
-    const raceCardDisplayDistance = raceCardElement.querySelector('.race-card-display-distance');
-    
     if (raceCardImage) raceCardImage.src = '';
     if (raceCardHeading) raceCardHeading.innerText = '';
     if (raceCityText) raceCityText.innerText = '';
@@ -360,11 +352,11 @@ async function clearRaceCardData() {
     if (raceCardDateText) raceCardDateText.innerText = '';
     if (raceSportText) raceSportText.innerText = '';
     if (raceCardDisplayDistance) raceCardDisplayDistance.innerText = '';
-    
-    return raceCardElement; // Return the race card element
+
+    return newRaceCardElement;
   } else {
     console.log('Element with class "race-card" not found');
-    return null; // Return null if the element is not found
+    return null;
   }
 }
 
