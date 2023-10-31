@@ -42,6 +42,9 @@ async function createMarkerOnMap(map, result) {
 async function cloneAndPopulateDiv(result) {
   // Clone the original div by its ID "map-pop-up"
   const clonedDiv = document.getElementById('map-pop-up').cloneNode(true);
+  
+  // Set the display of the cloned div to 'flex'
+  clonedDiv.style.display = 'flex';
 
   // Remove the ID from the cloned div
   clonedDiv.removeAttribute('id');
