@@ -43,6 +43,9 @@ async function cloneAndPopulateDiv(result) {
   // Clone the original div by its ID "map-pop-up"
   const clonedDiv = document.getElementById('map-pop-up').cloneNode(true);
 
+  // Remove the ID from the cloned div
+  clonedDiv.removeAttribute('id');
+
   // Populate elements within the cloned div
   const sportElement = clonedDiv.querySelector('.map-popup-sport');
   if (sportElement) {
@@ -79,10 +82,9 @@ async function cloneAndPopulateDiv(result) {
     distancesElement.innerText = result.distances_display_ag || '';
   }
 
-  const popUpDivElement = clonedDiv.querySelector('.map-pop-up-div');
-  console.log('popUpDivElement:', popUpDivElement); // Debugging line
-  if (popUpDivElement) {
-    popUpDivElement.href = `/race/${result.slug_ag}` || '';
+  const linkBlockElement = clonedDiv.querySelector('.map-popup-link-block');
+  if (linkBlockElement) {
+    linkBlockElement.href = `/race/${result.slug_ag}` || '';
   }
 
   console.log('clonedDiv.outerHTML:', clonedDiv.outerHTML); // Debugging line
@@ -113,13 +115,17 @@ async function displayMapWithResults() {
 
     // Check if map instance already exists
     if (!map) {
+      // Fetch access token and map style from serverless function
+      const response = await fetch('https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/initializeMapBox.js');
+      const { accessToken, mapStyle } = await response.json();
+
       // Define the map using the mapboxgl.Map constructor
       map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/magnus1993/cll28qk0n006a01pu7y9h0ouv',
+        style: mapStyle,
         center: [lng, lat],
         zoom: 10,
-        accessToken: 'pk.eyJ1IjoibWFnbnVzMTk5MyIsImEiOiJjbGwyOHUxZTcyYTc1M2VwZDhzZGY3bG13In0._jM6tBke0CyM5_udTKGDOQ'
+        accessToken: accessToken
       });
 
       // Add controls to the map
@@ -137,6 +143,7 @@ async function displayMapWithResults() {
 
     // Resize map to fit new markers
     map.resize();
+    hideMapPopUp(); // Hide the div with ID "map-pop-up"
   } catch (error) {
     // Log any errors that occur
     console.error("Error displaying map with results:", error);
@@ -163,7 +170,6 @@ async function toggleView(showMap) {
     
     // Add or remove "map-view" class
       manageMapViewClass(showMap);
-
     if (showMap) {
         displayMapWithResults(lat, lng); // Passing in global variables for lat and lng
     }
@@ -199,3 +205,22 @@ function getMarkerIcon(sports) {
   };
   return sportToIconMap[sports?.[0]] || 'https://uploads-ssl.webflow.com/64ccebfb87c59cf5f3e54ed9/6536b1433b89d8f50a64b09e_treccy-placeholder-marker.svg'; // Use the first sport to get the icon URL
 }
+
+// Function to hide the div with ID "map-pop-up"
+function hideMapPopUp() {
+  // Find the div with ID "map-pop-up"
+  const mapPopUpElement = document.getElementById('map-pop-up');
+  
+  // Check if the element exists
+  if (mapPopUpElement) {
+    // Set the display to 'none' to hide it
+    mapPopUpElement.style.display = 'none';
+    
+    // Log a message to the console
+    console.log('Successfully hid the div with ID "map-pop-up".');
+  } else {
+    // Log a message if the element couldn't be found
+    console.log('Could not find a div with ID "map-pop-up".');
+  }
+}
+
