@@ -328,6 +328,7 @@ async function getEmptyRaceCardTemplate() {
     newRaceCardElement.classList.add('greyed-out');
 
     // Add the greyed-out class to each child element
+    const raceCardTopBlock = newRaceCardElement.querySelector('.race-card-top-block');
     const raceCardImage = newRaceCardElement.querySelector('.race-card-image');
     const raceCardHeading = newRaceCardElement.querySelector('.race-card-heading');
     const raceCityText = newRaceCardElement.querySelector('.race-city-text');
@@ -335,6 +336,7 @@ async function getEmptyRaceCardTemplate() {
     const raceCardDateText = newRaceCardElement.querySelector('.race-card-date-text');
     const raceSportText = newRaceCardElement.querySelector('.race-sport-text');
     const raceCardDisplayDistance = newRaceCardElement.querySelector('.race-card-display-distance');
+    const cardTextLinkBlock = newRaceCardElement.querySelector('.card-text-link-block');
 
     if (raceCardImage) raceCardImage.classList.add('greyed-out');
     if (raceCardHeading) raceCardHeading.classList.add('greyed-out');
@@ -343,6 +345,8 @@ async function getEmptyRaceCardTemplate() {
     if (raceCardDateText) raceCardDateText.classList.add('greyed-out');
     if (raceSportText) raceSportText.classList.add('greyed-out');
     if (raceCardDisplayDistance) raceCardDisplayDistance.classList.add('greyed-out');
+    if (cardTextLinkBlock) cardTextLinkBlock.classList.add('greyed-out');
+    if (raceCardTopBlock) raceCardTopBlock.classList.add('greyed-out');
 
     // Clear data in each child element
     if (raceCardImage) raceCardImage.src = '';
@@ -352,6 +356,8 @@ async function getEmptyRaceCardTemplate() {
     if (raceCardDateText) raceCardDateText.innerText = '';
     if (raceSportText) raceSportText.innerText = '';
     if (raceCardDisplayDistance) raceCardDisplayDistance.innerText = '';
+    if (cardTextLinkBlock) cardTextLinkBlock.href = '';
+    if (raceCardTopBlock) raceCardTopBlock.href = '';
 
     return newRaceCardElement;
   } else {
