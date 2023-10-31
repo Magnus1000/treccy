@@ -211,6 +211,7 @@ async function populateRaceCards(results) {
         console.log(raceCardToPopulate); 
         const formattedDate = formatDate(result.date_ag);
         const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
+        removeGreyedOutFromElementAndChildren(raceCardToPopulate);
         // If statement to check if raceCardTopBlock exists
         if (raceCardTopBlock) {
           raceCardTopBlock.setAttribute('href', `/race/${result.slug_ag}`);
@@ -256,7 +257,6 @@ async function populateRaceCards(results) {
           likeButton.setAttribute('data-object-id', result.objectID);
         }
       }
-      removeGreyedOutFromElementAndChildren(raceCardToPopulate);
     } catch (error) {
       console.error(`Error populating race card ${index}: ${error}`);
     }
