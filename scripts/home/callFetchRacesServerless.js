@@ -85,7 +85,7 @@ async function checkURLParams() {
 }
 
 // Function to fetch races races from Vercel function
-async function fetchRacesFromVercel(filters) {
+async function fetchRacesFromVercel(filters, currentPage) {
   const apiUrl = 'https://treccy-serverside-magnus1000team.vercel.app/api/treccywebsite/fetchRaces';
   try {
     const response = await fetch(apiUrl, {
@@ -101,8 +101,8 @@ async function fetchRacesFromVercel(filters) {
         const results = await response.json();
         console.log('Results fetched from Vercel function:', results);
         raceResultsJSON = results; // Assign results to global variable
-        populateRaceCards(results); // Pass the calledByScroll parameter to the populateRaceCards function
-        hideUnusedRaceCards(); // Pass the calledByScroll parameter to the hideUnusedRaceCards function
+        await populateRaceCards(results); // Waiting for populateRaceCards to finish before calling hideUnusedRaceCards function
+        hideUnusedRaceCards(); 
       } else {
         console.log('No saved races found via Vercel function.');
         hideUnusedRaceCards(); // Hide all race cards if no results found
@@ -117,17 +117,20 @@ async function fetchRacesFromVercel(filters) {
 let isLoading = false; // Add a global variable to track whether a page is currently being loaded
 
 // Function to check if the user has scrolled to the bottom
-function checkScroll(filters) {
+async function checkScroll(filters) {
   if (!isLoading && window.innerHeight + window.scrollY >= document.body.offsetHeight) { // Check if a page is not currently being loaded
     isLoading = true; // Set isLoading to true to indicate that a page is being loaded
 
-    // Call createRaceCards function only when isLoading is true
-    createRaceCards();
+    // Call createRaceCards function with the fetched races
+    await createRaceCards();
 
     currentPage++; // Increment the current page number
-    //fetchRacesFromVercel(filters).then(() => {
+    console.log(`Current page number: ${currentPage}`);
+
+    // Call fetchRacesFromVercel with the current page number and filters
+    const races = await fetchRacesFromVercel(filters, currentPage);
+
     isLoading = false; // Set isLoading to false to indicate that the page has finished loading
-    //}); // Fetch the next set of races
   }
 }
 
@@ -150,8 +153,8 @@ async function removeGreyedOutFromElementAndChildren(element) {
 }
 
 // Function to create 20 race cards
-function createRaceCards() {
-  const raceCardTemplate = document.getElementById("race-card");
+async function createRaceCards() {
+  const raceCardTemplate = await clearRaceCardData();
   const raceCardsContainer = document.getElementById("race-grid-container");
 
   for (let i = 0; i < 20; i++) {
@@ -174,18 +177,19 @@ function hideUnusedRaceCards() {
   });
 }
 
-function populateRaceCards(results) {
+async function populateRaceCards(results) {
   console.log("Populating Race Cards...");
+  //Find the container the cards are in
   const raceGrid = document.getElementById('race-grid-container'); 
 
-  const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card')); // Assuming all your race cards have a common class named 'race-card-class'
+  //Find the cards that are greyed out to populate with search result data
+  const existingRaceCards = Array.from(raceGrid.querySelectorAll('.race-card.greyed-out'));
 
-  // Loop through each result and create a new race card
+  // Populate each card with the search result data
   results.forEach((result, index) => {
     try {
       if (existingRaceCards[index]) { // Check to ensure an existing card is available to populate
-        const raceCardToPopulate = existingRaceCards[index];
-        removeGreyedOutFromElementAndChildren(raceCardToPopulate);
+        const raceCardToPopulate = existingRaceCards[index]; 
         const formattedDate = formatDate(result.date_ag);
         const raceCardTopBlock = raceCardToPopulate.querySelector('.race-card-top-block');
         // If statement to check if raceCardTopBlock exists
@@ -233,25 +237,11 @@ function populateRaceCards(results) {
           likeButton.setAttribute('data-object-id', result.objectID);
         }
       }
+      await removeGreyedOutFromElementAndChildren(raceCardToPopulate);
     } catch (error) {
       console.error(`Error populating race card ${index}: ${error}`);
     }
   }); 
-}
-
-// The function to add "greyed-out" class to divs with class "race-card-component"
-function addGreyedOutClass() {
-  // Find all the div elements with the class "race-card-component"
-  const raceCardComponents = document.querySelectorAll('.race-card-component');
-  
-  // Loop through each div element found
-  raceCardComponents.forEach(function(element) {
-    // Add the class "greyed-out" to the div
-    element.classList.add('greyed-out');
-    
-    // Log to the console to show the class has been added
-    console.log(`Added 'greyed-out' class to element: ${element}`);
-  });
 }
 
 // Helper function to set an element's value by its ID
@@ -335,3 +325,39 @@ document.addEventListener("DOMContentLoaded", function() {
   const locationButton = document.getElementById("location-button");
   locationButton.addEventListener("click", getLocationAndPopulateField);
 });
+
+// This function clears the data within the FIRST element that has a class of 'race-card'
+async function clearRaceCardData() {
+  // Get the FIRST element by its class name
+  const raceCardElement = document.querySelector('.race-card');
+  
+  // Check if the element exists
+  if (raceCardElement) {
+    // Add "greyed-out" class to the race card element and all child elements
+    raceCardElement.classList.add('greyed-out');
+    raceCardElement.querySelectorAll('*').forEach(element => element.classList.add('greyed-out'));
+    
+    // Clear data in each child element
+    const raceCardImage = raceCardElement.querySelector('.race-card-image');
+    const raceCardHeading = raceCardElement.querySelector('.race-card-heading');
+    const raceCityText = raceCardElement.querySelector('.race-city-text');
+    const raceRegionText = raceCardElement.querySelector('.race-region-text');
+    const raceCardDateText = raceCardElement.querySelector('.race-card-date-text');
+    const raceSportText = raceCardElement.querySelector('.race-sport-text');
+    const raceCardDisplayDistance = raceCardElement.querySelector('.race-card-display-distance');
+    
+    if (raceCardImage) raceCardImage.src = '';
+    if (raceCardHeading) raceCardHeading.innerText = '';
+    if (raceCityText) raceCityText.innerText = '';
+    if (raceRegionText) raceRegionText.innerText = '';
+    if (raceCardDateText) raceCardDateText.innerText = '';
+    if (raceSportText) raceSportText.innerText = '';
+    if (raceCardDisplayDistance) raceCardDisplayDistance.innerText = '';
+    
+    // Log to console for debugging
+    console.log('Cleared data in the first race card while preserving structure');
+  } else {
+    // Log to console if the element is not found
+    console.log('Element with class "race-card" not found');
+  }
+}
